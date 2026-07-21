@@ -305,7 +305,6 @@ const FOOD_DB = [
   {id:"frites", name:"Frites", kcal:400, portion:"1 portion", alias:["frites","frite"]},
   {id:"pizza", name:"Pizza", kcal:285, portion:"1 part", alias:["pizza"]},
   {id:"kebab", name:"Kebab", kcal:700, portion:"1 unité", alias:["kebab"]},
-  {id:"burger", name:"Burger", kcal:550, portion:"1 unité", alias:["burger","hamburger"]},
   {id:"sandwich", name:"Sandwich jambon-beurre", kcal:450, portion:"1 unité", alias:["sandwich"]},
   {id:"chips", name:"Chips", kcal:250, portion:"1 petit paquet", alias:["chips"]},
   {id:"chocolat", name:"Chocolat", kcal:230, portion:"1 barre", alias:["chocolat"]},
@@ -379,10 +378,8 @@ const FOOD_DB = [
   // Plats fréquents de Bobby
   {id:"riz-bolo", name:"Riz/pâtes bolognaise", kcal:480, portion:"1 assiette", alias:["riz bolo","pates bolo","pâtes bolo","bolo"]},
   {id:"riz-curry", name:"Riz curry (poulet)", kcal:430, portion:"1 assiette", alias:["riz curry"]},
-  {id:"wings-frites", name:"Wings + frites (air fryer)", kcal:520, portion:"1 portion", alias:["wings"]},
   {id:"pates-riz-sauce", name:"Pâtes/riz sauce (générique)", kcal:400, portion:"1 assiette", alias:["sauce"]},
-  {id:"burger-avocado", name:"Burger chicken avocat + frites", kcal:800, portion:"1 menu", alias:["burger avocat","chicken avocado","burger chicken"]},
-  {id:"cheese-naan-tenders", name:"Cheese naan + tenders + frites", kcal:850, portion:"1 menu", alias:["cheese naan","tenders"]},
+  {id:"cheese-naan", name:"Cheese naan (pain indien fromage)", kcal:320, portion:"1 unité", alias:["cheese naan","naan fromage","naan"]},
   {id:"tasty-crousty", name:"Tasty Crousty (poulet croustillant)", kcal:650, portion:"1 menu", alias:["tasty crousty","crousty","tasty"]},
   {id:"salade-cesar", name:"Salade César", kcal:470, portion:"1 bol (assaisonnement inclus)", alias:["cesar","césar"]},
   {id:"salade-avocat-thon", name:"Salade avocat thon", kcal:350, portion:"1 bol", alias:["avocat thon"]},
@@ -429,7 +426,7 @@ const FOOD_DB = [
   {id:"panini", name:"Panini", kcal:400, portion:"1 unité", alias:["panini"]},
   {id:"empanada", name:"Empanada", kcal:250, portion:"1 unité", alias:["empanada"]},
   {id:"samosa", name:"Samosa", kcal:150, portion:"1 unité", alias:["samosa"]},
-  {id:"teriyaki", name:"Poulet teriyaki + riz", kcal:550, portion:"1 assiette", alias:["teriyaki"]},
+  {id:"teriyaki", name:"Poulet teriyaki", kcal:320, portion:"~150g avec sauce", alias:["teriyaki"]},
   {id:"pad-thai", name:"Pad thaï", kcal:550, portion:"1 assiette", alias:["pad thai","pad thaï"]},
   {id:"bibimbap", name:"Bibimbap", kcal:550, portion:"1 bol", alias:["bibimbap"]},
   {id:"shawarma", name:"Shawarma / gyros", kcal:600, portion:"1 unité", alias:["shawarma","gyros"]},
@@ -485,6 +482,145 @@ const FOOD_DB = [
   {id:"petit-filou", name:"Petit Filou / fromage blanc sucré", kcal:90, portion:"1 pot", alias:["petit filou","petits filous"]},
   {id:"yaourt-fruits", name:"Yaourt aux fruits", kcal:110, portion:"1 pot", alias:["yaourt aux fruits","yaourt fruit"]},
   {id:"compote", name:"Compote", kcal:80, portion:"1 gourde/pot", alias:["compote"]},
+
+  // ==== WINGS — toutes les versions ====
+  {id:"wings-air-fryer", name:"Wings air fryer (nature)", kcal:220, portion:"~6 wings", alias:["wings air fryer","wings sans huile","wings nature"]},
+  {id:"wings-panees", name:"Wings panées (chapelure, frites)", kcal:420, portion:"~6 wings", alias:["wings panees","wings chapelure","wings frites"]},
+  {id:"wings-buffalo", name:"Wings sauce buffalo", kcal:400, portion:"~6 wings", alias:["wings buffalo"]},
+  {id:"wings-bbq", name:"Wings sauce BBQ", kcal:420, portion:"~6 wings", alias:["wings bbq"]},
+  {id:"wings-miel-moutarde", name:"Wings miel-moutarde", kcal:440, portion:"~6 wings", alias:["wings miel moutarde"]},
+
+  // ==== POULET — toutes les versions ====
+  {id:"poulet-grille", name:"Poulet grillé/rôti (nature)", kcal:250, portion:"~150g", alias:["poulet grille","poulet roti","blanc de poulet"]},
+  {id:"poulet-pane", name:"Poulet pané (escalope panée)", kcal:340, portion:"~150g", alias:["poulet pane","escalope panee"]},
+  {id:"poulet-frit", name:"Poulet frit (type fast-food)", kcal:420, portion:"~150g", alias:["poulet frit","fried chicken"]},
+  {id:"poulet-sauce", name:"Poulet en sauce (curry/crème)", kcal:380, portion:"~150g avec sauce", alias:["poulet sauce","poulet curry","poulet creme"]},
+  {id:"cuisse-poulet", name:"Cuisse de poulet rôtie (avec peau)", kcal:290, portion:"1 cuisse ~150g", alias:["cuisse de poulet","cuisse poulet"]},
+  {id:"nuggets-poulet", name:"Nuggets de poulet", kcal:300, portion:"6 pièces", alias:["nuggets poulet"]},
+
+  // ==== POISSON — toutes les versions ====
+  {id:"poisson-vapeur", name:"Poisson vapeur/grillé (nature)", kcal:150, portion:"~150g", alias:["poisson vapeur","poisson grille nature"]},
+  {id:"poisson-pane", name:"Poisson pané", kcal:320, portion:"~150g", alias:["poisson pane"]},
+  {id:"poisson-frit", name:"Poisson frit", kcal:380, portion:"~150g", alias:["poisson frit"]},
+  {id:"poisson-sauce", name:"Poisson sauce (beurre blanc/crème)", kcal:340, portion:"~150g avec sauce", alias:["poisson sauce","poisson beurre blanc"]},
+  {id:"poisson-meuniere", name:"Poisson meunière (beurre)", kcal:280, portion:"~150g", alias:["poisson meuniere"]},
+
+  // ==== FRITES — toutes les versions ====
+  {id:"frites-air-fryer", name:"Frites air fryer (peu d'huile)", kcal:250, portion:"1 portion", alias:["frites air fryer","frites sans huile","frites four"]},
+  {id:"frites-maison", name:"Frites maison (huile)", kcal:380, portion:"1 portion", alias:["frites maison"]},
+  {id:"frites-fastfood", name:"Frites fast-food", kcal:340, portion:"portion moyenne", alias:["frites fast food","frites mcdo"]},
+
+  // ==== RIZ — toutes les versions ====
+  {id:"riz-saute", name:"Riz sauté/frit (wok)", kcal:320, portion:"~200g", alias:["riz saute","riz frit","riz wok"]},
+  {id:"riz-pilaf", name:"Riz pilaf/gras", kcal:300, portion:"~200g", alias:["riz pilaf","riz gras"]},
+  {id:"riz-complet", name:"Riz complet nature", kcal:230, portion:"~200g cuit", alias:["riz complet"]},
+
+  // ==== LÉGUMES VERTS — toutes les versions ====
+  {id:"haricots-verts-beurre", name:"Haricots verts sautés (beurre/ail)", kcal:110, portion:"~200g", alias:["haricots verts beurre","haricots verts sautes","haricots verts ail"]},
+  {id:"haricots-verts-creme", name:"Haricots verts à la crème", kcal:150, portion:"~200g", alias:["haricots verts creme"]},
+  {id:"brocoli-saute", name:"Brocoli sauté", kcal:110, portion:"~200g", alias:["brocoli saute"]},
+  {id:"legumes-vapeur", name:"Légumes vapeur (mix, nature)", kcal:70, portion:"~200g", alias:["legumes vapeur","poelee de legumes nature"]},
+  {id:"legumes-sautes", name:"Légumes sautés (poêlée, huile)", kcal:150, portion:"~200g", alias:["legumes sautes","poelee de legumes"]},
+
+  // ==== VIANDE ROUGE — variantes ====
+  {id:"steak-grille", name:"Steak grillé (entrecôte/faux-filet, nature)", kcal:300, portion:"~150g", alias:["steak grille","entrecote","faux filet"]},
+  {id:"viande-panee", name:"Viande panée (escalope panée)", kcal:350, portion:"~150g", alias:["viande panee","escalope de veau panee"]},
+  {id:"boeuf-sauce", name:"Bœuf en sauce (bourguignon type)", kcal:380, portion:"~200g avec sauce", alias:["boeuf sauce","boeuf bourguignon"]},
+
+  // ==== ŒUFS — variantes ====
+  {id:"oeuf-dur", name:"Œuf dur", kcal:70, portion:"1 unité", alias:["oeuf dur","œuf dur"]},
+  {id:"oeuf-plat", name:"Œuf au plat (frit)", kcal:95, portion:"1 unité", alias:["oeuf au plat","oeuf plat","oeuf frit"]},
+  {id:"oeufs-brouilles", name:"Œufs brouillés (2 œufs + beurre)", kcal:220, portion:"2 œufs", alias:["oeufs brouilles","œufs brouillés"]},
+
+  // ==== PÂTES/RIZ NATURE — variantes simples ====
+  {id:"pates-beurre", name:"Pâtes au beurre/huile (nature)", kcal:320, portion:"~200g", alias:["pates au beurre","pates nature","pates huile"]},
+  {id:"pates-tomate", name:"Pâtes sauce tomate simple", kcal:340, portion:"~200g", alias:["pates tomate","pates sauce tomate simple"]},
+
+  // ==== BURGER — toutes les versions ====
+  {id:"burger-simple", name:"Burger simple (fast-food, cheese)", kcal:550, portion:"1 unité", alias:["burger simple","cheeseburger","hamburger simple"]},
+  {id:"burger-double", name:"Burger double cheese", kcal:750, portion:"1 unité", alias:["burger double","double cheeseburger"]},
+  {id:"burger-maison", name:"Burger maison (steak haché, pain, fromage)", kcal:600, portion:"1 unité", alias:["burger maison"]},
+  {id:"burger-poulet-pane", name:"Burger poulet pané", kcal:500, portion:"1 unité", alias:["burger poulet pane","burger chicken pane"]},
+  {id:"burger-vege", name:"Burger végé", kcal:450, portion:"1 unité", alias:["burger vege","burger vegetarien"]},
+  {id:"burger-xxl", name:"Burger XXL/gourmet (bacon, œuf...)", kcal:850, portion:"1 unité", alias:["burger xxl","burger gourmet","burger bacon"]},
+
+  // ==== PIZZA — toutes les versions ====
+  {id:"pizza-margherita", name:"Pizza margherita", kcal:250, portion:"1 part", alias:["pizza margherita"]},
+  {id:"pizza-4fromages", name:"Pizza 4 fromages", kcal:320, portion:"1 part", alias:["pizza 4 fromages","pizza quatre fromages"]},
+  {id:"pizza-viande", name:"Pizza pepperoni/viande", kcal:300, portion:"1 part", alias:["pizza pepperoni","pizza viande"]},
+  {id:"pizza-fine", name:"Pizza pâte fine", kcal:220, portion:"1 part", alias:["pizza pate fine","pizza fine"]},
+  {id:"pizza-epaisse", name:"Pizza pâte épaisse/pan", kcal:350, portion:"1 part", alias:["pizza epaisse","pizza pan"]},
+
+  // ==== KEBAB — toutes les versions ====
+  {id:"kebab-galette", name:"Kebab galette (dans le pain)", kcal:700, portion:"1 unité", alias:["kebab galette"]},
+  {id:"kebab-assiette", name:"Kebab assiette (sans pain)", kcal:600, portion:"1 assiette", alias:["kebab assiette"]},
+  {id:"kebab-xl", name:"Kebab XL", kcal:900, portion:"1 unité", alias:["kebab xl","kebab maxi"]},
+
+  // ==== SANDWICH — versions supplémentaires ====
+  {id:"sandwich-poulet", name:"Sandwich poulet crudités", kcal:400, portion:"1 unité", alias:["sandwich poulet"]},
+  {id:"sandwich-thon", name:"Sandwich thon mayo", kcal:430, portion:"1 unité", alias:["sandwich thon"]},
+  {id:"sandwich-vege", name:"Sandwich végétarien", kcal:350, portion:"1 unité", alias:["sandwich vegetarien"]},
+
+  // ==== TACOS (français) — tailles ====
+  {id:"tacos-m", name:"Tacos 1 viande (M)", kcal:550, portion:"1 unité taille M", alias:["tacos m","tacos une viande"]},
+  {id:"tacos-l", name:"Tacos 2 viandes (L)", kcal:750, portion:"1 unité taille L", alias:["tacos l","tacos deux viandes"]},
+  {id:"tacos-xl", name:"Tacos XL", kcal:950, portion:"1 unité taille XL", alias:["tacos xl"]},
+
+  // ==== GLACE — versions ====
+  {id:"sorbet", name:"Sorbet (2 boules)", kcal:120, portion:"2 boules", alias:["sorbet"]},
+  {id:"cornet-glace", name:"Cornet glace (1 boule)", kcal:110, portion:"1 boule", alias:["cornet","cornet glace"]},
+
+  // ==== POMMES DE TERRE — versions ====
+  {id:"pdt-sautees", name:"Pommes de terre sautées", kcal:220, portion:"~200g", alias:["pommes de terre sautees","patates sautees"]},
+  {id:"pdt-four", name:"Pommes de terre au four", kcal:180, portion:"~200g", alias:["pommes de terre au four","patate au four"]},
+
+  // ==== AUTRES CLASSIQUES CONNUS ====
+  {id:"onion-rings", name:"Onion rings", kcal:350, portion:"1 portion", alias:["onion rings","oignons frits"]},
+  {id:"mozza-sticks", name:"Mozzarella sticks", kcal:300, portion:"6 pièces", alias:["mozzarella sticks","mozza sticks"]},
+  {id:"burrito", name:"Burrito", kcal:600, portion:"1 unité", alias:["burrito"]},
+  {id:"poutine", name:"Poutine", kcal:700, portion:"1 portion", alias:["poutine"]},
+  {id:"chicken-tenders", name:"Chicken tenders/strips", kcal:350, portion:"5 pièces", alias:["chicken tenders","tenders","strips de poulet"]},
+
+  // ==== INTERNATIONAL — un peu moins courant ====
+  {id:"gyoza", name:"Gyoza/raviolis japonais", kcal:220, portion:"6 pièces", alias:["gyoza","raviolis japonais"]},
+  {id:"okonomiyaki", name:"Okonomiyaki", kcal:450, portion:"1 part", alias:["okonomiyaki"]},
+  {id:"tempura", name:"Tempura (crevettes/légumes)", kcal:300, portion:"1 portion", alias:["tempura"]},
+  {id:"yakitori", name:"Yakitori", kcal:200, portion:"4 brochettes", alias:["yakitori","brochettes japonaises"]},
+  {id:"banh-mi", name:"Bánh mì", kcal:450, portion:"1 unité", alias:["banh mi"]},
+  {id:"biryani", name:"Biryani", kcal:550, portion:"1 assiette", alias:["biryani"]},
+  {id:"dal", name:"Dal/curry de lentilles", kcal:280, portion:"1 assiette", alias:["dal","curry de lentilles"]},
+  {id:"tikka-masala", name:"Poulet tikka masala", kcal:420, portion:"~200g avec sauce", alias:["tikka masala"]},
+  {id:"korma", name:"Curry korma", kcal:400, portion:"1 assiette", alias:["korma"]},
+  {id:"congee", name:"Congee (bouillie de riz)", kcal:180, portion:"1 bol", alias:["congee"]},
+  {id:"shakshuka", name:"Shakshuka", kcal:320, portion:"1 portion", alias:["shakshuka"]},
+  {id:"pho-boeuf", name:"Pho bœuf", kcal:420, portion:"1 bol", alias:["pho boeuf"]},
+  {id:"laksa", name:"Laksa", kcal:480, portion:"1 bol", alias:["laksa"]},
+
+  // ==== BISTROT FRANÇAIS ====
+  {id:"confit-canard", name:"Confit de canard", kcal:450, portion:"1 cuisse", alias:["confit de canard","confit canard"]},
+  {id:"magret-canard", name:"Magret de canard", kcal:350, portion:"~150g", alias:["magret de canard","magret"]},
+  {id:"escargots", name:"Escargots (beurre persillé)", kcal:280, portion:"6 pièces", alias:["escargots"]},
+  {id:"foie-gras", name:"Foie gras", kcal:250, portion:"~50g", alias:["foie gras"]},
+  {id:"tartare-boeuf", name:"Tartare de bœuf", kcal:350, portion:"1 portion", alias:["tartare de boeuf","tartare"]},
+  {id:"carpaccio", name:"Carpaccio de bœuf", kcal:250, portion:"1 portion", alias:["carpaccio"]},
+  {id:"aligot", name:"Aligot", kcal:400, portion:"~200g", alias:["aligot"]},
+  {id:"welsh", name:"Welsh", kcal:600, portion:"1 portion", alias:["welsh"]},
+
+  // ==== VÉGÉTARIEN / VÉGAN ====
+  {id:"tofu", name:"Tofu nature", kcal:150, portion:"~150g", alias:["tofu"]},
+  {id:"tofu-saute", name:"Tofu sauté (sauce)", kcal:250, portion:"~150g", alias:["tofu saute","tofu sauce"]},
+  {id:"seitan", name:"Seitan", kcal:200, portion:"~150g", alias:["seitan"]},
+  {id:"edamame", name:"Edamame", kcal:120, portion:"~100g", alias:["edamame"]},
+
+  // ==== SNACKS / DIVERS ====
+  {id:"popcorn", name:"Popcorn (nature)", kcal:150, portion:"1 petit bol", alias:["popcorn"]},
+  {id:"pretzels", name:"Pretzels", kcal:180, portion:"~30g", alias:["pretzel","pretzels"]},
+  {id:"trail-mix", name:"Mélange fruits secs/noix", kcal:200, portion:"~40g", alias:["trail mix","melange fruits secs"]},
+  {id:"rice-cakes", name:"Galettes de riz soufflé", kcal:35, portion:"1 unité", alias:["galette de riz","rice cake"]},
+  {id:"corn-dog", name:"Corn dog", kcal:350, portion:"1 unité", alias:["corn dog"]},
+  {id:"philly-cheesesteak", name:"Philly cheesesteak", kcal:600, portion:"1 unité", alias:["philly cheesesteak","cheesesteak"]},
+  {id:"loaded-fries", name:"Loaded fries (fromage/bacon)", kcal:600, portion:"1 portion", alias:["loaded fries"]},
+  {id:"stromboli", name:"Stromboli", kcal:500, portion:"1 part", alias:["stromboli"]},
 ];
 
 function normalizeText(s){ return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
@@ -500,7 +636,7 @@ function searchFood(query){
     words.forEach(w=>{ if (hay.includes(w)) score++; else if (w.length>4 && [...hay.split(/[\s,]+/)].some(h=>h.startsWith(w.slice(0,4)))) score+=0.5; });
     return {item, score};
   }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score);
-  return scored.slice(0,6).map(x=>x.item);
+  return scored.slice(0,10).map(x=>x.item);
 }
 
 const TYPE_META = {muscu:{color:"var(--gold)", label:"Musculation"}, cardio:{color:"var(--red)", label:"Cardio"}, repos:{color:"var(--teal)", label:"Repos"}};
