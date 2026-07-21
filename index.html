@@ -231,14 +231,15 @@ const DEFAULT_PROGRAM = {days:[
   {id:"d7", label:"Repos", weekday:"Lundi", type:"repos"},
   {id:"d1", label:"Full Body A", weekday:"Mardi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
   {id:"d2", label:"Cardio", weekday:"Mercredi", type:"cardio"},
-  {id:"d3", label:"Full Body B", weekday:"Jeudi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
-  {id:"d4", label:"Repos / Piscine légère", weekday:"Vendredi", type:"repos"},
+  {id:"d4", label:"Repos / Piscine légère", weekday:"Jeudi", type:"repos"},
+  {id:"d3", label:"Full Body B", weekday:"Vendredi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
   {id:"d5", label:"Full Body C", weekday:"Samedi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
   {id:"d6", label:"Cardio ou Piscine (bonus)", weekday:"Dimanche", type:"cardio"},
 ]};
 const SCHEDULE_MIGRATION_KEY = "ft_schedule_v2";
 const SCHEDULE_V2_WEEKDAYS = {d1:"Mardi", d2:"Mercredi", d3:"Jeudi", d4:"Vendredi", d5:"Samedi", d6:"Dimanche", d7:"Lundi"};
 const SCHEDULE_V2_ORDER = ["d7","d1","d2","d3","d4","d5","d6"];
+const SCHEDULE_MIGRATION_KEY_V3 = "ft_schedule_v3_thu_fri_swap";
 
 const WATER_TARGET = 2200;
 const KCAL_TARGET = 2100;
@@ -507,7 +508,7 @@ const TYPE_META = {muscu:{color:"var(--gold)", label:"Musculation"}, cardio:{col
 // ---------------------------------------------------------------------------
 // STATE + STORAGE
 // ---------------------------------------------------------------------------
-const LS = {program:"ft_program", sessions:"ft_sessions", daily:"ft_daily", rewards:"ft_rewards", redeem:"ft_redeem"};
+const LS = {program:"ft_program", sessions:"ft_sessions", daily:"ft_daily", rewards:"ft_rewards", redeem:"ft_redeem", weekOverrides:"ft_week_overrides", profile:"ft_profile"};
 function load(key, fallback){ try{ const v=localStorage.getItem(key); return v?JSON.parse(v):fallback; }catch(e){ return fallback; } }
 function save(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){ console.error(e); } }
 
@@ -518,6 +519,9 @@ const STATE = {
   daily: load(LS.daily, {}),
   rewards: load(LS.rewards, DEFAULT_REWARDS),
   redeemLog: load(LS.redeem, []),
+  weekOverrides: load(LS.weekOverrides, {}),
+  profile: load(LS.profile, {age:"", heightCm:"", sex:"m"}),
+  swapPickerDate: null,
   activeDay: null,
   guidedStep: 0,
   guidedSets: {},
@@ -550,6 +554,21 @@ const STATE = {
   localStorage.setItem(SCHEDULE_MIGRATION_KEY, "1");
 })();
 
+// One-time migration: swap Thursday and Friday (recurring Thursday medical appointment).
+(function migrateThuFriSwap(){
+  if (localStorage.getItem(SCHEDULE_MIGRATION_KEY_V3)) return;
+  const days = STATE.program.days;
+  const thu = days.find(d=>d.weekday==="Jeudi");
+  const fri = days.find(d=>d.weekday==="Vendredi");
+  if (thu && fri){
+    thu.weekday = "Vendredi";
+    fri.weekday = "Jeudi";
+    STATE.program = {...STATE.program, days:[...days]};
+    save(LS.program, STATE.program);
+  }
+  localStorage.setItem(SCHEDULE_MIGRATION_KEY_V3, "1");
+})();
+
 // ---------------------------------------------------------------------------
 // HELPERS
 // ---------------------------------------------------------------------------
@@ -562,8 +581,27 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">"
 function toNum(v){ if (v===null||v===undefined||v==="") return NaN; return parseFloat(String(v).replace(",",".")); }
 
 function slotForDate(dateStr){
+  const overrideId = STATE.weekOverrides[dateStr];
+  if (overrideId){
+    const overridden = STATE.program.days.find(d => d.id === overrideId);
+    if (overridden) return overridden;
+  }
   const wd = fmtWeekday(dateStr).toLowerCase();
   return STATE.program.days.find(d => d.weekday.toLowerCase() === wd) || null;
+}
+
+function swapDays(dateA, dateB){
+  const dayA = slotForDate(dateA);
+  const dayB = slotForDate(dateB);
+  if (!dayA || !dayB) return;
+  STATE.weekOverrides = {...STATE.weekOverrides, [dateA]: dayB.id, [dateB]: dayA.id};
+  save(LS.weekOverrides, STATE.weekOverrides);
+}
+function clearSwap(dateStr){
+  const next = {...STATE.weekOverrides};
+  delete next[dateStr];
+  STATE.weekOverrides = next;
+  save(LS.weekOverrides, STATE.weekOverrides);
 }
 
 function weekIndexFor(dateStr){
@@ -677,6 +715,72 @@ function weightTrend(){
   return {current:last[1].weight, start:first[1].weight, rate:(first[1].weight-last[1].weight)/days};
 }
 
+function weeklySummary(){
+  const cutoff = addDays(todayStr(), -6);
+  const sessionsWeek = STATE.sessions.filter(s=>s.date>=cutoff);
+  const muscuCount = sessionsWeek.filter(s=>s.type==="muscu").length;
+  const cardioCount = sessionsWeek.filter(s=>s.type==="cardio").length;
+  const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
+  let weightDelta = null;
+  if (weights.length){
+    const latest = weights[weights.length-1];
+    const weekAgoEntry = weights.find(([d])=>d>=cutoff);
+    if (weekAgoEntry && weekAgoEntry[0]!==latest[0]) weightDelta = latest[1].weight - weekAgoEntry[1].weight;
+  }
+  return {muscuCount, cardioCount, weightDelta, avgKcal: weekAverages().kcal};
+}
+
+// Rough deficit trend — both sides (mangé / brûlé) are estimates, so this is a
+// directional signal only, never treated as an exact number. The scale's
+// actual weight change is always the real source of truth, shown alongside it.
+// Important: the watch's "calories brûlées" figure is ACTIVE energy only
+// (movement/exercise) — it excludes resting/basal metabolism, which is
+// usually 60%+ of total daily burn. So total burn = BMR + active (watch).
+function computeBMR(weightKg, profile){
+  if (!profile || !profile.age || !profile.heightCm || !weightKg) return null;
+  const age = toNum(profile.age), height = toNum(profile.heightCm);
+  if (isNaN(age) || isNaN(height)) return null;
+  const sexOffset = profile.sex === "f" ? -161 : 5;
+  return 10*weightKg + 6.25*height - 5*age + sexOffset;
+}
+function weeklyDeficitEstimate(){
+  const cutoff = addDays(todayStr(), -6);
+  const entries = Object.entries(STATE.daily).filter(([d])=>d>=cutoff).map(([,v])=>v);
+  const usable = entries.filter(v => v.watchKcal && dayKcalTotal(v) > 0);
+  if (!usable.length) return null;
+  const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
+  const latestWeight = weights.length ? weights[weights.length-1][1].weight : null;
+  const bmr = computeBMR(latestWeight, STATE.profile);
+  if (!bmr) return {needsProfile:true, days: usable.length};
+  const avg = usable.reduce((a,v)=> a + ((bmr + toNum(v.watchKcal)) - dayKcalTotal(v)), 0) / usable.length;
+  return {avg: Math.round(avg), low: Math.round(avg*0.85), high: Math.round(avg*1.15), days: usable.length, bmr: Math.round(bmr)};
+}
+
+const GOAL_TARGET_DATE = "2026-11-15"; // ~3.5-4 months out, per the stated max timeframe
+function monthlyMilestones(){
+  const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
+  if (!weights.length) return [];
+  const startW = weights[0][1].weight;
+  const startDate = new Date(weights[0][0]+"T00:00:00");
+  const targetDate = new Date(GOAL_TARGET_DATE+"T00:00:00");
+  const totalDays = (targetDate - startDate) / 86400000;
+  if (totalDays <= 0) return [];
+  const milestones = [];
+  let y = startDate.getFullYear(), m = startDate.getMonth();
+  let guard = 0;
+  while (guard++ < 12){
+    const endOfMonth = new Date(y, m+1, 0);
+    if (endOfMonth >= targetDate) break;
+    const elapsed = (endOfMonth - startDate)/86400000;
+    const frac = Math.max(0, Math.min(1, elapsed/totalDays));
+    const w = startW - (startW-GOAL_FINAL)*frac;
+    milestones.push({label: endOfMonth.toLocaleDateString("fr-FR",{month:"short"}), weight: Math.round(w*10)/10});
+    m++;
+  }
+  milestones.push({label: targetDate.toLocaleDateString("fr-FR",{month:"short"}), weight: GOAL_FINAL});
+  return milestones.slice(0,4);
+}
+
 // ---------------------------------------------------------------------------
 // SMALL RENDER HELPERS
 // ---------------------------------------------------------------------------
@@ -729,6 +833,7 @@ function renderHome(){
   const streak = currentStreak();
   const today = STATE.daily[todayStr()] || {};
   const waterPct = Math.min(100, ((today.water||0)/WATER_TARGET)*100);
+  const lowWater = new Date().getHours() >= 16 && (today.water||0) < WATER_TARGET*0.5;
   const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
   const currentWeight = weights.length ? weights[weights.length-1][1].weight : null;
   const startWeight = weights.length ? weights[0][1].weight : null;
@@ -739,28 +844,47 @@ function renderHome(){
     etaText = `À ce rythme : objectif vers le ${fmtDate(addDays(todayStr(), daysLeft))} environ`;
   }
   const unlocked = BADGES.filter(b=>b.metric(badgeCtx())>=b.target).length;
+  const milestones = monthlyMilestones();
   const doneToday = STATE.sessions.some(s=>s.date===todayStr());
 
+  const weekDates = [];
+  for (let i=0;i<7;i++) weekDates.push(addDays(todayStr(), i));
+
   let strip = "";
-  for (let i=0;i<7;i++){
-    const date = addDays(todayStr(), i);
+  weekDates.forEach((date, i) => {
     const day = slotForDate(date);
-    if (!day){
-      strip += `<div class="card" style="padding:12px;${i===0?"border-color:var(--gold);background:rgba(227,168,59,.08);":""}"><p class="muted" style="font-size:11px;text-transform:capitalize;">${fmtWeekday(date)} · ${fmtDate(date)}</p><p style="font-size:14px;font-weight:700;margin:2px 0 6px;">Repos</p>${pill("Repos","var(--teal)")}</div>`;
-      continue;
-    }
     const meta = TYPE_META[day.type];
     const isToday = i===0;
     const showGo = isToday && day.type!=="repos" && !doneToday;
-    strip += `<div class="card" style="padding:12px;display:flex;align-items:center;justify-content:space-between;${isToday?"border-color:var(--gold);background:rgba(227,168,59,.08);":""}">
-      <div>
-        <p class="muted" style="font-size:11px;text-transform:capitalize;margin:0;">${fmtWeekday(date)} · ${fmtDate(date)}</p>
-        <p style="font-size:14px;font-weight:700;margin:2px 0 6px;">${esc(day.label)}</p>
-        ${pill(meta.label, meta.color)}
+    const isSwapped = !!STATE.weekOverrides[date];
+    const pickerOpen = STATE.swapPickerDate === date;
+
+    strip += `<div class="card" style="padding:12px;${isToday?"border-color:var(--gold);background:rgba(227,168,59,.08);":""}">
+      <div class="row between">
+        <div>
+          <p class="muted" style="font-size:11px;text-transform:capitalize;margin:0;">${fmtWeekday(date)} · ${fmtDate(date)}${isSwapped?` <span style="color:var(--gold);">🔀</span>`:""}</p>
+          <p style="font-size:14px;font-weight:700;margin:2px 0 6px;">${esc(day.label)}</p>
+          ${pill(meta.label, meta.color)}
+        </div>
+        <div class="col gap6" style="align-items:flex-end;">
+          ${showGo ? `<button data-action="start-day" data-day="${day.id}" style="background:var(--gold);border-radius:10px;padding:10px 14px;color:#14171C;font-weight:700;font-size:12px;">▶ Go</button>` : ""}
+          <button data-action="toggle-swap-picker" data-date="${date}" style="color:var(--muted);font-size:17px;padding:4px;">🔀</button>
+        </div>
       </div>
-      ${showGo ? `<button data-action="start-day" data-day="${day.id}" style="background:var(--gold);border-radius:10px;padding:10px 14px;color:#14171C;font-weight:700;font-size:12px;">▶ Go</button>` : ""}
+      ${isSwapped ? `<button data-action="clear-swap" data-date="${date}" style="margin-top:8px;font-size:11px;color:var(--red);">↺ Annuler l'échange</button>` : ""}
+      ${pickerOpen ? `<div class="col gap6" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);">
+        <p class="muted" style="font-size:11px;">Échanger avec quel jour ?</p>
+        ${weekDates.filter(d2=>d2!==date).map(d2=>{
+          const day2 = slotForDate(d2);
+          return `<button data-action="do-swap" data-date-a="${date}" data-date-b="${d2}" class="row between" style="background:var(--surface-alt);border-radius:8px;padding:8px 10px;width:100%;text-align:left;">
+            <span style="font-size:12px;text-transform:capitalize;">${fmtWeekday(d2)} · ${fmtDate(d2)}</span>
+            <span style="font-size:12px;color:var(--muted);">${esc(day2.label)}</span>
+          </button>`;
+        }).join("")}
+        <button data-action="toggle-swap-picker" data-date="${date}" style="font-size:11px;color:var(--muted);margin-top:4px;">Annuler</button>
+      </div>` : ""}
     </div>`;
-  }
+  });
 
   return `
     <div class="col gap14">
@@ -782,13 +906,15 @@ function renderHome(){
         <div class="row between" style="margin-bottom:8px;"><div class="row gap8"><span>🎯</span><span style="font-weight:700;font-size:14px;">Objectif : ${GOAL_FINAL}kg</span></div><span class="mono" style="color:var(--gold);font-size:13px;">${Math.max(0,currentWeight-GOAL_FINAL).toFixed(1)}kg restants</span></div>
         <div class="bar-bg"><div class="bar-fill" style="width:${startWeight>GOAL_FINAL?Math.min(100,Math.max(0,((startWeight-currentWeight)/(startWeight-GOAL_FINAL))*100)):100}%;background:var(--gold);"></div></div>
         <p class="muted" style="font-size:11px;margin:8px 0 0;">Actuel : ${currentWeight}kg${etaText?` · ${etaText}`:""}</p>
+        ${milestones.length ? `<div class="row gap6" style="margin-top:10px;flex-wrap:wrap;">${milestones.map(m=>`<span class="pill" style="background:var(--surface-alt);color:var(--muted);">${esc(m.label)} · ~${m.weight}kg</span>`).join("")}</div>` : ""}
       </div>` : `<div class="card"><p class="muted" style="font-size:12px;margin:0;">Note ton poids dans le Journal pour suivre ta progression vers ${GOAL_FINAL}kg.</p></div>`}
-      <div class="card">
+      <div class="card" style="${lowWater?"border-color:var(--red);":""}">
         <div class="row between" style="margin-bottom:8px;">
           <div class="row gap8"><span>💧</span><span style="font-weight:700;font-size:14px;">Eau aujourd'hui</span></div>
           <span class="mono" style="font-size:13px;color:var(--teal);">${today.water||0} / ${WATER_TARGET} ml</span>
         </div>
-        <div class="bar-bg"><div class="bar-fill" style="width:${waterPct}%;background:var(--teal);"></div></div>
+        <div class="bar-bg"><div class="bar-fill" style="width:${waterPct}%;background:${lowWater?"var(--red)":"var(--teal)"};"></div></div>
+        ${lowWater ? `<p style="font-size:11px;color:var(--red);margin:8px 0 0;">⚠ Moins de la moitié en fin de journée — pense à boire un coup</p>` : ""}
       </div>
       <div>
         <p class="muted" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">Ta semaine</p>
@@ -870,7 +996,13 @@ function startDay(dayId){
     STATE.activeDay = {...day, exercises};
     STATE.guidedStep = 0;
     STATE.guidedSets = {};
-    exercises.forEach(id=>{ STATE.guidedSets[id] = [{weight:"",reps:""},{weight:"",reps:""},{weight:"",reps:""}]; });
+    exercises.forEach(id=>{
+      const hist = exerciseHistory(id);
+      const lastSets = hist.length ? hist[0].sets.filter(s=>s.reps!=="") : [];
+      STATE.guidedSets[id] = lastSets.length
+        ? lastSets.map(s=>({weight: s.weight||"", reps:""}))
+        : [{weight:"",reps:""},{weight:"",reps:""},{weight:"",reps:""}];
+    });
   } else {
     STATE.activeDay = {...day};
     STATE.cardioForm = {activity:"Tapis", duration:"", calories:"", hr:""};
@@ -948,6 +1080,7 @@ function renderSession(){
         ${step>0 ? `<button data-action="prev-step" class="btn-secondary" style="flex:1;">Précédent</button>`:""}
         <button data-action="${isLast?"finish-muscu":"next-step"}" class="btn-primary" style="flex:2;">${isLast?"Terminer la séance":"Exercice suivant"}</button>
       </div>
+      ${!isLast ? `<button data-action="finish-muscu" style="width:100%;margin-top:10px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:10px 0;font-size:12px;">⏱ Pas le temps — terminer maintenant (séance écourtée)</button>` : ""}
     </div>`;
   }
 
@@ -1064,9 +1197,10 @@ function renderDaily(){
         <button data-action="search-food" style="background:var(--surface-alt);border-radius:8px;padding:0 14px;font-weight:700;font-size:13px;">🔍</button>
       </div>
       ${foodMatchesHTML}
-      <p class="muted" style="font-size:11px;margin:4px 0 6px;">Ou en texte libre (sans calcul auto) :</p>
+      <p class="muted" style="font-size:11px;margin:4px 0 6px;">Plat pas dans la base ? Note-le et mets une estimation au pif :</p>
       <div class="row gap8" style="margin-bottom:12px;">
-        <input id="input-meal" placeholder="ex: Poulet riz légumes" style="flex:1;">
+        <input id="input-meal" placeholder="ex: Poulet riz légumes" style="flex:2;">
+        <input id="input-meal-kcal" type="text" inputmode="decimal" placeholder="kcal (au pif)" class="mono" style="flex:1;">
         <button data-action="add-meal" style="background:var(--gold);border-radius:8px;padding:0 12px;color:#14171C;font-weight:700;">➕</button>
       </div>
       <button data-action="toggle-meals-detail" class="row between" style="width:100%;padding:6px 0;">
@@ -1106,12 +1240,28 @@ function weightChartSVG(){
   const ys = vals.map(v => h-pad - ((v-min)/(max-min))*(h-2*pad));
   const points = xs.map((x,i)=>`${x.toFixed(1)},${ys[i].toFixed(1)}`).join(" ");
   const dots = xs.map((x,i)=>`<circle cx="${x.toFixed(1)}" cy="${ys[i].toFixed(1)}" r="3" fill="#E3A83B"/>`).join("");
+
+  // Simple linear regression trend line
+  const n = vals.length;
+  const sumX = vals.reduce((a,_,i)=>a+i,0);
+  const sumY = vals.reduce((a,v)=>a+v,0);
+  const sumXY = vals.reduce((a,v,i)=>a+i*v,0);
+  const sumXX = vals.reduce((a,_,i)=>a+i*i,0);
+  const denom = (n*sumXX - sumX*sumX) || 1;
+  const slope = (n*sumXY - sumX*sumY) / denom;
+  const intercept = (sumY - slope*sumX) / n;
+  const trendYRaw = [0, n-1].map(i => intercept + slope*i);
+  const trendY = trendYRaw.map(v => h-pad - ((v-min)/(max-min))*(h-2*pad));
+  const trendLine = `<line x1="${xs[0].toFixed(1)}" y1="${trendY[0].toFixed(1)}" x2="${xs[xs.length-1].toFixed(1)}" y2="${trendY[1].toFixed(1)}" stroke="#37C6A0" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+
   return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:160px;">
+    ${trendLine}
     <polyline points="${points}" fill="none" stroke="#E3A83B" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
     ${dots}
     <text x="${pad}" y="${h-4}" fill="#8B95A1" font-size="9">${esc(data[0].date)}</text>
     <text x="${w-pad}" y="${h-4}" fill="#8B95A1" font-size="9" text-anchor="end">${esc(data[data.length-1].date)}</text>
-  </svg>`;
+  </svg>
+  <p class="muted" style="font-size:11px;margin-top:6px;"><span style="color:#37C6A0;">┄</span> tendance générale</p>`;
 }
 
 function renderProgress(){
@@ -1149,10 +1299,13 @@ function renderProgress(){
       return `<div style="background:var(--surface-alt);border-radius:10px;padding:10px 12px;">
         <div class="row between"><span style="font-size:13px;font-weight:700;">${s.type==="muscu"?"Musculation":`Cardio · ${esc(s.activity||"")}`}</span><span class="mono muted" style="font-size:11px;">${fmtDate(s.date)}</span></div>
         <p class="muted" style="font-size:11px;margin:4px 0 0;">${sub}</p>
+        <button data-action="copy-session" data-id="${s.id}" style="margin-top:6px;font-size:11px;color:var(--gold);">📋 Copier le résumé</button>
       </div>`;
     }).join("");
 
   const wk = weekAverages();
+  const ws = weeklySummary();
+  const deficit = weeklyDeficitEstimate();
   const avgRow = `<div class="grid3">
     <div class="card" style="padding:12px;text-align:center;"><p class="muted" style="font-size:10px;margin:0;">😴 SOMMEIL</p><p class="mono" style="font-size:16px;color:var(--teal);margin:4px 0 0;">${wk.sleep!=null?wk.sleep.toFixed(1)+"h":"—"}</p></div>
     <div class="card" style="padding:12px;text-align:center;"><p class="muted" style="font-size:10px;margin:0;">💧 EAU</p><p class="mono" style="font-size:16px;color:var(--teal);margin:4px 0 0;">${wk.water!=null?Math.round(wk.water)+"ml":"—"}</p></div>
@@ -1176,6 +1329,33 @@ function renderProgress(){
 
   return `<div class="col gap14">
     <h1 class="display" style="font-size:28px;margin:0;">Progression</h1>
+    <div class="card">
+      <div class="row gap8" style="margin-bottom:10px;"><span>📅</span><span style="font-weight:700;font-size:14px;">Cette semaine</span></div>
+      <div class="row gap8" style="flex-wrap:wrap;">
+        <span class="pill" style="background:var(--gold)22;color:var(--gold);">${ws.muscuCount} séance${ws.muscuCount!==1?"s":""} muscu</span>
+        <span class="pill" style="background:var(--red)22;color:var(--red);">${ws.cardioCount} cardio</span>
+        ${ws.weightDelta!=null ? `<span class="pill" style="background:${ws.weightDelta<=0?"var(--teal)22":"var(--red)22"};color:${ws.weightDelta<=0?"var(--teal)":"var(--red)"};">${ws.weightDelta>0?"+":""}${ws.weightDelta.toFixed(1)}kg</span>` : ""}
+        ${ws.avgKcal!=null ? `<span class="pill" style="background:var(--surface-alt);color:var(--muted);">~${Math.round(ws.avgKcal)} kcal/j</span>` : ""}
+      </div>
+      ${deficit && !deficit.needsProfile ? `
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);">
+          <p style="font-size:13px;font-weight:700;margin:0;">${deficit.avg>0 ? `Déficit estimé : ~${Math.min(deficit.low,deficit.high)} à ${Math.max(deficit.low,deficit.high)} kcal/j` : `Pas de déficit estimé (~${deficit.avg} kcal/j)`}</p>
+          <p class="muted" style="font-size:10px;margin:4px 0 0;">Basé sur ton métabolisme de base estimé (~${deficit.bmr} kcal/j) + calories actives de la montre, sur ${deficit.days} jour${deficit.days>1?"s":""} renseigné${deficit.days>1?"s":""} — ${ws.weightDelta!=null ? `ta balance ${ws.weightDelta<0?"confirme":ws.weightDelta>0?"ne confirme pas":"reste stable, à confirmer"} ${ws.weightDelta<0?`(-${Math.abs(ws.weightDelta).toFixed(1)}kg réel)`:ws.weightDelta>0?`(+${ws.weightDelta.toFixed(1)}kg réel)`:""} — fie-toi à elle en priorité.` : "note ton poids régulièrement pour vérifier si ça colle."}</p>
+        </div>` : deficit && deficit.needsProfile ? `<p class="muted" style="font-size:11px;margin:10px 0 0;">Renseigne ton profil ci-dessous (âge/taille) pour calculer ton métabolisme de base et avoir une vraie estimation.</p>` : `<p class="muted" style="font-size:11px;margin:10px 0 0;">Renseigne calories brûlées (montre) + repas pour voir une estimation de déficit.</p>`}
+    </div>
+    <div class="card">
+      <div class="row gap8" style="margin-bottom:10px;"><span>⚙️</span><span style="font-weight:700;font-size:14px;">Profil (pour le calcul du déficit)</span></div>
+      <p class="muted" style="font-size:11px;margin:0 0 10px;">La montre n'affiche que les calories actives, pas ton métabolisme de base — on le calcule à partir de ces infos.</p>
+      <div class="row gap8" style="margin-bottom:8px;">
+        <input id="profile-age" type="text" inputmode="numeric" placeholder="Âge" value="${esc(STATE.profile.age)}" class="mono" style="flex:1;">
+        <input id="profile-height" type="text" inputmode="numeric" placeholder="Taille (cm)" value="${esc(STATE.profile.heightCm)}" class="mono" style="flex:1;">
+      </div>
+      <div class="row gap8">
+        <button data-action="set-profile-sex" data-value="m" style="flex:1;padding:8px 0;border-radius:8px;font-size:12px;font-weight:700;background:${STATE.profile.sex==="m"?"var(--gold)":"var(--surface-alt)"};color:${STATE.profile.sex==="m"?"#14171C":"var(--text)"};">Homme</button>
+        <button data-action="set-profile-sex" data-value="f" style="flex:1;padding:8px 0;border-radius:8px;font-size:12px;font-weight:700;background:${STATE.profile.sex==="f"?"var(--gold)":"var(--surface-alt)"};color:${STATE.profile.sex==="f"?"#14171C":"var(--text)"};">Femme</button>
+        <button data-action="save-profile" style="flex:1;background:var(--gold);border-radius:8px;padding:8px 0;color:#14171C;font-weight:700;font-size:12px;">✓ Valider</button>
+      </div>
+    </div>
     <div class="card">
       <div class="row gap8" style="margin-bottom:10px;"><span>💾</span><span style="font-weight:700;font-size:14px;">Sauvegarde</span></div>
       <p class="muted" style="font-size:12px;margin:0 0 10px;">Exporte régulièrement pour ne jamais perdre tes données, même si le cache du navigateur saute.</p>
@@ -1230,10 +1410,33 @@ function renderProgress(){
 // ---------------------------------------------------------------------------
 // BACKUP / RESTORE
 // ---------------------------------------------------------------------------
+function copySessionSummary(sessionId){
+  const s = STATE.sessions.find(x=>String(x.id)===String(sessionId));
+  if (!s) return;
+  let text = `Séance du ${fmtDate(s.date)}\n`;
+  if (s.type === "muscu"){
+    text += "Musculation\n";
+    s.entries.forEach(e=>{
+      const name = EX[e.exId] ? EX[e.exId].name : e.exId;
+      const sets = e.sets.map(x=>`${x.weight||"-"}kg x${x.reps||"-"}`).join(", ");
+      text += `- ${name} : ${sets}\n`;
+    });
+  } else {
+    text += `Cardio · ${s.activity||""}\n${s.duration} min${s.calories?` · ${s.calories} kcal`:""}${s.hr?` · FC moy ${s.hr}`:""}\n`;
+  }
+  const done = () => alert("Résumé copié !");
+  const fail = () => alert("Impossible de copier automatiquement, voici le résumé :\n\n"+text);
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(done).catch(fail);
+    } else { fail(); }
+  } catch(e){ fail(); }
+}
+
 function exportData(){
   const data = {
     program: STATE.program, sessions: STATE.sessions, daily: STATE.daily,
-    rewards: STATE.rewards, redeemLog: STATE.redeemLog, exportedAt: new Date().toISOString(),
+    rewards: STATE.rewards, redeemLog: STATE.redeemLog, weekOverrides: STATE.weekOverrides, profile: STATE.profile, exportedAt: new Date().toISOString(),
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
@@ -1256,6 +1459,8 @@ function importDataFromFile(file){
       if (data.daily) { STATE.daily = data.daily; save(LS.daily, STATE.daily); }
       if (data.rewards) { STATE.rewards = data.rewards; save(LS.rewards, STATE.rewards); }
       if (data.redeemLog) { STATE.redeemLog = data.redeemLog; save(LS.redeem, STATE.redeemLog); }
+      if (data.weekOverrides) { STATE.weekOverrides = data.weekOverrides; save(LS.weekOverrides, STATE.weekOverrides); }
+      if (data.profile) { STATE.profile = data.profile; save(LS.profile, STATE.profile); }
       alert("Sauvegarde restaurée !");
       render();
     } catch(err){
@@ -1267,18 +1472,22 @@ function importDataFromFile(file){
 
 function resetAllData(){
   if (!confirm("Ça efface toutes tes données (séances, journal, récompenses) pour repartir de zéro. Tu es sûr ?")) return;
-  [LS.program, LS.sessions, LS.daily, LS.rewards, LS.redeem].forEach(k=>localStorage.removeItem(k));
+  [LS.program, LS.sessions, LS.daily, LS.rewards, LS.redeem, LS.weekOverrides, LS.profile].forEach(k=>localStorage.removeItem(k));
   STATE.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
   STATE.sessions = [];
   STATE.daily = {};
   STATE.rewards = JSON.parse(JSON.stringify(DEFAULT_REWARDS));
   STATE.redeemLog = [];
+  STATE.weekOverrides = {};
+  STATE.profile = {age:"", heightCm:"", sex:"m"};
+  STATE.swapPickerDate = null;
   STATE.activeDay = null;
   STATE.guidedStep = 0;
   STATE.guidedSets = {};
   STATE.justFinished = false;
   STATE.tab = "home";
   localStorage.setItem(SCHEDULE_MIGRATION_KEY, "1");
+  localStorage.setItem(SCHEDULE_MIGRATION_KEY_V3, "1");
   alert("C'est reparti, l'app est vierge.");
   render();
 }
@@ -1343,6 +1552,9 @@ document.addEventListener("click", (e)=>{
 
   if (action==="goto"){ STATE.tab = btn.dataset.tab; STATE.activeDay=null; STATE.justFinished=false; render(); }
   else if (action==="start-day"){ startDay(btn.dataset.day); }
+  else if (action==="toggle-swap-picker"){ STATE.swapPickerDate = STATE.swapPickerDate===btn.dataset.date ? null : btn.dataset.date; render(); }
+  else if (action==="do-swap"){ swapDays(btn.dataset.dateA, btn.dataset.dateB); STATE.swapPickerDate = null; render(); }
+  else if (action==="clear-swap"){ clearSwap(btn.dataset.date); render(); }
   else if (action==="toggle-day"){ STATE.openProgramDay = STATE.openProgramDay===btn.dataset.day ? null : btn.dataset.day; render(); }
   else if (action==="open-modal"){ STATE.modalExId = btn.dataset.ex; render(); }
   else if (action==="close-modal"){ STATE.modalExId = null; render(); }
@@ -1395,6 +1607,18 @@ document.addEventListener("click", (e)=>{
     render();
   }
   else if (action==="save-field"){ saveWeightSleepFromDOM(); render(); }
+  else if (action==="set-profile-sex"){
+    const ageEl = document.getElementById("profile-age"), heightEl = document.getElementById("profile-height");
+    STATE.profile = {...STATE.profile, age: ageEl?ageEl.value:STATE.profile.age, heightCm: heightEl?heightEl.value:STATE.profile.heightCm, sex: btn.dataset.value};
+    save(LS.profile, STATE.profile);
+    render();
+  }
+  else if (action==="save-profile"){
+    const ageEl = document.getElementById("profile-age"), heightEl = document.getElementById("profile-height");
+    STATE.profile = {...STATE.profile, age: ageEl?ageEl.value:"", heightCm: heightEl?heightEl.value:""};
+    save(LS.profile, STATE.profile);
+    render();
+  }
   else if (action==="toggle-meals-detail"){ saveWeightSleepFromDOM(); STATE.showMealsList = !STATE.showMealsList; render(); }
   else if (action==="set-meal-tag"){ saveWeightSleepFromDOM(); STATE.mealTag = STATE.mealTag===btn.dataset.value ? null : btn.dataset.value; render(); }
   else if (action==="search-food"){
@@ -1419,12 +1643,15 @@ document.addEventListener("click", (e)=>{
   else if (action==="add-meal"){
     saveWeightSleepFromDOM();
     const input = document.getElementById("input-meal");
+    const kcalInput = document.getElementById("input-meal-kcal");
     const text = input ? input.value.trim() : "";
     if (!text) return;
+    const kcalNum = kcalInput ? toNum(kcalInput.value) : NaN;
+    const kcal = !isNaN(kcalNum) && kcalNum > 0 ? Math.round(kcalNum) : null;
     const date = todayStr();
     const entry = STATE.daily[date] || {water:0, weight:"", sleep:"", meals:[], watchKcal:""};
     const full = STATE.mealTag ? `${STATE.mealTag} : ${text}` : text;
-    entry.meals = [...(entry.meals||[]), {text:full, kcal:null}];
+    entry.meals = [...(entry.meals||[]), {text:full, kcal}];
     STATE.daily = {...STATE.daily, [date]: entry};
     save(LS.daily, STATE.daily);
     STATE.mealTag = null;
@@ -1445,6 +1672,7 @@ document.addEventListener("click", (e)=>{
     save(LS.rewards, STATE.rewards);
     render();
   }
+  else if (action==="copy-session"){ copySessionSummary(btn.dataset.id); }
   else if (action==="export-data"){ exportData(); }
   else if (action==="reset-all"){ resetAllData(); }
   else if (action==="trigger-import"){ const inp = document.getElementById("import-file-input"); if (inp) inp.click(); }
