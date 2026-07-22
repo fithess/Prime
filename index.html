@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <title>Prime</title>
 <meta name="theme-color" content="#10141A">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -39,6 +42,7 @@
   .muted{color:var(--muted);font-size:13px;}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
   .btn-primary{background:var(--gold);color:#14171C;font-weight:700;border-radius:12px;padding:14px;text-align:center;}
   .btn-secondary{background:var(--surface-alt);color:var(--text);font-weight:700;border-radius:12px;padding:14px;text-align:center;}
   .btn-outline{background:transparent;border:1px solid var(--gold);color:var(--gold);font-weight:700;border-radius:8px;padding:6px 10px;font-size:12px;}
@@ -87,6 +91,7 @@
 // ---------------------------------------------------------------------------
 const EX = {
   "presse-cuisses": {name:"Presse à cuisses", muscle:"Quadriceps / Fessiers", equip:"Machine",
+    setup:"Assis, dossier réglé pour que tes genoux forment un angle de 90° pieds sur la plateforme. Cales de sécurité sur le côté à déverrouiller après t'être installé.",
     steps:["Assieds-toi sur la machine, dos bien plaqué contre le dossier.",
       "Place tes pieds sur la plateforme, largeur épaules, pointes légèrement vers l'extérieur.",
       "Déverrouille les cales de sécurité, descends en pliant les genoux jusqu'à 90°.",
@@ -95,6 +100,7 @@ const EX = {
     mistake:"Verrouiller les genoux en extension complète en haut : ça met les articulations en danger, remonte à 90% seulement.",
     alt:["leg-extension","squat-machine"], axis:"horizontal", from:"Genoux fléchis", to:"Jambes tendues"},
   "leg-extension": {name:"Leg extension", muscle:"Quadriceps", equip:"Machine",
+    setup:"Assis, dos contre le dossier, rouleau réglé juste au-dessus des chevilles (pas sur les tibias). Le point de pivot du genou doit être aligné avec l'axe de la machine.",
     steps:["Assieds-toi, dos calé, tibias contre le rouleau juste au-dessus des chevilles.",
       "Règle le dossier pour que le genou soit aligné avec l'axe de la machine.",
       "Tends les jambes en soufflant, marque une pause d'une seconde en haut.",
@@ -103,6 +109,7 @@ const EX = {
     mistake:"Balancer le buste en arrière pour s'aider : garde le dos plaqué au dossier.",
     alt:["presse-cuisses"], axis:"horizontal", from:"Genoux fléchis", to:"Jambes tendues"},
   "squat-machine": {name:"Squat guidé (Smith / Hack squat)", muscle:"Quadriceps / Fessiers", equip:"Machine guidée",
+    setup:"Pieds légèrement devant toi, largeur épaules. Débloque le crochet de sécurité (souvent une rotation de la barre) avant de descendre.",
     steps:["Place-toi sous la barre ou sur la plateforme, pieds largeur épaules.",
       "Descends en poussant les fesses vers l'arrière, genoux dans l'axe des pieds.",
       "Descends jusqu'à cuisses parallèles au sol si la mobilité le permet.",
@@ -111,6 +118,7 @@ const EX = {
     mistake:"Laisser les genoux rentrer vers l'intérieur en remontant — pousse-les légèrement vers l'extérieur.",
     alt:["presse-cuisses"], axis:"vertical", from:"Debout", to:"Cuisses parallèles au sol"},
   "leg-curl": {name:"Leg curl allongé", muscle:"Ischio-jambiers", equip:"Machine",
+    setup:"Allongé sur le ventre, rouleau réglé juste au-dessus des talons (pas sur les mollets). Genoux légèrement en dehors du bord du banc pour plier librement.",
     steps:["Allonge-toi face contre le banc, rouleau juste au-dessus des talons.",
       "Bassin bien plaqué contre le banc, ne le décolle pas pendant le mouvement.",
       "Fléchis les genoux pour amener les talons vers les fessiers.",
@@ -119,6 +127,7 @@ const EX = {
     mistake:"Décoller les hanches du banc pour tricher — ça enlève tout le travail des ischios.",
     alt:["leg-curl-assis"], axis:"horizontal", from:"Jambes tendues", to:"Talons vers les fessiers"},
   "leg-curl-assis": {name:"Leg curl assis", muscle:"Ischio-jambiers", equip:"Machine",
+    setup:"Assis, dos calé, rouleau juste au-dessus des chevilles. Verrouille le coussin de cuisses si la machine en a un, pour bloquer le bassin.",
     steps:["Assieds-toi, dos calé, rouleau juste au-dessus des chevilles, genoux alignés avec l'axe.",
       "Bloque tes cuisses sous le coussin prévu si la machine en a un.",
       "Fléchis les genoux pour amener le rouleau vers l'arrière du banc.",
@@ -127,6 +136,7 @@ const EX = {
     mistake:"Aller trop vite : ici la vitesse contrôlée compte plus que la charge.",
     alt:["leg-curl"], axis:"horizontal", from:"Jambes tendues", to:"Talons vers l'arrière"},
   "tirage-horizontal": {name:"Tirage horizontal (rowing poulie basse)", muscle:"Dos / Biceps", equip:"Poulie",
+    setup:"Assis face à la poulie basse, pieds calés sur les repose-pieds, genoux légèrement fléchis. Attrape la poignée triangle ou barre en V.",
     steps:["Assieds-toi face à la poulie, pieds calés, genoux légèrement fléchis.",
       "Attrape la poignée, buste droit, léger creux dans le bas du dos.",
       "Tire la poignée vers ton nombril en ramenant les coudes vers l'arrière.",
@@ -135,6 +145,7 @@ const EX = {
     mistake:"Se pencher en arrière pour tirer plus lourd — le buste reste quasi immobile, ce sont les bras/dos qui travaillent.",
     alt:["tirage-vertical"], axis:"horizontal", from:"Bras tendus devant", to:"Coudes vers l'arrière"},
   "tirage-vertical": {name:"Tirage vertical (lat pulldown)", muscle:"Dos / Biceps", equip:"Poulie haute",
+    setup:"Assis, cuisses bloquées sous les cales rembourrées (ajuste la hauteur si besoin). Attrape la barre large, mains plus larges que les épaules.",
     steps:["Assieds-toi, cuisses bloquées sous les cales, attrape la barre plus large que les épaules.",
       "Buste légèrement incliné en arrière, tire la barre vers le haut de la poitrine.",
       "Ramène les coudes vers le bas et légèrement vers l'arrière.",
@@ -143,6 +154,7 @@ const EX = {
     mistake:"Tirer la barre derrière la nuque — mauvais pour les épaules, tire toujours devant.",
     alt:["tirage-horizontal"], axis:"vertical", from:"Bras tendus en haut", to:"Barre vers la poitrine"},
   "developpe-couche": {name:"Développé couché machine", muscle:"Pectoraux / Triceps", equip:"Machine",
+    setup:"Assis, dos plaqué au dossier, règle le siège pour que les poignées soient à hauteur du milieu de ta poitrine.",
     steps:["Assieds-toi, dos bien plaqué, poignées à hauteur de milieu de poitrine.",
       "Pousse les poignées devant toi jusqu'à extension quasi complète des bras.",
       "Contrôle la descente jusqu'à ce que les coudes soient légèrement en dessous des épaules.",
@@ -151,6 +163,7 @@ const EX = {
     mistake:"Cambrer excessivement le bas du dos pour pousser plus lourd : garde le dos au contact du dossier.",
     alt:["developpe-incline"], axis:"horizontal", from:"Coudes fléchis", to:"Bras tendus devant"},
   "developpe-incline": {name:"Développé incliné machine", muscle:"Haut des pectoraux / Épaules", equip:"Machine",
+    setup:"Règle le siège pour que les poignées soient à hauteur du HAUT de ta poitrine (pas des épaules).",
     steps:["Règle le siège pour que les poignées soient à hauteur du haut de ta poitrine.",
       "Dos plaqué, pousse les poignées vers le haut/l'avant.",
       "Étends presque complètement sans bloquer les coudes.",
@@ -159,6 +172,7 @@ const EX = {
     mistake:"Régler le siège trop bas : les poignées doivent être proches du haut de la poitrine, pas des épaules.",
     alt:["developpe-couche"], axis:"horizontal", from:"Coudes fléchis", to:"Bras tendus vers le haut"},
   "developpe-epaules": {name:"Développé épaules machine", muscle:"Épaules", equip:"Machine",
+    setup:"Assis, dos droit plaqué au dossier, règle le siège pour que les poignées démarrent à hauteur d'épaules.",
     steps:["Assieds-toi, dos droit plaqué au dossier, poignées à hauteur d'épaules.",
       "Pousse vers le haut jusqu'à extension quasi complète des bras.",
       "Redescends lentement jusqu'à ce que les coudes soient à hauteur d'épaules.",
@@ -167,6 +181,7 @@ const EX = {
     mistake:"Verrouiller les coudes en extension complète en haut à chaque rep — reste léger sur le blocage.",
     alt:["elevations-laterales"], axis:"vertical", from:"Coudes à hauteur d'épaules", to:"Bras tendus au-dessus"},
   "elevations-laterales": {name:"Élévations latérales (poulie ou haltères)", muscle:"Épaules (deltoïde latéral)", equip:"Poulie / Haltères légers",
+    setup:"Debout au centre, un haltère léger dans chaque main (ou poulie basse de chaque côté), bras le long du corps.",
     steps:["Debout, léger fléchissement des genoux, bras le long du corps.",
       "Lève les bras sur le côté jusqu'à hauteur d'épaules, coudes légèrement fléchis.",
       "Marque une petite pause en haut.",
@@ -175,6 +190,7 @@ const EX = {
     mistake:"Utiliser l'élan du buste pour lancer le poids : mouvement lent et contrôlé uniquement.",
     alt:["developpe-epaules"], axis:"vertical", from:"Bras le long du corps", to:"Bras à l'horizontale"},
   "poulie-triceps": {name:"Extension triceps à la poulie", muscle:"Triceps", equip:"Poulie haute",
+    setup:"Debout face à la poulie haute, attrape la barre droite ou en V accrochée en haut, coudes collés au corps dès le départ.",
     steps:["Face à la poulie haute, attrape la barre, coudes collés au corps.",
       "Pousse la barre vers le bas jusqu'à extension complète des bras.",
       "Contracte le triceps une seconde en bas.",
@@ -183,6 +199,7 @@ const EX = {
     mistake:"Décoller les coudes du corps pour pousser plus lourd — ça retire le travail du triceps.",
     alt:["dips-machine"], axis:"vertical", from:"Avant-bras fléchis", to:"Bras tendus vers le bas"},
   "dips-machine": {name:"Dips machine (assisté)", muscle:"Triceps / Pectoraux bas", equip:"Machine assistée",
+    setup:"Règle le poids d'assistance sur la pile (plus de poids = plus facile, ça compense ton poids de corps). Monte sur les appuis genoux ou pieds selon le modèle.",
     steps:["Règle le poids d'assistance selon ton niveau (plus de poids = plus facile).",
       "Place-toi sur les appuis, buste droit, descends en pliant les coudes.",
       "Descends jusqu'à un angle confortable au niveau des épaules.",
@@ -191,6 +208,7 @@ const EX = {
     mistake:"Descendre trop bas trop vite au début — vas-y progressivement pour protéger les épaules.",
     alt:["poulie-triceps"], axis:"vertical", from:"Bras tendus", to:"Coudes fléchis"},
   "curl-biceps": {name:"Curl biceps machine", muscle:"Biceps", equip:"Machine",
+    setup:"Assis, bras posés à plat sur le pupitre incliné, coudes exactement alignés avec l'axe de rotation de la machine.",
     steps:["Assieds-toi, bras posés sur le pupitre incliné, coudes alignés avec l'axe de la machine.",
       "Attrape les poignées, fléchis les coudes pour ramener vers les épaules.",
       "Contracte une seconde en haut.",
@@ -199,6 +217,7 @@ const EX = {
     mistake:"Décoller les coudes du pupitre pour tricher sur la fin du mouvement.",
     alt:["curl-biceps-poulie"], axis:"vertical", from:"Bras tendu", to:"Main vers l'épaule"},
   "curl-biceps-poulie": {name:"Curl biceps à la poulie basse", muscle:"Biceps", equip:"Poulie basse",
+    setup:"Debout face à la poulie basse, attrape la barre droite accrochée en bas, coudes collés au corps dès le départ.",
     steps:["Debout face à la poulie basse, attrape la barre, coudes collés au corps.",
       "Fléchis les coudes pour amener la barre vers les épaules.",
       "Contracte en haut, redescends lentement.",
@@ -207,6 +226,7 @@ const EX = {
     mistake:"Se servir des jambes/du dos pour lancer la barre — mouvement strict, coudes fixes.",
     alt:["curl-biceps"], axis:"vertical", from:"Bras tendu", to:"Main vers l'épaule"},
   "crunch-machine": {name:"Crunch machine", muscle:"Abdominaux", equip:"Machine",
+    setup:"Assis, cale tes pieds sous les repose-pieds, place le haut du buste contre le coussin supérieur, mains sur les poignées ou tempes selon le modèle.",
     steps:["Assieds-toi, cale tes pieds, place le buste contre le coussin supérieur.",
       "Enroule le buste vers l'avant en contractant les abdos, pas en tirant avec les bras.",
       "Marque une pause en contraction maximale.",
@@ -215,6 +235,7 @@ const EX = {
     mistake:"Aller trop vite en mode 'pompe' — ralentis, c'est la contraction qui compte.",
     alt:["gainage"], axis:"rotate", from:"Buste droit", to:"Buste enroulé"},
   "gainage": {name:"Gainage (planche)", muscle:"Sangle abdominale / lombaires", equip:"Poids du corps",
+    setup:"Au sol, sur un tapis si possible. Avant-bras et pointes de pieds au sol, coudes juste sous les épaules.",
     steps:["Position pompe sur les avant-bras, coudes sous les épaules.",
       "Corps aligné de la tête aux talons, ne laisse pas le bassin tomber ni monter.",
       "Contracte les abdos et les fessiers, respire normalement.",
@@ -222,27 +243,92 @@ const EX = {
     tip:"30 secondes bien gainé valent mieux que 60 secondes avec le dos qui s'affaisse.",
     mistake:"Laisser le bassin descendre — ça transforme l'exo en exercice de bas du dos, pas d'abdos.",
     alt:["crunch-machine"], axis:"static", from:"Maintiens la position gainée", to:""},
+  "hip-thrust": {name:"Hip thrust au sol (pont fessier)", muscle:"Fessiers / Ischio-jambiers", equip:"Poids du corps",
+    setup:"Allongé au sol (ou dos calé contre un banc bas si dispo), genoux fléchis, pieds à plat à largeur de bassin, bras le long du corps.",
+    steps:["Allonge-toi au sol, genoux fléchis, pieds à plat proches des fessiers.",
+      "Pousse à travers les talons pour monter le bassin vers le plafond.",
+      "Contracte fort les fessiers en haut, corps aligné genoux-hanches-épaules.",
+      "Redescends lentement sans reposer complètement le bassin entre les reps."],
+    tip:"Serre bien les fessiers en haut une seconde — c'est la contraction qui construit le muscle, pas juste monter/descendre.",
+    mistake:"Cambrer le bas du dos pour monter plus haut — le mouvement vient des fessiers, pas des lombaires.",
+    alt:["presse-cuisses"], axis:"vertical", from:"Bassin au sol", to:"Bassin levé, fessiers contractés"},
 };
 
 const MUSCU_DEFAULT = ["presse-cuisses","tirage-horizontal","developpe-couche","leg-curl",
-  "developpe-epaules","poulie-triceps","curl-biceps","crunch-machine"];
+  "developpe-epaules","poulie-triceps","curl-biceps","crunch-machine","hip-thrust","gainage"];
 
 const DEFAULT_PROGRAM = {days:[
   {id:"d7", label:"Repos", weekday:"Lundi", type:"repos"},
   {id:"d1", label:"Full Body A", weekday:"Mardi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
-  {id:"d2", label:"Cardio", weekday:"Mercredi", type:"cardio"},
+  {id:"d2", label:"Cardio", weekday:"Mercredi", type:"cardio", cardioKind:"steady"},
   {id:"d4", label:"Repos / Piscine légère", weekday:"Jeudi", type:"repos"},
   {id:"d3", label:"Full Body B", weekday:"Vendredi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
   {id:"d5", label:"Full Body C", weekday:"Samedi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
-  {id:"d6", label:"Cardio ou Piscine (bonus)", weekday:"Dimanche", type:"cardio"},
+  {id:"d6", label:"Cardio ou Piscine (bonus)", weekday:"Dimanche", type:"cardio", cardioKind:"hiit"},
 ]};
 const SCHEDULE_MIGRATION_KEY = "ft_schedule_v2";
 const SCHEDULE_V2_WEEKDAYS = {d1:"Mardi", d2:"Mercredi", d3:"Jeudi", d4:"Vendredi", d5:"Samedi", d6:"Dimanche", d7:"Lundi"};
 const SCHEDULE_V2_ORDER = ["d7","d1","d2","d3","d4","d5","d6"];
 const SCHEDULE_MIGRATION_KEY_V3 = "ft_schedule_v3_thu_fri_swap";
+const SCHEDULE_MIGRATION_KEY_V4 = "ft_schedule_v4_cardio_kind";
+
+// Cardio protocols — structured like the muscu progressive-overload targets,
+// so cardio days aren't just "do some cardio" but have an actual plan.
+const CARDIO_PROTOCOLS = {
+  steady: {
+    label: "Cardio continu (endurance / perte de gras)",
+    why: "À allure modérée et constante, c'est le format le plus efficace pour brûler du gras sans fatiguer le corps avant tes séances de muscu — tu peux l'enchaîner sans que ça nuise à ta récup.",
+    baseMinutes: 25, stepMinutes: 5, everyN: 4, maxMinutes: 40,
+    structure: [
+      "5 min d'échauffement — allure tranquille, monte progressivement en intensité.",
+      "Corps de séance à allure modérée constante (zone cible ci-dessous) — tu dois pouvoir parler par phrases courtes, pas plus.",
+      "5 min de retour au calme — ralentis progressivement en fin de séance.",
+    ],
+    zoneLabel: "Zone cible : 60-70% de ta FC max",
+  },
+  hiit: {
+    label: "Cardio par intervalles (HIIT)",
+    why: "Sur un jour bonus, des intervalles courts et intenses brûlent plus par minute qu'un cardio classique — parfait quand t'as moins de temps mais que tu veux quand même un vrai impact.",
+    baseRounds: 6, stepRounds: 1, everyN: 4, maxRounds: 10,
+    structure: [
+      "5 min d'échauffement progressif.",
+      "Alterne 30 sec à fond (effort maximal soutenable) / 90 sec récupération active (allure lente) — répète pour le nombre de tours ci-dessous.",
+      "5 min de retour au calme.",
+    ],
+    zoneLabel: "Zone d'effort : 80-90% de ta FC max pendant les 30 sec",
+  },
+};
+
+function maxHR(){
+  const age = toNum(STATE.profile.age);
+  if (isNaN(age) || age<=0) return null;
+  return 220 - age;
+}
+function hrZoneText(lowPct, highPct){
+  const mhr = maxHR();
+  if (!mhr) return null;
+  return `~${Math.round(mhr*lowPct)}-${Math.round(mhr*highPct)} bpm`;
+}
+function cardioSessionCount(kind){
+  return STATE.sessions.filter(s=>s.type==="cardio" && s.cardioKind===kind).length;
+}
+function suggestedCardioTarget(day){
+  const kind = day.cardioKind || "steady";
+  const proto = CARDIO_PROTOCOLS[kind];
+  const count = cardioSessionCount(kind);
+  if (kind==="hiit"){
+    const rounds = Math.min(proto.maxRounds, proto.baseRounds + Math.floor(count/proto.everyN)*proto.stepRounds);
+    const zone = hrZoneText(0.8, 0.9);
+    return {kind, proto, rounds, totalMinutes: 10 + rounds*2, zone};
+  }
+  const minutes = Math.min(proto.maxMinutes, proto.baseMinutes + Math.floor(count/proto.everyN)*proto.stepMinutes);
+  const zone = hrZoneText(0.6, 0.7);
+  return {kind, proto, minutes, zone};
+}
 
 const WATER_TARGET = 2200;
 const KCAL_TARGET = 2100;
+const EVENT_DATE = "2026-08-12"; // vacances/sortie — repère court terme
 const SLEEP_TARGET = 8;
 const GOAL_FINAL = 80; // kg — single simplified target, no more intermediate milestone
 
@@ -254,7 +340,7 @@ const DEFAULT_TARGET = {
   "developpe-epaules":{sets:3,reps:10}, "elevations-laterales":{sets:3,reps:15},
   "poulie-triceps":{sets:3,reps:12}, "dips-machine":{sets:3,reps:12},
   "curl-biceps":{sets:3,reps:12}, "curl-biceps-poulie":{sets:3,reps:12},
-  "crunch-machine":{sets:3,reps:20}, "gainage":{sets:3,reps:30,unit:"sec"},
+  "crunch-machine":{sets:3,reps:20}, "gainage":{sets:3,reps:30,unit:"sec"}, "hip-thrust":{sets:3,reps:15},
 };
 
 const TIER_COLOR = {bronze:"#CD7F32", silver:"#B9C2CC", gold:"var(--gold)", diamond:"#7FD8E8"};
@@ -284,19 +370,19 @@ const DEFAULT_REWARDS = [
 const FOOD_DB = [
   {id:"riz", name:"Riz cuit", kcal:260, portion:"portion moyenne ~200g", alias:["riz"]},
   {id:"pates", name:"Pâtes cuites", kcal:280, portion:"portion moyenne ~200g", alias:["pates","pâtes","pasta"]},
-  {id:"poulet", name:"Poulet (filet)", kcal:250, portion:"~150g", alias:["poulet","volaille"]},
-  {id:"poisson-blanc", name:"Poisson blanc", kcal:150, portion:"~150g", alias:["poisson","cabillaud","colin","merlu"]},
-  {id:"saumon", name:"Saumon", kcal:280, portion:"~150g", alias:["saumon"]},
-  {id:"thon", name:"Thon (boîte)", kcal:130, portion:"~100g", alias:["thon"]},
-  {id:"boeuf-hache", name:"Bœuf haché 5%", kcal:220, portion:"~150g", alias:["boeuf","bœuf","hache","haché","viande"]},
-  {id:"steak-hache", name:"Steak haché 15%", kcal:320, portion:"~150g", alias:["steak"]},
-  {id:"oeuf", name:"Œuf", kcal:70, portion:"1 unité", alias:["oeuf","œuf","oeufs","œufs"]},
+  {id:"poulet", name:"Poulet (filet)", kcal:250, portion:"~150g", alias:["poulet","volaille"], protein:35},
+  {id:"poisson-blanc", name:"Poisson blanc", kcal:150, portion:"~150g", alias:["poisson","cabillaud","colin","merlu"], protein:32},
+  {id:"saumon", name:"Saumon", kcal:280, portion:"~150g", alias:["saumon"], protein:30},
+  {id:"thon", name:"Thon (boîte)", kcal:130, portion:"~100g", alias:["thon"], protein:25},
+  {id:"boeuf-hache", name:"Bœuf haché 5%", kcal:220, portion:"~150g", alias:["boeuf","bœuf","hache","haché","viande"], protein:33},
+  {id:"steak-hache", name:"Steak haché 15%", kcal:320, portion:"~150g", alias:["steak"], protein:30},
+  {id:"oeuf", name:"Œuf", kcal:70, portion:"1 unité", alias:["oeuf","œuf","oeufs","œufs"], protein:6},
   {id:"pain", name:"Pain", kcal:130, portion:"1 tranche ~50g", alias:["pain","baguette"]},
   {id:"pain-complet", name:"Pain complet", kcal:120, portion:"~50g", alias:["complet"]},
-  {id:"fromage", name:"Fromage", kcal:110, portion:"~30g", alias:["fromage"]},
-  {id:"yaourt", name:"Yaourt nature", kcal:60, portion:"1 pot ~125g", alias:["yaourt","yogourt"]},
-  {id:"yaourt-grec", name:"Yaourt grec", kcal:130, portion:"~150g", alias:["grec"]},
-  {id:"lait", name:"Lait", kcal:120, portion:"250ml", alias:["lait"]},
+  {id:"fromage", name:"Fromage", kcal:110, portion:"~30g", alias:["fromage"], protein:7},
+  {id:"yaourt", name:"Yaourt nature", kcal:60, portion:"1 pot ~125g", alias:["yaourt","yogourt"], protein:5},
+  {id:"yaourt-grec", name:"Yaourt grec", kcal:130, portion:"~150g", alias:["grec"], protein:15},
+  {id:"lait", name:"Lait", kcal:120, portion:"250ml", alias:["lait"], protein:8},
   {id:"pomme", name:"Pomme", kcal:80, portion:"1 unité", alias:["pomme"]},
   {id:"banane", name:"Banane", kcal:105, portion:"1 unité", alias:["banane"]},
   {id:"salade", name:"Salade verte", kcal:20, portion:"1 bol", alias:["salade"]},
@@ -305,7 +391,7 @@ const FOOD_DB = [
   {id:"frites", name:"Frites", kcal:400, portion:"1 portion", alias:["frites","frite"]},
   {id:"pizza", name:"Pizza", kcal:285, portion:"1 part", alias:["pizza"]},
   {id:"kebab", name:"Kebab", kcal:700, portion:"1 unité", alias:["kebab"]},
-  {id:"sandwich", name:"Sandwich jambon-beurre", kcal:450, portion:"1 unité", alias:["sandwich"]},
+  {id:"sandwich", name:"Sandwich jambon-beurre", kcal:450, portion:"1 unité", alias:["sandwich"], protein:18},
   {id:"chips", name:"Chips", kcal:250, portion:"1 petit paquet", alias:["chips"]},
   {id:"chocolat", name:"Chocolat", kcal:230, portion:"1 barre", alias:["chocolat"]},
   {id:"soda", name:"Soda", kcal:140, portion:"33cl", alias:["soda","coca","cola"]},
@@ -313,38 +399,38 @@ const FOOD_DB = [
   {id:"jus", name:"Jus de fruit", kcal:90, portion:"200ml", alias:["jus"]},
   {id:"beurre", name:"Beurre", kcal:75, portion:"10g", alias:["beurre"]},
   {id:"huile", name:"Huile d'olive", kcal:90, portion:"1 c.à.s", alias:["huile"]},
-  {id:"lentilles", name:"Lentilles cuites", kcal:230, portion:"~200g", alias:["lentilles"]},
+  {id:"lentilles", name:"Lentilles cuites", kcal:230, portion:"~200g", alias:["lentilles"], protein:18},
   {id:"haricots-verts", name:"Haricots verts", kcal:60, portion:"~200g", alias:["haricots"]},
   {id:"brocoli", name:"Brocoli", kcal:70, portion:"~200g", alias:["brocoli"]},
   {id:"pdt", name:"Pommes de terre", kcal:170, portion:"~200g cuites", alias:["patate","pomme de terre","pdt"]},
   {id:"puree", name:"Purée", kcal:180, portion:"~200g", alias:["puree","purée"]},
-  {id:"couscous", name:"Couscous", kcal:220, portion:"~200g cuit", alias:["couscous","semoule"]},
-  {id:"quinoa", name:"Quinoa", kcal:230, portion:"~200g cuit", alias:["quinoa"]},
-  {id:"crevettes", name:"Crevettes", kcal:100, portion:"~100g", alias:["crevettes"]},
+  {id:"couscous", name:"Couscous", kcal:220, portion:"~200g cuit", alias:["couscous","semoule"], protein:6},
+  {id:"quinoa", name:"Quinoa", kcal:230, portion:"~200g cuit", alias:["quinoa"], protein:8},
+  {id:"crevettes", name:"Crevettes", kcal:100, portion:"~100g", alias:["crevettes"], protein:20},
   {id:"jambon", name:"Jambon blanc", kcal:90, portion:"2 tranches", alias:["jambon"]},
-  {id:"noix", name:"Noix / amandes", kcal:190, portion:"~30g", alias:["noix","amandes","cacahuetes","cacahuètes"]},
+  {id:"noix", name:"Noix / amandes", kcal:190, portion:"~30g", alias:["noix","amandes","cacahuetes","cacahuètes"], protein:6},
   {id:"cereales", name:"Céréales petit-déj", kcal:150, portion:"~40g", alias:["cereales","céréales","muesli"]},
   {id:"croissant", name:"Croissant", kcal:230, portion:"1 unité", alias:["croissant"]},
   {id:"pain-choco", name:"Pain au chocolat", kcal:250, portion:"1 unité", alias:["pain au chocolat","chocolatine"]},
-  {id:"barre-prot", name:"Barre protéinée", kcal:200, portion:"1 unité", alias:["barre proteinee","barre protéinée","proteine"]},
-  {id:"fromage-blanc", name:"Fromage blanc", kcal:100, portion:"~150g", alias:["fromage blanc"]},
+  {id:"barre-prot", name:"Barre protéinée", kcal:200, portion:"1 unité", alias:["barre proteinee","barre protéinée","proteine"], protein:20},
+  {id:"fromage-blanc", name:"Fromage blanc", kcal:100, portion:"~150g", alias:["fromage blanc"], protein:12},
   {id:"glace", name:"Glace", kcal:180, portion:"2 boules", alias:["glace"]},
   {id:"gateau", name:"Gâteau", kcal:300, portion:"1 part", alias:["gateau","gâteau"]},
   {id:"biscuits", name:"Biscuits", kcal:150, portion:"4 unités", alias:["biscuit","biscuits","cookie"]},
-  {id:"houmous", name:"Houmous", kcal:110, portion:"~50g", alias:["houmous","hummus"]},
+  {id:"houmous", name:"Houmous", kcal:110, portion:"~50g", alias:["houmous","hummus"], protein:4},
   {id:"sauce-tomate", name:"Sauce tomate", kcal:50, portion:"~100g", alias:["sauce tomate"]},
   {id:"mayo", name:"Mayonnaise", kcal:95, portion:"1 c.à.s", alias:["mayo","mayonnaise"]},
   {id:"confiture", name:"Confiture", kcal:50, portion:"1 c.à.s", alias:["confiture"]},
   {id:"miel", name:"Miel", kcal:60, portion:"1 c.à.s", alias:["miel"]},
   {id:"biere", name:"Bière", kcal:150, portion:"33cl", alias:["biere","bière"]},
   {id:"vin", name:"Vin", kcal:120, portion:"1 verre", alias:["vin"]},
-  {id:"escalope", name:"Escalope de dinde/poulet", kcal:180, portion:"~150g", alias:["escalope","dinde"]},
-  {id:"paupiette", name:"Paupiette", kcal:200, portion:"1 unité", alias:["paupiette"]},
-  {id:"merguez", name:"Merguez / saucisse", kcal:250, portion:"2 unités", alias:["merguez","saucisse","chorizo"]},
-  {id:"agneau", name:"Agneau", kcal:280, portion:"~150g", alias:["agneau"]},
-  {id:"porc", name:"Porc", kcal:240, portion:"~150g", alias:["porc","cote de porc","côte de porc"]},
-  {id:"bolognaise", name:"Pâtes bolognaise", kcal:450, portion:"1 assiette", alias:["bolognaise","spaghetti"]},
-  {id:"lasagnes", name:"Lasagnes", kcal:400, portion:"1 part", alias:["lasagne","lasagnes"]},
+  {id:"escalope", name:"Escalope de dinde/poulet", kcal:180, portion:"~150g", alias:["escalope","dinde"], protein:33},
+  {id:"paupiette", name:"Paupiette", kcal:200, portion:"1 unité", alias:["paupiette"], protein:22},
+  {id:"merguez", name:"Merguez / saucisse", kcal:250, portion:"2 unités", alias:["merguez","saucisse","chorizo"], protein:20},
+  {id:"agneau", name:"Agneau", kcal:280, portion:"~150g", alias:["agneau"], protein:30},
+  {id:"porc", name:"Porc", kcal:240, portion:"~150g", alias:["porc","cote de porc","côte de porc"], protein:30},
+  {id:"bolognaise", name:"Pâtes bolognaise", kcal:450, portion:"1 assiette", alias:["bolognaise","spaghetti"], protein:22},
+  {id:"lasagnes", name:"Lasagnes", kcal:400, portion:"1 part", alias:["lasagne","lasagnes"], protein:25},
   {id:"gratin", name:"Gratin dauphinois", kcal:250, portion:"~200g", alias:["gratin","dauphinois"]},
   {id:"ratatouille", name:"Ratatouille", kcal:90, portion:"~200g", alias:["ratatouille"]},
   {id:"soupe", name:"Soupe de légumes", kcal:90, portion:"1 bol", alias:["soupe","potage"]},
@@ -355,8 +441,8 @@ const FOOD_DB = [
   {id:"ramen", name:"Ramen / nouilles", kcal:450, portion:"1 bol", alias:["ramen","nouilles","noodles"]},
   {id:"riz-cantonais", name:"Riz cantonais", kcal:350, portion:"1 portion", alias:["cantonais"]},
   {id:"curry", name:"Curry", kcal:350, portion:"1 portion", alias:["curry"]},
-  {id:"falafel", name:"Falafel", kcal:330, portion:"~5 pièces", alias:["falafel"]},
-  {id:"omelette", name:"Omelette (2 œufs)", kcal:180, portion:"2 œufs", alias:["omelette"]},
+  {id:"falafel", name:"Falafel", kcal:330, portion:"~5 pièces", alias:["falafel"], protein:13},
+  {id:"omelette", name:"Omelette (2 œufs)", kcal:180, portion:"2 œufs", alias:["omelette"], protein:13},
   {id:"crepe", name:"Crêpe", kcal:120, portion:"1 unité nature", alias:["crepe","crêpe"]},
   {id:"gaufre", name:"Gaufre", kcal:220, portion:"1 unité", alias:["gaufre"]},
   {id:"pancake", name:"Pancake", kcal:90, portion:"1 unité", alias:["pancake"]},
@@ -370,16 +456,16 @@ const FOOD_DB = [
   {id:"carotte", name:"Carotte", kcal:35, portion:"~150g", alias:["carotte"]},
   {id:"mais", name:"Maïs", kcal:130, portion:"~150g", alias:["mais","maïs"]},
   {id:"petits-pois", name:"Petits pois", kcal:110, portion:"~150g", alias:["petits pois"]},
-  {id:"proteine-shake", name:"Shake protéiné (whey)", kcal:120, portion:"1 dose + eau", alias:["whey","shake","proteine"]},
+  {id:"proteine-shake", name:"Shake protéiné (whey)", kcal:120, portion:"1 dose + eau", alias:["whey","shake","proteine"], protein:24},
   {id:"milkshake", name:"Milkshake", kcal:350, portion:"1 verre", alias:["milkshake"]},
   {id:"cafe-latte", name:"Café latte / cappuccino", kcal:120, portion:"1 tasse", alias:["latte","cappuccino","capuccino"]},
   {id:"chocolat-chaud", name:"Chocolat chaud", kcal:180, portion:"1 tasse", alias:["chocolat chaud"]},
 
   // Plats fréquents de Bobby
-  {id:"riz-bolo", name:"Riz/pâtes bolognaise", kcal:480, portion:"1 assiette", alias:["riz bolo","pates bolo","pâtes bolo","bolo"]},
-  {id:"riz-curry", name:"Riz curry (poulet)", kcal:430, portion:"1 assiette", alias:["riz curry"]},
+  {id:"riz-bolo", name:"Riz/pâtes bolognaise", kcal:480, portion:"1 assiette", alias:["riz bolo","pates bolo","pâtes bolo","bolo"], protein:22},
+  {id:"riz-curry", name:"Riz curry (poulet)", kcal:430, portion:"1 assiette", alias:["riz curry"], protein:25},
   {id:"pates-riz-sauce", name:"Pâtes/riz sauce (générique)", kcal:400, portion:"1 assiette", alias:["sauce"]},
-  {id:"cheese-naan", name:"Cheese naan (pain indien fromage)", kcal:320, portion:"1 unité", alias:["cheese naan","naan fromage","naan"]},
+  {id:"cheese-naan", name:"Cheese naan (pain indien fromage)", kcal:320, portion:"1 unité", alias:["cheese naan","naan fromage","naan"], protein:10},
   {id:"tasty-crousty", name:"Tasty Crousty (poulet croustillant)", kcal:650, portion:"1 menu", alias:["tasty crousty","crousty","tasty"]},
   {id:"salade-cesar", name:"Salade César", kcal:470, portion:"1 bol (assaisonnement inclus)", alias:["cesar","césar"]},
   {id:"salade-avocat-thon", name:"Salade avocat thon", kcal:350, portion:"1 bol", alias:["avocat thon"]},
@@ -418,26 +504,26 @@ const FOOD_DB = [
   {id:"pot-au-feu", name:"Pot-au-feu", kcal:400, portion:"1 assiette", alias:["pot au feu"]},
   {id:"blanquette", name:"Blanquette de veau", kcal:450, portion:"1 assiette", alias:["blanquette"]},
   {id:"buddha-bowl", name:"Buddha bowl", kcal:450, portion:"1 bol", alias:["buddha bowl"]},
-  {id:"granola", name:"Granola", kcal:200, portion:"~50g", alias:["granola"]},
-  {id:"porridge", name:"Porridge", kcal:220, portion:"1 bol", alias:["porridge","flocons d'avoine","avoine"]},
+  {id:"granola", name:"Granola", kcal:200, portion:"~50g", alias:["granola"], protein:5},
+  {id:"porridge", name:"Porridge", kcal:220, portion:"1 bol", alias:["porridge","flocons d'avoine","avoine"], protein:8},
   {id:"smoothie-bowl", name:"Smoothie bowl", kcal:300, portion:"1 bol", alias:["smoothie bowl","smoothie"]},
   {id:"french-toast", name:"Pain perdu", kcal:280, portion:"2 tranches", alias:["pain perdu","french toast"]},
   {id:"club-sandwich", name:"Club sandwich", kcal:500, portion:"1 unité", alias:["club sandwich"]},
   {id:"panini", name:"Panini", kcal:400, portion:"1 unité", alias:["panini"]},
   {id:"empanada", name:"Empanada", kcal:250, portion:"1 unité", alias:["empanada"]},
   {id:"samosa", name:"Samosa", kcal:150, portion:"1 unité", alias:["samosa"]},
-  {id:"teriyaki", name:"Poulet teriyaki", kcal:320, portion:"~150g avec sauce", alias:["teriyaki"]},
-  {id:"pad-thai", name:"Pad thaï", kcal:550, portion:"1 assiette", alias:["pad thai","pad thaï"]},
-  {id:"bibimbap", name:"Bibimbap", kcal:550, portion:"1 bol", alias:["bibimbap"]},
-  {id:"shawarma", name:"Shawarma / gyros", kcal:600, portion:"1 unité", alias:["shawarma","gyros"]},
+  {id:"teriyaki", name:"Poulet teriyaki", kcal:320, portion:"~150g avec sauce", alias:["teriyaki"], protein:28},
+  {id:"pad-thai", name:"Pad thaï", kcal:550, portion:"1 assiette", alias:["pad thai","pad thaï"], protein:18},
+  {id:"bibimbap", name:"Bibimbap", kcal:550, portion:"1 bol", alias:["bibimbap"], protein:20},
+  {id:"shawarma", name:"Shawarma / gyros", kcal:600, portion:"1 unité", alias:["shawarma","gyros"], protein:28},
   {id:"tabbouleh", name:"Taboulé", kcal:180, portion:"~200g", alias:["taboule","taboulé"]},
   {id:"risotto", name:"Risotto", kcal:450, portion:"1 assiette", alias:["risotto"]},
   {id:"gnocchi", name:"Gnocchis", kcal:400, portion:"1 assiette", alias:["gnocchi","gnocchis"]},
-  {id:"carbonara", name:"Pâtes carbonara", kcal:550, portion:"1 assiette", alias:["carbonara"]},
+  {id:"carbonara", name:"Pâtes carbonara", kcal:550, portion:"1 assiette", alias:["carbonara"], protein:25},
   {id:"pesto", name:"Pâtes au pesto", kcal:480, portion:"1 assiette", alias:["pesto"]},
-  {id:"mac-cheese", name:"Mac and cheese", kcal:500, portion:"1 assiette", alias:["mac and cheese","mac cheese"]},
+  {id:"mac-cheese", name:"Mac and cheese", kcal:500, portion:"1 assiette", alias:["mac and cheese","mac cheese"], protein:15},
   {id:"nuggets", name:"Nuggets", kcal:300, portion:"6 pièces", alias:["nuggets"]},
-  {id:"fish-sticks", name:"Bâtonnets de poisson", kcal:250, portion:"6 pièces", alias:["batonnets de poisson","fish sticks"]},
+  {id:"fish-sticks", name:"Bâtonnets de poisson", kcal:250, portion:"6 pièces", alias:["batonnets de poisson","fish sticks"], protein:15},
   {id:"calzone", name:"Calzone", kcal:600, portion:"1 unité", alias:["calzone"]},
   {id:"quesadilla", name:"Quesadilla", kcal:450, portion:"1 unité", alias:["quesadilla"]},
 
@@ -477,33 +563,33 @@ const FOOD_DB = [
   {id:"baba-rhum", name:"Baba au rhum", kcal:300, portion:"1 unité", alias:["baba au rhum","baba rhum"]},
 
   // Desserts du quotidien / marques connues
-  {id:"danette", name:"Danette", kcal:130, portion:"1 pot", alias:["danette"]},
-  {id:"liegeois", name:"Liégeois (chocolat/café)", kcal:180, portion:"1 pot", alias:["liegeois","liégeois"]},
-  {id:"petit-filou", name:"Petit Filou / fromage blanc sucré", kcal:90, portion:"1 pot", alias:["petit filou","petits filous"]},
-  {id:"yaourt-fruits", name:"Yaourt aux fruits", kcal:110, portion:"1 pot", alias:["yaourt aux fruits","yaourt fruit"]},
+  {id:"danette", name:"Danette", kcal:130, portion:"1 pot", alias:["danette"], protein:3},
+  {id:"liegeois", name:"Liégeois (chocolat/café)", kcal:180, portion:"1 pot", alias:["liegeois","liégeois"], protein:4},
+  {id:"petit-filou", name:"Petit Filou / fromage blanc sucré", kcal:90, portion:"1 pot", alias:["petit filou","petits filous"], protein:6},
+  {id:"yaourt-fruits", name:"Yaourt aux fruits", kcal:110, portion:"1 pot", alias:["yaourt aux fruits","yaourt fruit"], protein:5},
   {id:"compote", name:"Compote", kcal:80, portion:"1 gourde/pot", alias:["compote"]},
 
   // ==== WINGS — toutes les versions ====
-  {id:"wings-air-fryer", name:"Wings air fryer (nature)", kcal:220, portion:"~6 wings", alias:["wings air fryer","wings sans huile","wings nature"]},
-  {id:"wings-panees", name:"Wings panées (chapelure, frites)", kcal:420, portion:"~6 wings", alias:["wings panees","wings chapelure","wings frites"]},
-  {id:"wings-buffalo", name:"Wings sauce buffalo", kcal:400, portion:"~6 wings", alias:["wings buffalo"]},
-  {id:"wings-bbq", name:"Wings sauce BBQ", kcal:420, portion:"~6 wings", alias:["wings bbq"]},
-  {id:"wings-miel-moutarde", name:"Wings miel-moutarde", kcal:440, portion:"~6 wings", alias:["wings miel moutarde"]},
+  {id:"wings-air-fryer", name:"Wings air fryer (nature)", kcal:220, portion:"~6 wings", alias:["wings air fryer","wings sans huile","wings nature"], protein:30},
+  {id:"wings-panees", name:"Wings panées (chapelure, frites)", kcal:420, portion:"~6 wings", alias:["wings panees","wings chapelure","wings frites"], protein:28},
+  {id:"wings-buffalo", name:"Wings sauce buffalo", kcal:400, portion:"~6 wings", alias:["wings buffalo"], protein:28},
+  {id:"wings-bbq", name:"Wings sauce BBQ", kcal:420, portion:"~6 wings", alias:["wings bbq"], protein:28},
+  {id:"wings-miel-moutarde", name:"Wings miel-moutarde", kcal:440, portion:"~6 wings", alias:["wings miel moutarde"], protein:28},
 
   // ==== POULET — toutes les versions ====
-  {id:"poulet-grille", name:"Poulet grillé/rôti (nature)", kcal:250, portion:"~150g", alias:["poulet grille","poulet roti","blanc de poulet"]},
-  {id:"poulet-pane", name:"Poulet pané (escalope panée)", kcal:340, portion:"~150g", alias:["poulet pane","escalope panee"]},
-  {id:"poulet-frit", name:"Poulet frit (type fast-food)", kcal:420, portion:"~150g", alias:["poulet frit","fried chicken"]},
-  {id:"poulet-sauce", name:"Poulet en sauce (curry/crème)", kcal:380, portion:"~150g avec sauce", alias:["poulet sauce","poulet curry","poulet creme"]},
-  {id:"cuisse-poulet", name:"Cuisse de poulet rôtie (avec peau)", kcal:290, portion:"1 cuisse ~150g", alias:["cuisse de poulet","cuisse poulet"]},
-  {id:"nuggets-poulet", name:"Nuggets de poulet", kcal:300, portion:"6 pièces", alias:["nuggets poulet"]},
+  {id:"poulet-grille", name:"Poulet grillé/rôti (nature)", kcal:250, portion:"~150g", alias:["poulet grille","poulet roti","blanc de poulet"], protein:35},
+  {id:"poulet-pane", name:"Poulet pané (escalope panée)", kcal:340, portion:"~150g", alias:["poulet pane","escalope panee"], protein:30},
+  {id:"poulet-frit", name:"Poulet frit (type fast-food)", kcal:420, portion:"~150g", alias:["poulet frit","fried chicken"], protein:28},
+  {id:"poulet-sauce", name:"Poulet en sauce (curry/crème)", kcal:380, portion:"~150g avec sauce", alias:["poulet sauce","poulet curry","poulet creme"], protein:30},
+  {id:"cuisse-poulet", name:"Cuisse de poulet rôtie (avec peau)", kcal:290, portion:"1 cuisse ~150g", alias:["cuisse de poulet","cuisse poulet"], protein:28},
+  {id:"nuggets-poulet", name:"Nuggets de poulet", kcal:300, portion:"6 pièces", alias:["nuggets poulet"], protein:15},
 
   // ==== POISSON — toutes les versions ====
-  {id:"poisson-vapeur", name:"Poisson vapeur/grillé (nature)", kcal:150, portion:"~150g", alias:["poisson vapeur","poisson grille nature"]},
-  {id:"poisson-pane", name:"Poisson pané", kcal:320, portion:"~150g", alias:["poisson pane"]},
-  {id:"poisson-frit", name:"Poisson frit", kcal:380, portion:"~150g", alias:["poisson frit"]},
-  {id:"poisson-sauce", name:"Poisson sauce (beurre blanc/crème)", kcal:340, portion:"~150g avec sauce", alias:["poisson sauce","poisson beurre blanc"]},
-  {id:"poisson-meuniere", name:"Poisson meunière (beurre)", kcal:280, portion:"~150g", alias:["poisson meuniere"]},
+  {id:"poisson-vapeur", name:"Poisson vapeur/grillé (nature)", kcal:150, portion:"~150g", alias:["poisson vapeur","poisson grille nature"], protein:32},
+  {id:"poisson-pane", name:"Poisson pané", kcal:320, portion:"~150g", alias:["poisson pane"], protein:25},
+  {id:"poisson-frit", name:"Poisson frit", kcal:380, portion:"~150g", alias:["poisson frit"], protein:25},
+  {id:"poisson-sauce", name:"Poisson sauce (beurre blanc/crème)", kcal:340, portion:"~150g avec sauce", alias:["poisson sauce","poisson beurre blanc"], protein:28},
+  {id:"poisson-meuniere", name:"Poisson meunière (beurre)", kcal:280, portion:"~150g", alias:["poisson meuniere"], protein:30},
 
   // ==== FRITES — toutes les versions ====
   {id:"frites-air-fryer", name:"Frites air fryer (peu d'huile)", kcal:250, portion:"1 portion", alias:["frites air fryer","frites sans huile","frites four"]},
@@ -523,48 +609,48 @@ const FOOD_DB = [
   {id:"legumes-sautes", name:"Légumes sautés (poêlée, huile)", kcal:150, portion:"~200g", alias:["legumes sautes","poelee de legumes"]},
 
   // ==== VIANDE ROUGE — variantes ====
-  {id:"steak-grille", name:"Steak grillé (entrecôte/faux-filet, nature)", kcal:300, portion:"~150g", alias:["steak grille","entrecote","faux filet"]},
-  {id:"viande-panee", name:"Viande panée (escalope panée)", kcal:350, portion:"~150g", alias:["viande panee","escalope de veau panee"]},
-  {id:"boeuf-sauce", name:"Bœuf en sauce (bourguignon type)", kcal:380, portion:"~200g avec sauce", alias:["boeuf sauce","boeuf bourguignon"]},
+  {id:"steak-grille", name:"Steak grillé (entrecôte/faux-filet, nature)", kcal:300, portion:"~150g", alias:["steak grille","entrecote","faux filet"], protein:34},
+  {id:"viande-panee", name:"Viande panée (escalope panée)", kcal:350, portion:"~150g", alias:["viande panee","escalope de veau panee"], protein:28},
+  {id:"boeuf-sauce", name:"Bœuf en sauce (bourguignon type)", kcal:380, portion:"~200g avec sauce", alias:["boeuf sauce","boeuf bourguignon"], protein:30},
 
   // ==== ŒUFS — variantes ====
-  {id:"oeuf-dur", name:"Œuf dur", kcal:70, portion:"1 unité", alias:["oeuf dur","œuf dur"]},
-  {id:"oeuf-plat", name:"Œuf au plat (frit)", kcal:95, portion:"1 unité", alias:["oeuf au plat","oeuf plat","oeuf frit"]},
-  {id:"oeufs-brouilles", name:"Œufs brouillés (2 œufs + beurre)", kcal:220, portion:"2 œufs", alias:["oeufs brouilles","œufs brouillés"]},
+  {id:"oeuf-dur", name:"Œuf dur", kcal:70, portion:"1 unité", alias:["oeuf dur","œuf dur"], protein:6},
+  {id:"oeuf-plat", name:"Œuf au plat (frit)", kcal:95, portion:"1 unité", alias:["oeuf au plat","oeuf plat","oeuf frit"], protein:6},
+  {id:"oeufs-brouilles", name:"Œufs brouillés (2 œufs + beurre)", kcal:220, portion:"2 œufs", alias:["oeufs brouilles","œufs brouillés"], protein:13},
 
   // ==== PÂTES/RIZ NATURE — variantes simples ====
   {id:"pates-beurre", name:"Pâtes au beurre/huile (nature)", kcal:320, portion:"~200g", alias:["pates au beurre","pates nature","pates huile"]},
   {id:"pates-tomate", name:"Pâtes sauce tomate simple", kcal:340, portion:"~200g", alias:["pates tomate","pates sauce tomate simple"]},
 
   // ==== BURGER — toutes les versions ====
-  {id:"burger-simple", name:"Burger simple (fast-food, cheese)", kcal:550, portion:"1 unité", alias:["burger simple","cheeseburger","hamburger simple"]},
-  {id:"burger-double", name:"Burger double cheese", kcal:750, portion:"1 unité", alias:["burger double","double cheeseburger"]},
-  {id:"burger-maison", name:"Burger maison (steak haché, pain, fromage)", kcal:600, portion:"1 unité", alias:["burger maison"]},
-  {id:"burger-poulet-pane", name:"Burger poulet pané", kcal:500, portion:"1 unité", alias:["burger poulet pane","burger chicken pane"]},
-  {id:"burger-vege", name:"Burger végé", kcal:450, portion:"1 unité", alias:["burger vege","burger vegetarien"]},
-  {id:"burger-xxl", name:"Burger XXL/gourmet (bacon, œuf...)", kcal:850, portion:"1 unité", alias:["burger xxl","burger gourmet","burger bacon"]},
+  {id:"burger-simple", name:"Burger simple (fast-food, cheese)", kcal:550, portion:"1 unité", alias:["burger simple","cheeseburger","hamburger simple"], protein:25},
+  {id:"burger-double", name:"Burger double cheese", kcal:750, portion:"1 unité", alias:["burger double","double cheeseburger"], protein:40},
+  {id:"burger-maison", name:"Burger maison (steak haché, pain, fromage)", kcal:600, portion:"1 unité", alias:["burger maison"], protein:28},
+  {id:"burger-poulet-pane", name:"Burger poulet pané", kcal:500, portion:"1 unité", alias:["burger poulet pane","burger chicken pane"], protein:25},
+  {id:"burger-vege", name:"Burger végé", kcal:450, portion:"1 unité", alias:["burger vege","burger vegetarien"], protein:15},
+  {id:"burger-xxl", name:"Burger XXL/gourmet (bacon, œuf...)", kcal:850, portion:"1 unité", alias:["burger xxl","burger gourmet","burger bacon"], protein:35},
 
   // ==== PIZZA — toutes les versions ====
-  {id:"pizza-margherita", name:"Pizza margherita", kcal:250, portion:"1 part", alias:["pizza margherita"]},
-  {id:"pizza-4fromages", name:"Pizza 4 fromages", kcal:320, portion:"1 part", alias:["pizza 4 fromages","pizza quatre fromages"]},
-  {id:"pizza-viande", name:"Pizza pepperoni/viande", kcal:300, portion:"1 part", alias:["pizza pepperoni","pizza viande"]},
+  {id:"pizza-margherita", name:"Pizza margherita", kcal:250, portion:"1 part", alias:["pizza margherita"], protein:12},
+  {id:"pizza-4fromages", name:"Pizza 4 fromages", kcal:320, portion:"1 part", alias:["pizza 4 fromages","pizza quatre fromages"], protein:18},
+  {id:"pizza-viande", name:"Pizza pepperoni/viande", kcal:300, portion:"1 part", alias:["pizza pepperoni","pizza viande"], protein:16},
   {id:"pizza-fine", name:"Pizza pâte fine", kcal:220, portion:"1 part", alias:["pizza pate fine","pizza fine"]},
   {id:"pizza-epaisse", name:"Pizza pâte épaisse/pan", kcal:350, portion:"1 part", alias:["pizza epaisse","pizza pan"]},
 
   // ==== KEBAB — toutes les versions ====
-  {id:"kebab-galette", name:"Kebab galette (dans le pain)", kcal:700, portion:"1 unité", alias:["kebab galette"]},
-  {id:"kebab-assiette", name:"Kebab assiette (sans pain)", kcal:600, portion:"1 assiette", alias:["kebab assiette"]},
-  {id:"kebab-xl", name:"Kebab XL", kcal:900, portion:"1 unité", alias:["kebab xl","kebab maxi"]},
+  {id:"kebab-galette", name:"Kebab galette (dans le pain)", kcal:700, portion:"1 unité", alias:["kebab galette"], protein:30},
+  {id:"kebab-assiette", name:"Kebab assiette (sans pain)", kcal:600, portion:"1 assiette", alias:["kebab assiette"], protein:32},
+  {id:"kebab-xl", name:"Kebab XL", kcal:900, portion:"1 unité", alias:["kebab xl","kebab maxi"], protein:40},
 
   // ==== SANDWICH — versions supplémentaires ====
-  {id:"sandwich-poulet", name:"Sandwich poulet crudités", kcal:400, portion:"1 unité", alias:["sandwich poulet"]},
-  {id:"sandwich-thon", name:"Sandwich thon mayo", kcal:430, portion:"1 unité", alias:["sandwich thon"]},
+  {id:"sandwich-poulet", name:"Sandwich poulet crudités", kcal:400, portion:"1 unité", alias:["sandwich poulet"], protein:25},
+  {id:"sandwich-thon", name:"Sandwich thon mayo", kcal:430, portion:"1 unité", alias:["sandwich thon"], protein:22},
   {id:"sandwich-vege", name:"Sandwich végétarien", kcal:350, portion:"1 unité", alias:["sandwich vegetarien"]},
 
   // ==== TACOS (français) — tailles ====
-  {id:"tacos-m", name:"Tacos 1 viande (M)", kcal:550, portion:"1 unité taille M", alias:["tacos m","tacos une viande"]},
-  {id:"tacos-l", name:"Tacos 2 viandes (L)", kcal:750, portion:"1 unité taille L", alias:["tacos l","tacos deux viandes"]},
-  {id:"tacos-xl", name:"Tacos XL", kcal:950, portion:"1 unité taille XL", alias:["tacos xl"]},
+  {id:"tacos-m", name:"Tacos 1 viande (M)", kcal:550, portion:"1 unité taille M", alias:["tacos m","tacos une viande"], protein:25},
+  {id:"tacos-l", name:"Tacos 2 viandes (L)", kcal:750, portion:"1 unité taille L", alias:["tacos l","tacos deux viandes"], protein:40},
+  {id:"tacos-xl", name:"Tacos XL", kcal:950, portion:"1 unité taille XL", alias:["tacos xl"], protein:55},
 
   // ==== GLACE — versions ====
   {id:"sorbet", name:"Sorbet (2 boules)", kcal:120, portion:"2 boules", alias:["sorbet"]},
@@ -579,38 +665,38 @@ const FOOD_DB = [
   {id:"mozza-sticks", name:"Mozzarella sticks", kcal:300, portion:"6 pièces", alias:["mozzarella sticks","mozza sticks"]},
   {id:"burrito", name:"Burrito", kcal:600, portion:"1 unité", alias:["burrito"]},
   {id:"poutine", name:"Poutine", kcal:700, portion:"1 portion", alias:["poutine"]},
-  {id:"chicken-tenders", name:"Chicken tenders/strips", kcal:350, portion:"5 pièces", alias:["chicken tenders","tenders","strips de poulet"]},
+  {id:"chicken-tenders", name:"Chicken tenders/strips", kcal:350, portion:"5 pièces", alias:["chicken tenders","tenders","strips de poulet"], protein:25},
 
   // ==== INTERNATIONAL — un peu moins courant ====
-  {id:"gyoza", name:"Gyoza/raviolis japonais", kcal:220, portion:"6 pièces", alias:["gyoza","raviolis japonais"]},
+  {id:"gyoza", name:"Gyoza/raviolis japonais", kcal:220, portion:"6 pièces", alias:["gyoza","raviolis japonais"], protein:10},
   {id:"okonomiyaki", name:"Okonomiyaki", kcal:450, portion:"1 part", alias:["okonomiyaki"]},
   {id:"tempura", name:"Tempura (crevettes/légumes)", kcal:300, portion:"1 portion", alias:["tempura"]},
-  {id:"yakitori", name:"Yakitori", kcal:200, portion:"4 brochettes", alias:["yakitori","brochettes japonaises"]},
+  {id:"yakitori", name:"Yakitori", kcal:200, portion:"4 brochettes", alias:["yakitori","brochettes japonaises"], protein:20},
   {id:"banh-mi", name:"Bánh mì", kcal:450, portion:"1 unité", alias:["banh mi"]},
-  {id:"biryani", name:"Biryani", kcal:550, portion:"1 assiette", alias:["biryani"]},
-  {id:"dal", name:"Dal/curry de lentilles", kcal:280, portion:"1 assiette", alias:["dal","curry de lentilles"]},
-  {id:"tikka-masala", name:"Poulet tikka masala", kcal:420, portion:"~200g avec sauce", alias:["tikka masala"]},
-  {id:"korma", name:"Curry korma", kcal:400, portion:"1 assiette", alias:["korma"]},
+  {id:"biryani", name:"Biryani", kcal:550, portion:"1 assiette", alias:["biryani"], protein:20},
+  {id:"dal", name:"Dal/curry de lentilles", kcal:280, portion:"1 assiette", alias:["dal","curry de lentilles"], protein:14},
+  {id:"tikka-masala", name:"Poulet tikka masala", kcal:420, portion:"~200g avec sauce", alias:["tikka masala"], protein:28},
+  {id:"korma", name:"Curry korma", kcal:400, portion:"1 assiette", alias:["korma"], protein:22},
   {id:"congee", name:"Congee (bouillie de riz)", kcal:180, portion:"1 bol", alias:["congee"]},
   {id:"shakshuka", name:"Shakshuka", kcal:320, portion:"1 portion", alias:["shakshuka"]},
-  {id:"pho-boeuf", name:"Pho bœuf", kcal:420, portion:"1 bol", alias:["pho boeuf"]},
+  {id:"pho-boeuf", name:"Pho bœuf", kcal:420, portion:"1 bol", alias:["pho boeuf"], protein:25},
   {id:"laksa", name:"Laksa", kcal:480, portion:"1 bol", alias:["laksa"]},
 
   // ==== BISTROT FRANÇAIS ====
-  {id:"confit-canard", name:"Confit de canard", kcal:450, portion:"1 cuisse", alias:["confit de canard","confit canard"]},
-  {id:"magret-canard", name:"Magret de canard", kcal:350, portion:"~150g", alias:["magret de canard","magret"]},
+  {id:"confit-canard", name:"Confit de canard", kcal:450, portion:"1 cuisse", alias:["confit de canard","confit canard"], protein:30},
+  {id:"magret-canard", name:"Magret de canard", kcal:350, portion:"~150g", alias:["magret de canard","magret"], protein:32},
   {id:"escargots", name:"Escargots (beurre persillé)", kcal:280, portion:"6 pièces", alias:["escargots"]},
   {id:"foie-gras", name:"Foie gras", kcal:250, portion:"~50g", alias:["foie gras"]},
-  {id:"tartare-boeuf", name:"Tartare de bœuf", kcal:350, portion:"1 portion", alias:["tartare de boeuf","tartare"]},
-  {id:"carpaccio", name:"Carpaccio de bœuf", kcal:250, portion:"1 portion", alias:["carpaccio"]},
+  {id:"tartare-boeuf", name:"Tartare de bœuf", kcal:350, portion:"1 portion", alias:["tartare de boeuf","tartare"], protein:30},
+  {id:"carpaccio", name:"Carpaccio de bœuf", kcal:250, portion:"1 portion", alias:["carpaccio"], protein:25},
   {id:"aligot", name:"Aligot", kcal:400, portion:"~200g", alias:["aligot"]},
   {id:"welsh", name:"Welsh", kcal:600, portion:"1 portion", alias:["welsh"]},
 
   // ==== VÉGÉTARIEN / VÉGAN ====
-  {id:"tofu", name:"Tofu nature", kcal:150, portion:"~150g", alias:["tofu"]},
-  {id:"tofu-saute", name:"Tofu sauté (sauce)", kcal:250, portion:"~150g", alias:["tofu saute","tofu sauce"]},
-  {id:"seitan", name:"Seitan", kcal:200, portion:"~150g", alias:["seitan"]},
-  {id:"edamame", name:"Edamame", kcal:120, portion:"~100g", alias:["edamame"]},
+  {id:"tofu", name:"Tofu nature", kcal:150, portion:"~150g", alias:["tofu"], protein:15},
+  {id:"tofu-saute", name:"Tofu sauté (sauce)", kcal:250, portion:"~150g", alias:["tofu saute","tofu sauce"], protein:18},
+  {id:"seitan", name:"Seitan", kcal:200, portion:"~150g", alias:["seitan"], protein:30},
+  {id:"edamame", name:"Edamame", kcal:120, portion:"~100g", alias:["edamame"], protein:11},
 
   // ==== SNACKS / DIVERS ====
   {id:"popcorn", name:"Popcorn (nature)", kcal:150, portion:"1 petit bol", alias:["popcorn"]},
@@ -679,7 +765,7 @@ const TYPE_META = {muscu:{color:"var(--gold)", label:"Musculation"}, cardio:{col
 // ---------------------------------------------------------------------------
 // STATE + STORAGE
 // ---------------------------------------------------------------------------
-const LS = {program:"ft_program", sessions:"ft_sessions", daily:"ft_daily", rewards:"ft_rewards", redeem:"ft_redeem", weekOverrides:"ft_week_overrides", profile:"ft_profile"};
+const LS = {program:"ft_program", sessions:"ft_sessions", daily:"ft_daily", rewards:"ft_rewards", redeem:"ft_redeem", weekOverrides:"ft_week_overrides", profile:"ft_profile", activeSession:"ft_active_session"};
 function load(key, fallback){ try{ const v=localStorage.getItem(key); return v?JSON.parse(v):fallback; }catch(e){ return fallback; } }
 function save(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){ console.error(e); } }
 
@@ -693,6 +779,7 @@ const STATE = {
   weekOverrides: load(LS.weekOverrides, {}),
   profile: load(LS.profile, {age:"", heightCm:"", sex:"m"}),
   swapPickerDate: null,
+  exercisePickerOpen: false,
   activeDay: null,
   guidedStep: 0,
   guidedSets: {},
@@ -738,6 +825,25 @@ const STATE = {
     save(LS.program, STATE.program);
   }
   localStorage.setItem(SCHEDULE_MIGRATION_KEY_V3, "1");
+})();
+
+// One-time migration: tag cardio days with a protocol kind (steady vs HIIT)
+// for anyone who already had cardio days saved before this was added.
+(function migrateCardioKind(){
+  if (localStorage.getItem(SCHEDULE_MIGRATION_KEY_V4)) return;
+  const days = STATE.program.days;
+  let changed = false;
+  days.forEach(d=>{
+    if (d.type==="cardio" && !d.cardioKind){
+      d.cardioKind = /bonus/i.test(d.label) ? "hiit" : "steady";
+      changed = true;
+    }
+  });
+  if (changed){
+    STATE.program = {...STATE.program, days:[...days]};
+    save(LS.program, STATE.program);
+  }
+  localStorage.setItem(SCHEDULE_MIGRATION_KEY_V4, "1");
 })();
 
 // ---------------------------------------------------------------------------
@@ -914,6 +1020,16 @@ function computeBMR(weightKg, profile){
   const sexOffset = profile.sex === "f" ? -161 : 5;
   return 10*weightKg + 6.25*height - 5*age + sexOffset;
 }
+// Personalized daily calorie target: BMR x1.3 (activité légère, le sport actif
+// est déjà compté à part via la montre) moins un déficit modéré (350 kcal) —
+// stable et progressif pour une recomposition, pas un cut agressif.
+function personalKcalTarget(){
+  const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
+  const latestWeight = weights.length ? weights[weights.length-1][1].weight : null;
+  const bmr = computeBMR(latestWeight, STATE.profile);
+  if (!bmr) return KCAL_TARGET;
+  return Math.round(bmr*1.3 - 350);
+}
 function weeklyDeficitEstimate(){
   const cutoff = addDays(todayStr(), -6);
   const entries = Object.entries(STATE.daily).filter(([d])=>d>=cutoff).map(([,v])=>v);
@@ -979,10 +1095,11 @@ function exerciseDetailHTML(exId, ctx){
     </div>`).join("");
   return `
     <div class="row gap8" style="margin-bottom:12px;">${pill(ex.muscle,"var(--gold)")}${pill(ex.equip,"var(--teal)")}</div>
+    ${ex.setup ? `<div class="card" style="background:var(--surface-alt);padding:12px;margin-bottom:12px;">
+      <p style="font-size:13px;color:var(--gold);font-weight:600;margin:0;">⚙️ Réglage de départ</p>
+      <p style="font-size:13px;margin:4px 0 0;">${esc(ex.setup)}</p>
+    </div>` : ""}
     <div class="card" style="padding:12px;">${moveDiagram(ex)}</div>
-    <a href="${video}" target="_blank" rel="noopener noreferrer" class="row center gap8" style="background:var(--surface-alt);border:1px solid var(--line);border-radius:10px;padding:10px 0;font-size:12px;font-weight:700;margin-top:12px;text-decoration:none;">
-      🔗 Voir une vidéo de démo
-    </a>
     <p class="muted" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:16px 0 0;">Comment faire</p>
     <ol class="steps">${ex.steps.map((s,i)=>`<li><span class="stepnum">${i+1}</span><span style="font-size:14px;line-height:1.5;">${esc(s)}</span></li>`).join("")}</ol>
     <div class="card" style="background:var(--surface-alt);margin-top:12px;padding:12px;">
@@ -994,6 +1111,9 @@ function exerciseDetailHTML(exId, ctx){
       <p style="font-size:13px;margin:4px 0 0;">${esc(ex.mistake)}</p>
     </div>
     ${(ex.alt&&ex.alt.length) ? `<p class="muted" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:16px 0 4px;">🔄 Exercices similaires</p>${altHTML}` : ""}
+    <a href="${video}" target="_blank" rel="noopener noreferrer" class="row center gap6" style="margin-top:14px;font-size:11px;color:var(--muted);text-decoration:none;">
+      🔗 Vidéo de démo (pas toujours fiable, à défaut d'autre chose)
+    </a>
   `;
 }
 
@@ -1017,6 +1137,7 @@ function renderHome(){
   const unlocked = BADGES.filter(b=>b.metric(badgeCtx())>=b.target).length;
   const milestones = monthlyMilestones();
   const doneToday = STATE.sessions.some(s=>s.date===todayStr());
+  const eventDaysLeft = Math.round((new Date(EVENT_DATE+"T00:00:00") - new Date(todayStr()+"T00:00:00")) / 86400000);
 
   const weekDates = [];
   for (let i=0;i<7;i++) weekDates.push(addDays(todayStr(), i));
@@ -1069,6 +1190,9 @@ function renderHome(){
         </div>
       </div>
       ${doneToday ? `<p style="color:var(--teal);font-size:12px;margin:0;">✓ Séance du jour déjà validée</p>` : ""}
+      ${eventDaysLeft!=null && eventDaysLeft>=0 ? `<div class="card" style="background:rgba(224,101,79,.1);border-color:var(--red);">
+        <div class="row between"><span style="font-size:13px;font-weight:700;">🎉 ${fmtDate(EVENT_DATE)}</span><span class="mono" style="color:var(--red);font-weight:700;font-size:14px;">J-${eventDaysLeft}</span></div>
+      </div>` : ""}
       <div class="grid2">
         <div class="card"><div class="row gap6"><span>🎁</span><span class="muted" style="font-size:12px;">Points dispo</span></div><p class="mono" style="font-size:22px;color:var(--gold);font-weight:700;margin:4px 0 0;">${balance()}</p></div>
         <div class="card"><div class="row gap6"><span>🏅</span><span class="muted" style="font-size:12px;">Badges</span></div><p class="mono" style="font-size:22px;color:var(--teal);font-weight:700;margin:4px 0 0;">${unlocked}/${BADGES.length}</p></div>
@@ -1118,7 +1242,12 @@ function renderProgram(){
         </button>`;
       }).join("");
     } else if (day.type==="cardio"){
-      inner = `<p class="muted" style="font-size:13px;padding:6px 2px;">Tapis, vélo ou piscine — 25 à 30 min, intensité modérée à soutenue.</p>`;
+      const proto = CARDIO_PROTOCOLS[day.cardioKind || "steady"];
+      inner = `<div style="padding:6px 2px;">
+        <p style="font-size:13px;font-weight:700;margin:0;">${esc(proto.label)}</p>
+        <p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(proto.why)}</p>
+        <ol class="steps" style="margin-top:8px;">${proto.structure.map((s,i)=>`<li><span class="stepnum">${i+1}</span><span style="font-size:12px;line-height:1.4;">${esc(s)}</span></li>`).join("")}</ol>
+      </div>`;
     } else {
       inner = `<p class="muted" style="font-size:13px;padding:6px 2px;">Repos complet ou piscine/sauna léger si t'en as envie.</p>`;
     }
@@ -1158,6 +1287,26 @@ function captureCardioForm(){
   if (h) STATE.cardioForm.hr = h.value;
 }
 
+// Real-time autosave of an in-progress session — so nothing is lost if the
+// phone locks, a call comes in, or the app gets closed mid-séance.
+function saveActiveSession(){
+  if (!STATE.activeDay){ localStorage.removeItem(LS.activeSession); return; }
+  save(LS.activeSession, {
+    date: todayStr(), activeDay: STATE.activeDay, guidedStep: STATE.guidedStep,
+    guidedSets: STATE.guidedSets, cardioForm: STATE.cardioForm,
+  });
+}
+function clearActiveSession(){ localStorage.removeItem(LS.activeSession); }
+function restoreActiveSession(){
+  const saved = load(LS.activeSession, null);
+  if (!saved || saved.date !== todayStr()) { clearActiveSession(); return; }
+  STATE.activeDay = saved.activeDay;
+  STATE.guidedStep = saved.guidedStep || 0;
+  STATE.guidedSets = saved.guidedSets || {};
+  STATE.cardioForm = saved.cardioForm || {activity:"Tapis", duration:"", calories:"", hr:""};
+  STATE.tab = "session";
+}
+
 function startDay(dayId){
   const day = STATE.program.days.find(d=>d.id===dayId);
   if (!day) return;
@@ -1180,6 +1329,8 @@ function startDay(dayId){
   }
   STATE.tab = "session";
   STATE.justFinished = false;
+  STATE.exercisePickerOpen = false;
+  saveActiveSession();
   render();
 }
 
@@ -1193,15 +1344,17 @@ function finishMuscu(){
   STATE.sessions = [session, ...STATE.sessions];
   save(LS.sessions, STATE.sessions);
   STATE.activeDay = null; STATE.justFinished = true;
+  clearActiveSession();
   render();
 }
 function finishCardio(){
   captureCardioForm();
   if (!STATE.cardioForm.duration) return;
-  const session = {id:Date.now(), date:todayStr(), dayId:STATE.activeDay.id, type:"cardio", ...STATE.cardioForm};
+  const session = {id:Date.now(), date:todayStr(), dayId:STATE.activeDay.id, type:"cardio", cardioKind: STATE.activeDay.cardioKind || "steady", ...STATE.cardioForm};
   STATE.sessions = [session, ...STATE.sessions];
   save(LS.sessions, STATE.sessions);
   STATE.activeDay = null; STATE.justFinished = true;
+  clearActiveSession();
   render();
 }
 
@@ -1228,6 +1381,13 @@ function renderSession(){
         <input id="set-w-${i}" type="text" inputmode="decimal" placeholder="0" value="${esc(s.weight)}" class="mono" style="flex:1;">
         <input id="set-r-${i}" type="text" inputmode="decimal" placeholder="0" value="${esc(s.reps)}" class="mono" style="flex:1;">
       </div>`).join("");
+    const quickAlts = (EX[exId].alt||[]).map(aid => `<button data-action="swap-ex" data-ctx="session" data-old="${exId}" data-new="${aid}" style="background:var(--surface-alt);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--text);">${esc(EX[aid].name)}</button>`).join("");
+    const pickerOpen = STATE.exercisePickerOpen;
+    const pickerList = pickerOpen ? Object.keys(EX).filter(id=>id!==exId).map(id=>`
+      <button data-action="requeue-swap" data-old="${exId}" data-new="${id}" class="row between" style="background:var(--surface-alt);border-radius:8px;padding:8px 10px;width:100%;text-align:left;">
+        <span style="font-size:13px;">${esc(EX[id].name)}</span>
+        <span class="muted" style="font-size:11px;">${esc(EX[id].muscle)}</span>
+      </button>`).join("") : "";
 
     return `<div class="fade">
       <div class="row between" style="margin-bottom:12px;">
@@ -1239,6 +1399,12 @@ function renderSession(){
       <div class="card" style="background:rgba(227,168,59,.1);border-color:var(--gold);margin-bottom:12px;">
         <p style="font-size:13px;font-weight:700;color:var(--gold);margin:0;">🎯 Objectif : ${target.sets} x ${target.reps}${target.unit==="sec"?" sec":""}${target.weight?` à ${target.weight}kg`:""}</p>
         <p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(target.note)}</p>
+      </div>
+      <div class="card" style="margin-bottom:12px;">
+        <p class="muted" style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">Machine prise ou indispo ?</p>
+        ${quickAlts ? `<div class="row gap6" style="flex-wrap:wrap;margin-bottom:8px;">${quickAlts}</div>` : ""}
+        <button data-action="toggle-exercise-picker" style="width:100%;background:var(--surface-alt);border-radius:8px;padding:10px 0;font-size:12px;font-weight:700;color:var(--gold);">🔁 Faire un autre exo (celui-ci repasse plus tard)</button>
+        ${pickerOpen ? `<div class="col gap6" style="margin-top:10px;max-height:280px;overflow-y:auto;">${pickerList}</div>` : ""}
       </div>
       ${exerciseDetailHTML(exId, "session")}
       <div class="card" style="margin-top:16px;">
@@ -1257,18 +1423,32 @@ function renderSession(){
 
   if (STATE.activeDay && STATE.activeDay.type==="cardio"){
     const day = STATE.activeDay, f = STATE.cardioForm;
+    const target = suggestedCardioTarget(day);
     const acts = ["Tapis","Vélo","Piscine","Autre"].map(a=>`
       <button data-action="set-cardio-activity" data-value="${a}" style="flex:1;padding:8px 4px;border-radius:8px;font-size:12px;font-weight:700;background:${f.activity===a?"var(--gold)":"var(--surface-alt)"};color:${f.activity===a?"#14171C":"var(--text)"};">${a}</button>`).join("");
     return `<div class="fade">
       <div class="row gap8" style="margin-bottom:12px;"><button data-action="cancel-session">‹</button><h2 class="display" style="font-size:22px;margin:0;">${esc(day.label)}</h2></div>
-      <div class="card">
+
+      <div class="card" style="background:rgba(227,168,59,.1);border-color:var(--gold);">
+        <p style="font-size:14px;font-weight:700;color:var(--gold);margin:0;">🎯 ${esc(target.proto.label)}</p>
+        <p style="font-size:13px;font-weight:700;margin:6px 0 0;">${target.kind==="hiit" ? `Objectif : ${target.rounds} tours (~${target.totalMinutes} min au total)` : `Objectif : ${target.minutes} min`}</p>
+        ${target.zone ? `<p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(target.proto.zoneLabel)} : <span style="color:var(--teal);font-weight:700;">${target.zone}</span></p>` : `<p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(target.proto.zoneLabel)} — renseigne ton âge dans le profil (onglet Stats) pour voir ta zone en bpm.</p>`}
+        <p class="muted" style="font-size:12px;margin:8px 0 0;">${esc(target.proto.why)}</p>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
+        <p class="muted" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">Comment faire</p>
+        <ol class="steps">${target.proto.structure.map((s,i)=>`<li><span class="stepnum">${i+1}</span><span style="font-size:14px;line-height:1.5;">${esc(s)}</span></li>`).join("")}</ol>
+      </div>
+
+      <div class="card" style="margin-top:12px;">
         <div class="col gap10">
           <div><label class="muted" style="font-size:12px;">Activité</label><div class="row gap8" style="margin-top:4px;">${acts}</div></div>
-          <div><label class="muted" style="font-size:12px;">Durée (min)</label><input id="cardio-duration" type="number" value="${esc(f.duration)}" class="mono" style="margin-top:4px;"></div>
+          <div><label class="muted" style="font-size:12px;">Durée réelle (min)</label><input id="cardio-duration" type="text" inputmode="decimal" value="${esc(f.duration)}" class="mono" style="margin-top:4px;" placeholder="${target.kind==='hiit'?target.totalMinutes:target.minutes}"></div>
           <p class="muted" style="font-size:11px;margin:-4px 0 0;">D'après ta montre (optionnel)</p>
           <div class="row gap8">
-            <div style="flex:1;"><label class="muted" style="font-size:12px;">Calories</label><input id="cardio-calories" type="number" value="${esc(f.calories)}" class="mono" style="margin-top:4px;"></div>
-            <div style="flex:1;"><label class="muted" style="font-size:12px;">FC moyenne</label><input id="cardio-hr" type="number" value="${esc(f.hr)}" class="mono" style="margin-top:4px;"></div>
+            <div style="flex:1;"><label class="muted" style="font-size:12px;">Calories</label><input id="cardio-calories" type="text" inputmode="decimal" value="${esc(f.calories)}" class="mono" style="margin-top:4px;"></div>
+            <div style="flex:1;"><label class="muted" style="font-size:12px;">FC moyenne</label><input id="cardio-hr" type="text" inputmode="decimal" value="${esc(f.hr)}" class="mono" style="margin-top:4px;"></div>
           </div>
         </div>
       </div>
@@ -1307,7 +1487,8 @@ function renderDaily(){
     </div>`;
   }).join("");
   const totalKcal = dayKcalTotal(entry);
-  const kcalPct = Math.min(100, (totalKcal/KCAL_TARGET)*100);
+  const myKcalTarget = personalKcalTarget();
+  const kcalPct = Math.min(100, (totalKcal/myKcalTarget)*100);
   const yEntry = STATE.daily[addDays(date,-1)] || {};
   const weightDelta = (entry.weight && yEntry.weight) ? (entry.weight - yEntry.weight) : null;
   const sleepPct = entry.sleep ? Math.min(100, (entry.sleep/SLEEP_TARGET)*100) : 0;
@@ -1355,12 +1536,12 @@ function renderDaily(){
     </div>
     <div class="card">
       <div class="row gap8" style="margin-bottom:8px;"><span>⌚</span><span style="font-size:13px;font-weight:700;">Calories brûlées (montre)</span></div>
-      <div class="row gap6"><input id="input-watch-kcal" type="number" placeholder="kcal, d'après ta montre" value="${esc(entry.watchKcal||"")}" class="mono" style="flex:1;">
+      <div class="row gap6"><input id="input-watch-kcal" type="text" inputmode="decimal" placeholder="kcal, d'après ta montre" value="${esc(entry.watchKcal||"")}" class="mono" style="flex:1;">
       <button data-action="save-field" data-field="watchKcal" style="background:var(--gold);border-radius:8px;padding:0 10px;color:#14171C;font-weight:700;">✓</button></div>
       ${entry.watchKcal ? `<p class="muted" style="font-size:10px;margin:6px 0 0;color:var(--teal);">✓ ${entry.watchKcal} kcal${yEntry.watchKcal?` · hier ${yEntry.watchKcal}kcal`:""}</p>` : (yEntry.watchKcal ? `<p class="muted" style="font-size:10px;margin:6px 0 0;">Hier : ${yEntry.watchKcal} kcal</p>` : "")}
     </div>
     <div class="card">
-      <div class="row between" style="margin-bottom:8px;"><div class="row gap8"><span>🍽️</span><span style="font-weight:700;font-size:14px;">Repas</span></div><span class="mono" style="color:var(--gold);font-size:13px;">${totalKcal} / ${KCAL_TARGET} kcal</span></div>
+      <div class="row between" style="margin-bottom:8px;"><div class="row gap8"><span>🍽️</span><span style="font-weight:700;font-size:14px;">Repas</span></div><span class="mono" style="color:var(--gold);font-size:13px;">${totalKcal} / ${myKcalTarget} kcal</span></div>
       <div class="bar-bg" style="margin-bottom:12px;"><div class="bar-fill" style="width:${kcalPct}%;background:var(--gold);"></div></div>
       <div class="row gap6" style="flex-wrap:wrap;margin-bottom:8px;">${chips}</div>
       <div class="row gap8">
@@ -1659,6 +1840,7 @@ function resetAllData(){
   STATE.tab = "home";
   localStorage.setItem(SCHEDULE_MIGRATION_KEY, "1");
   localStorage.setItem(SCHEDULE_MIGRATION_KEY_V3, "1");
+  localStorage.setItem(SCHEDULE_MIGRATION_KEY_V4, "1");
   alert("C'est reparti, l'app est vierge.");
   render();
 }
@@ -1721,7 +1903,7 @@ document.addEventListener("click", (e)=>{
   if (!btn) return;
   const action = btn.dataset.action;
 
-  if (action==="goto"){ STATE.tab = btn.dataset.tab; STATE.activeDay=null; STATE.justFinished=false; render(); }
+  if (action==="goto"){ STATE.tab = btn.dataset.tab; STATE.justFinished=false; render(); }
   else if (action==="start-day"){ startDay(btn.dataset.day); }
   else if (action==="toggle-swap-picker"){ STATE.swapPickerDate = STATE.swapPickerDate===btn.dataset.date ? null : btn.dataset.date; render(); }
   else if (action==="do-swap"){ swapDays(btn.dataset.dateA, btn.dataset.dateB); STATE.swapPickerDate = null; render(); }
@@ -1740,21 +1922,37 @@ document.addEventListener("click", (e)=>{
       const idx = STATE.activeDay.exercises.indexOf(oldId);
       if (idx>-1){
         captureCurrentStepInputs();
-        STATE.activeDay.exercises[idx] = newId;
+        STATE.activeDay = {...STATE.activeDay, exercises: STATE.activeDay.exercises.map((e,i)=> i===idx ? newId : e)};
         if (!STATE.guidedSets[newId]) STATE.guidedSets[newId] = [{weight:"",reps:""},{weight:"",reps:""},{weight:"",reps:""}];
-        const days = STATE.program.days.map(d => d.id!==STATE.activeDay.id ? d : {...d, exercises:d.exercises.map(e=>e===oldId?newId:e)});
-        STATE.program = {...STATE.program, days};
-        save(LS.program, STATE.program);
+        saveActiveSession();
       }
     }
     render();
   }
-  else if (action==="add-set"){ captureCurrentStepInputs(); const exId=STATE.activeDay.exercises[STATE.guidedStep]; STATE.guidedSets[exId].push({weight:"",reps:""}); render(); }
-  else if (action==="next-step"){ captureCurrentStepInputs(); STATE.guidedStep++; render(); }
-  else if (action==="prev-step"){ captureCurrentStepInputs(); STATE.guidedStep--; render(); }
+  else if (action==="toggle-exercise-picker"){ STATE.exercisePickerOpen = !STATE.exercisePickerOpen; render(); }
+  else if (action==="requeue-swap"){
+    const {old:oldId, new:newId} = btn.dataset;
+    if (STATE.activeDay){
+      const idx = STATE.activeDay.exercises.indexOf(oldId);
+      if (idx>-1){
+        captureCurrentStepInputs();
+        const arr = [...STATE.activeDay.exercises];
+        arr[idx] = newId;
+        arr.push(oldId);
+        STATE.activeDay = {...STATE.activeDay, exercises: arr};
+        if (!STATE.guidedSets[newId]) STATE.guidedSets[newId] = [{weight:"",reps:""},{weight:"",reps:""},{weight:"",reps:""}];
+        STATE.exercisePickerOpen = false;
+        saveActiveSession();
+      }
+    }
+    render();
+  }
+  else if (action==="add-set"){ captureCurrentStepInputs(); const exId=STATE.activeDay.exercises[STATE.guidedStep]; STATE.guidedSets[exId].push({weight:"",reps:""}); saveActiveSession(); render(); }
+  else if (action==="next-step"){ captureCurrentStepInputs(); STATE.guidedStep++; STATE.exercisePickerOpen=false; saveActiveSession(); render(); }
+  else if (action==="prev-step"){ captureCurrentStepInputs(); STATE.guidedStep--; STATE.exercisePickerOpen=false; saveActiveSession(); render(); }
   else if (action==="finish-muscu"){ finishMuscu(); }
   else if (action==="finish-cardio"){ finishCardio(); }
-  else if (action==="cancel-session"){ STATE.activeDay=null; render(); }
+  else if (action==="cancel-session"){ STATE.activeDay=null; clearActiveSession(); render(); }
   else if (action==="dismiss-finish"){ STATE.justFinished=false; render(); }
   else if (action==="set-cardio-activity"){ captureCardioForm(); STATE.cardioForm.activity = btn.dataset.value; render(); }
   else if (action==="add-water"){
@@ -1871,6 +2069,17 @@ document.addEventListener("input", (e)=>{
     const el = document.getElementById("food-search");
     if (el){ el.focus(); try{ el.setSelectionRange(pos,pos); }catch(err){} }
   }
+  else if (e.target && STATE.activeDay && /^(set-w-|set-r-)\d+$/.test(e.target.id)){
+    captureCurrentStepInputs();
+    saveActiveSession();
+  }
+  else if (e.target && STATE.activeDay && ["cardio-duration","cardio-calories","cardio-hr"].includes(e.target.id)){
+    captureCardioForm();
+    saveActiveSession();
+  }
+  else if (e.target && ["input-weight","input-sleep","input-watch-kcal"].includes(e.target.id)){
+    saveWeightSleepFromDOM();
+  }
 });
 
 document.addEventListener("keydown", (e)=>{
@@ -1886,6 +2095,7 @@ document.addEventListener("change", (e)=>{
   }
 });
 
+restoreActiveSession();
 render();
 </script>
 </body>
