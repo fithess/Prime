@@ -17,8 +17,8 @@
 <link rel="manifest" href="data:application/json,%7B%22name%22%3A%22Prime%22%2C%22short_name%22%3A%22Prime%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2310141A%22%2C%22theme_color%22%3A%22%2310141A%22%7D">
 <style>
   :root{
-    --bg:#10141A; --surface:#1B222B; --surface-alt:#232C37; --line:#2C3644;
-    --text:#EDEFF2; --muted:#8B95A1; --gold:#E3A83B; --gold-dim:#8A6A2A; --teal:#37C6A0; --red:#E0654F;
+    --bg:#0B0E13; --surface:#1D2530; --surface-alt:#2B3543; --line:#3C4A5A;
+    --text:#F7F8FA; --muted:#9FACBC; --gold:#F0B23E; --gold-dim:#8A6A2A; --teal:#3DDDB0; --red:#F17158;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
@@ -30,10 +30,12 @@
   #app{max-width:480px;margin:0 auto;min-height:100vh;padding:20px 16px 100px;}
   button{font:inherit;border:none;background:none;color:inherit;cursor:pointer;}
   input{font:inherit;color:var(--text);background:var(--surface-alt);border:1px solid var(--line);
-    border-radius:8px;padding:8px 10px;width:100%;}
-  input:focus{outline:1px solid var(--gold);}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;}
-  .pill{font-size:11px;padding:3px 8px;border-radius:999px;font-weight:700;letter-spacing:.5px;display:inline-block;}
+    border-radius:8px;padding:9px 11px;width:100%;}
+  input::placeholder{color:var(--muted);opacity:.75;}
+  input:focus{outline:2px solid var(--gold);outline-offset:-1px;}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.28);}
+  .pill{font-size:11px;padding:3px 9px;border-radius:999px;font-weight:800;letter-spacing:.5px;display:inline-block;}
   .row{display:flex;align-items:center;}
   .between{justify-content:space-between;}
   .center{justify-content:center;}
@@ -43,20 +45,22 @@
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
   .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
-  .btn-primary{background:var(--gold);color:#14171C;font-weight:700;border-radius:12px;padding:14px;text-align:center;}
-  .btn-secondary{background:var(--surface-alt);color:var(--text);font-weight:700;border-radius:12px;padding:14px;text-align:center;}
-  .btn-outline{background:transparent;border:1px solid var(--gold);color:var(--gold);font-weight:700;border-radius:8px;padding:6px 10px;font-size:12px;}
-  .bar-bg{height:8px;background:var(--surface-alt);border-radius:999px;overflow:hidden;}
+  .btn-primary{background:var(--gold);color:#14171C;font-weight:800;border-radius:12px;padding:14px;text-align:center;
+    box-shadow:0 3px 12px rgba(240,178,62,.25);}
+  .btn-secondary{background:var(--surface-alt);color:var(--text);font-weight:700;border-radius:12px;padding:14px;text-align:center;border:1px solid var(--line);}
+  .btn-outline{background:transparent;border:1.5px solid var(--gold);color:var(--gold);font-weight:800;border-radius:8px;padding:6px 10px;font-size:12px;}
+  .bar-bg{height:8px;background:var(--bg);border:1px solid var(--line);border-radius:999px;overflow:hidden;}
   .bar-fill{height:100%;transition:width .3s;}
   .navbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;}
   .navbtn .ic{font-size:19px;}
-  .navbtn .lb{font-size:10px;font-weight:600;}
+  .navbtn .lb{font-size:10px;font-weight:700;}
   .fade{animation:fadeUp .25s ease;}
+  h1.display, h2.display{letter-spacing:.03em;}
   @keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
   @keyframes slideHoriz{0%,100%{transform:translateX(-26px);}50%{transform:translateX(26px);}}
   @keyframes slideVert{0%,100%{transform:translateY(28px);}50%{transform:translateY(-28px);}}
   @keyframes rotateSwing{0%,100%{transform:rotate(-22deg);}50%{transform:rotate(22deg);}}
-  @keyframes pulseRing{0%,100%{box-shadow:0 0 0 0 rgba(227,168,59,.45);}50%{box-shadow:0 0 0 12px rgba(227,168,59,0);}}
+  @keyframes pulseRing{0%,100%{box-shadow:0 0 0 0 rgba(240,178,62,.45);}50%{box-shadow:0 0 0 12px rgba(240,178,62,0);}}
   .diagram{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;}
   .diagram-box{border:2px dashed var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
   .diagram-box.horiz{width:150px;height:64px;}
@@ -276,26 +280,12 @@ const SCHEDULE_MIGRATION_KEY_V4 = "ft_schedule_v4_cardio_kind";
 // so cardio days aren't just "do some cardio" but have an actual plan.
 const CARDIO_PROTOCOLS = {
   steady: {
-    label: "Cardio continu (endurance / perte de gras)",
-    why: "À allure modérée et constante, c'est le format le plus efficace pour brûler du gras sans fatiguer le corps avant tes séances de muscu — tu peux l'enchaîner sans que ça nuise à ta récup.",
-    baseMinutes: 25, stepMinutes: 5, everyN: 4, maxMinutes: 40,
-    structure: [
-      "5 min d'échauffement — allure tranquille, monte progressivement en intensité.",
-      "Corps de séance à allure modérée constante (zone cible ci-dessous) — tu dois pouvoir parler par phrases courtes, pas plus.",
-      "5 min de retour au calme — ralentis progressivement en fin de séance.",
-    ],
-    zoneLabel: "Zone cible : 60-70% de ta FC max",
+    label: "Cardio tapis — protocole détaillé",
+    why: "Alterner un bloc en côte et un bloc rapide à plat brûle plus qu'une allure constante, tout en restant gérable avant/après tes séances de muscu.",
   },
   hiit: {
-    label: "Cardio par intervalles (HIIT)",
-    why: "Sur un jour bonus, des intervalles courts et intenses brûlent plus par minute qu'un cardio classique — parfait quand t'as moins de temps mais que tu veux quand même un vrai impact.",
-    baseRounds: 6, stepRounds: 1, everyN: 4, maxRounds: 10,
-    structure: [
-      "5 min d'échauffement progressif.",
-      "Alterne 30 sec à fond (effort maximal soutenable) / 90 sec récupération active (allure lente) — répète pour le nombre de tours ci-dessous.",
-      "5 min de retour au calme.",
-    ],
-    zoneLabel: "Zone d'effort : 80-90% de ta FC max pendant les 30 sec",
+    label: "Cardio tapis — intervalles (HIIT)",
+    why: "Sur le jour bonus, des sprints courts et intenses brûlent plus par minute — parfait quand t'as moins de temps mais que tu veux un vrai impact.",
   },
 };
 
@@ -304,26 +294,41 @@ function maxHR(){
   if (isNaN(age) || age<=0) return null;
   return 220 - age;
 }
-function hrZoneText(lowPct, highPct){
-  const mhr = maxHR();
-  if (!mhr) return null;
-  return `~${Math.round(mhr*lowPct)}-${Math.round(mhr*highPct)} bpm`;
-}
 function cardioSessionCount(kind){
   return STATE.sessions.filter(s=>s.type==="cardio" && s.cardioKind===kind).length;
 }
+// Progression: tous les 4 séances, le programme monte un peu (durée/vitesse/tours),
+// avec des paliers concrets à suivre directement sur le tapis.
 function suggestedCardioTarget(day){
   const kind = day.cardioKind || "steady";
   const proto = CARDIO_PROTOCOLS[kind];
   const count = cardioSessionCount(kind);
+  const level = Math.floor(count/4); // palier de progression
+
   if (kind==="hiit"){
-    const rounds = Math.min(proto.maxRounds, proto.baseRounds + Math.floor(count/proto.everyN)*proto.stepRounds);
-    const zone = hrZoneText(0.8, 0.9);
-    return {kind, proto, rounds, totalMinutes: 10 + rounds*2, zone};
+    const rounds = Math.min(10, 6 + level);
+    const sprintSpeed = Math.min(16, 12.5 + level*0.5);
+    const sprintIncline = 2;
+    const segments = [
+      {label:"Échauffement", minutes:5, incline:1, speed:6.5},
+      {label:`${rounds}x [30 sec sprint / 90 sec récup]`, minutes: rounds*2, incline:sprintIncline, speed:sprintSpeed, note:`Sprint à ${sprintSpeed}km/h (incline ${sprintIncline}%) 30 sec, puis marche/trot à 6.5km/h (incline 1%) 90 sec. Répète ${rounds} fois.`},
+      {label:"Retour au calme", minutes:5, incline:0, speed:5.5},
+    ];
+    const totalMinutes = segments.reduce((a,s)=>a+s.minutes,0);
+    return {kind, proto, rounds, totalMinutes, segments};
   }
-  const minutes = Math.min(proto.maxMinutes, proto.baseMinutes + Math.floor(count/proto.everyN)*proto.stepMinutes);
-  const zone = hrZoneText(0.6, 0.7);
-  return {kind, proto, minutes, zone};
+
+  const totalMinutes = Math.min(40, 25 + level*5);
+  const flatSpeed = Math.min(12, 9.5 + level*0.5);
+  const climbSpeed = Math.min(9, 7.5 + level*0.3);
+  const blockMinutes = Math.max(5, Math.round((totalMinutes-10)/2));
+  const segments = [
+    {label:"Échauffement", minutes:5, incline:1, speed:6},
+    {label:"Bloc côte", minutes:blockMinutes, incline:6, speed:climbSpeed},
+    {label:"Bloc rapide", minutes:blockMinutes, incline:0, speed:flatSpeed},
+    {label:"Retour au calme", minutes:5, incline:0, speed:5.5},
+  ];
+  return {kind, proto, totalMinutes: segments.reduce((a,s)=>a+s.minutes,0), segments};
 }
 
 const WATER_TARGET = 2200;
@@ -742,6 +747,160 @@ const FOOD_DB = [
   {id:"fruits-rouges", name:"Fruits rouges mélangés", kcal:60, portion:"~150g bol", alias:["fruits rouges"]},
   {id:"salade-fruits", name:"Salade de fruits", kcal:120, portion:"~200g bol", alias:["salade de fruits"]},
   {id:"smoothie-fruits", name:"Smoothie de fruits (maison)", kcal:150, portion:"250ml", alias:["smoothie fruits","smoothie maison"]},
+
+  // ==== CUISINE FRANÇAISE MAISON ====
+  {id:"hachis-parmentier", name:"Hachis parmentier", kcal:420, portion:"1 assiette", alias:["hachis parmentier","hachis"]},
+  {id:"parmentier-canard", name:"Parmentier de canard", kcal:480, portion:"1 assiette", alias:["parmentier de canard","parmentier canard"]},
+  {id:"tourte-poisson", name:"Tourte au poisson", kcal:420, portion:"1 part", alias:["tourte au poisson","tourte poisson"]},
+  {id:"tourte-viande", name:"Tourte à la viande", kcal:480, portion:"1 part", alias:["tourte a la viande","tourte viande"]},
+  {id:"tourte-legumes", name:"Tourte aux légumes", kcal:350, portion:"1 part", alias:["tourte aux legumes","tourte legumes"]},
+  {id:"pate-croute", name:"Pâté en croûte", kcal:380, portion:"1 part", alias:["pate en croute","pate croute"]},
+  {id:"gratin-macaroni", name:"Gratin de macaroni", kcal:450, portion:"~250g", alias:["gratin de macaroni","gratin macaroni"]},
+  {id:"chou-farci", name:"Chou farci", kcal:350, portion:"1-2 pièces", alias:["chou farci"]},
+  {id:"rougail-saucisse", name:"Rougail saucisse", kcal:500, portion:"1 assiette", alias:["rougail saucisse","rougail"]},
+  {id:"colombo-poulet", name:"Colombo de poulet", kcal:420, portion:"1 assiette", alias:["colombo","colombo de poulet"]},
+  {id:"navarin-agneau", name:"Navarin d'agneau", kcal:420, portion:"1 assiette", alias:["navarin","navarin d'agneau"]},
+  {id:"daube-boeuf", name:"Daube de bœuf", kcal:450, portion:"1 assiette", alias:["daube","daube de boeuf"]},
+  {id:"potee", name:"Potée", kcal:480, portion:"1 assiette", alias:["potee"]},
+  {id:"gratin-chou-fleur", name:"Gratin de chou-fleur", kcal:280, portion:"~250g", alias:["gratin de chou fleur","gratin chou fleur"]},
+  {id:"endives-jambon", name:"Endives au jambon (gratinées)", kcal:380, portion:"2 pièces", alias:["endives au jambon","endives jambon"]},
+  {id:"oeufs-cocotte", name:"Œufs cocotte", kcal:220, portion:"2 œufs", alias:["oeufs cocotte","oeuf cocotte"]},
+  {id:"croque-madame", name:"Croque-madame", kcal:450, portion:"1 unité", alias:["croque madame"]},
+  {id:"pain-de-viande", name:"Pain de viande", kcal:380, portion:"~200g", alias:["pain de viande"]},
+  {id:"boulettes-sauce-tomate", name:"Boulettes sauce tomate", kcal:420, portion:"~200g avec riz/pâtes non inclus", alias:["boulettes","boulettes sauce tomate"]},
+  {id:"saucisse-lentilles", name:"Saucisse-lentilles", kcal:480, portion:"1 assiette", alias:["saucisse lentilles"]},
+  {id:"jambon-braise", name:"Jambon braisé", kcal:280, portion:"~150g", alias:["jambon braise","jambon a l'os"]},
+  {id:"roti-porc", name:"Rôti de porc", kcal:280, portion:"~150g", alias:["roti de porc","roti porc"]},
+  {id:"roti-boeuf", name:"Rôti de bœuf", kcal:300, portion:"~150g", alias:["roti de boeuf","roti boeuf"]},
+  {id:"poule-au-pot", name:"Poule au pot", kcal:400, portion:"1 assiette", alias:["poule au pot"]},
+  {id:"pates-jambon", name:"Pâtes au jambon", kcal:420, portion:"~250g", alias:["pates au jambon","pates jambon"]},
+  {id:"souffle-fromage", name:"Soufflé au fromage", kcal:320, portion:"1 unité", alias:["souffle au fromage","souffle fromage"]},
+  {id:"vol-au-vent", name:"Vol-au-vent", kcal:420, portion:"1 part", alias:["vol au vent"]},
+  {id:"feuilletee-saumon", name:"Feuilleté au saumon", kcal:400, portion:"1 part", alias:["feuillete au saumon","feuillete saumon"]},
+  {id:"terrine-campagne", name:"Terrine de campagne", kcal:280, portion:"~80g", alias:["terrine de campagne","terrine"]},
+  {id:"rillettes", name:"Rillettes", kcal:220, portion:"~50g", alias:["rillettes"]},
+  {id:"boudin-noir", name:"Boudin noir", kcal:300, portion:"~150g", alias:["boudin noir"]},
+  {id:"andouillette", name:"Andouillette", kcal:280, portion:"1 unité", alias:["andouillette"]},
+  {id:"lapin-moutarde", name:"Lapin à la moutarde", kcal:350, portion:"1 assiette", alias:["lapin a la moutarde","lapin moutarde"]},
+  {id:"canard-orange", name:"Canard à l'orange", kcal:420, portion:"1 assiette", alias:["canard a l'orange"]},
+  {id:"poulet-basquaise", name:"Poulet basquaise", kcal:380, portion:"1 assiette", alias:["poulet basquaise"]},
+  {id:"curry-legumes", name:"Curry de légumes", kcal:280, portion:"1 assiette", alias:["curry de legumes","curry legumes"]},
+  {id:"soupe-poisson", name:"Soupe de poisson", kcal:200, portion:"1 bol", alias:["soupe de poisson","soupe poisson"]},
+  {id:"bouillabaisse", name:"Bouillabaisse", kcal:400, portion:"1 assiette", alias:["bouillabaisse"]},
+  {id:"moules-frites", name:"Moules frites", kcal:650, portion:"1 portion", alias:["moules frites","moules"]},
+  {id:"gratin-fruits-mer", name:"Gratin de fruits de mer", kcal:420, portion:"~250g", alias:["gratin de fruits de mer","gratin fruits de mer"]},
+  {id:"tartare-saumon", name:"Tartare de saumon", kcal:280, portion:"1 portion", alias:["tartare de saumon","tartare saumon"]},
+  {id:"quiche-lorraine", name:"Quiche lorraine", kcal:380, portion:"1 part", alias:["quiche lorraine"]},
+  {id:"quenelles-sauce", name:"Quenelles sauce", kcal:350, portion:"2 pièces", alias:["quenelles"]},
+  {id:"gratin-endives", name:"Gratin d'endives", kcal:300, portion:"~250g", alias:["gratin d'endives","gratin endives"]},
+  {id:"pot-au-feu-legumes", name:"Pot-au-feu (avec légumes)", kcal:450, portion:"1 assiette", alias:["pot au feu legumes"]},
+  {id:"paupiettes-veau", name:"Paupiettes de veau", kcal:320, portion:"2 pièces", alias:["paupiettes de veau"]},
+  {id:"veau-marengo", name:"Veau marengo", kcal:400, portion:"1 assiette", alias:["veau marengo"]},
+  {id:"chipolatas-purée", name:"Chipolatas", kcal:280, portion:"3 pièces", alias:["chipolatas","chipolata"]},
+  {id:"riz-saucisse", name:"Riz saucisses", kcal:480, portion:"1 assiette", alias:["riz saucisse","riz saucisses"]},
+
+  // ==== ASIATIQUE — plus complet ====
+  {id:"nouilles-sautees", name:"Nouilles sautées (chow mein)", kcal:420, portion:"1 assiette", alias:["nouilles sautees","chow mein"]},
+  {id:"riz-cantonais-crevettes", name:"Riz cantonais aux crevettes", kcal:380, portion:"1 portion", alias:["riz cantonais crevettes"]},
+  {id:"boeuf-sauce-huitre", name:"Bœuf sauce huître", kcal:380, portion:"1 assiette", alias:["boeuf sauce huitre"]},
+  {id:"poulet-sauce-aigre-douce", name:"Poulet sauce aigre-douce", kcal:420, portion:"1 assiette", alias:["aigre doux","sauce aigre douce"]},
+  {id:"boeuf-brocoli", name:"Bœuf brocoli", kcal:350, portion:"1 assiette", alias:["boeuf brocoli"]},
+  {id:"raviolis-vapeur", name:"Raviolis vapeur (dim sum)", kcal:250, portion:"6 pièces", alias:["dim sum","raviolis vapeur"]},
+  {id:"nems-poulet", name:"Nems poulet", kcal:280, portion:"4 pièces", alias:["nems poulet"]},
+  {id:"soupe-miso", name:"Soupe miso", kcal:60, portion:"1 bol", alias:["soupe miso","miso"]},
+  {id:"edamame-sale", name:"Edamame salé", kcal:140, portion:"~150g", alias:["edamame sale"]},
+  {id:"donburi", name:"Donburi (riz + viande/poisson)", kcal:550, portion:"1 bol", alias:["donburi"]},
+  {id:"udon", name:"Udon", kcal:420, portion:"1 bol", alias:["udon"]},
+  {id:"ramen-porc", name:"Ramen porc (tonkotsu)", kcal:550, portion:"1 bol", alias:["tonkotsu","ramen porc"]},
+  {id:"sashimi", name:"Sashimi", kcal:150, portion:"~8 pièces", alias:["sashimi"]},
+  {id:"onigiri", name:"Onigiri", kcal:180, portion:"1 unité", alias:["onigiri"]},
+  {id:"riz-thai", name:"Riz thaï nature", kcal:220, portion:"~200g", alias:["riz thai","riz jasmin"]},
+  {id:"soupe-tom-yum", name:"Soupe tom yum", kcal:150, portion:"1 bol", alias:["tom yum"]},
+  {id:"curry-vert-thai", name:"Curry vert thaï", kcal:420, portion:"1 assiette", alias:["curry vert","curry vert thai"]},
+  {id:"nasi-goreng", name:"Nasi goreng", kcal:450, portion:"1 assiette", alias:["nasi goreng"]},
+  {id:"mee-goreng", name:"Mee goreng", kcal:430, portion:"1 assiette", alias:["mee goreng"]},
+
+  // ==== MEXICAIN / TEX-MEX ====
+  {id:"guacamole-chips", name:"Guacamole + chips tortilla", kcal:350, portion:"1 portion", alias:["guacamole chips"]},
+  {id:"nachos", name:"Nachos garnis", kcal:600, portion:"1 portion", alias:["nachos"]},
+  {id:"enchiladas", name:"Enchiladas", kcal:450, portion:"2 pièces", alias:["enchiladas"]},
+  {id:"fajitas-poulet", name:"Fajitas poulet", kcal:450, portion:"1 portion", alias:["fajitas","fajitas poulet"]},
+  {id:"chili-con-carne-riz", name:"Chili con carne + riz", kcal:480, portion:"1 assiette", alias:["chili con carne riz"]},
+  {id:"tacos-mexicains", name:"Tacos mexicains (petits, corn)", kcal:300, portion:"3 pièces", alias:["tacos mexicains","street tacos"]},
+  {id:"guacamole", name:"Guacamole seul", kcal:150, portion:"~100g", alias:["guacamole"]},
+
+  // ==== MOYEN-ORIENT / MÉDITERRANÉEN ====
+  {id:"chawarma-assiette", name:"Chawarma assiette", kcal:550, portion:"1 assiette", alias:["chawarma","chawarma assiette"]},
+  {id:"moussaka-grecque", name:"Moussaka grecque", kcal:420, portion:"1 part", alias:["moussaka grecque"]},
+  {id:"souvlaki", name:"Souvlaki", kcal:400, portion:"2 brochettes", alias:["souvlaki"]},
+  {id:"pita-falafel", name:"Pita falafel garnie", kcal:480, portion:"1 unité", alias:["pita falafel"]},
+  {id:"boulgour", name:"Boulgour", kcal:200, portion:"~200g cuit", alias:["boulgour"]},
+  {id:"baba-ganoush", name:"Baba ganoush", kcal:120, portion:"~80g", alias:["baba ganoush"]},
+
+  // ==== PETIT-DÉJEUNER ====
+  {id:"tartines-beurre-confiture", name:"Tartines beurre-confiture", kcal:280, portion:"2 tranches", alias:["tartines","tartine beurre confiture"]},
+  {id:"pain-beurre", name:"Pain beurre", kcal:200, portion:"1 tranche", alias:["pain beurre"]},
+  {id:"petit-dej-anglais", name:"Petit-déjeuner anglais complet", kcal:650, portion:"1 assiette", alias:["english breakfast","petit dejeuner anglais"]},
+  {id:"pancakes-sirop", name:"Pancakes au sirop d'érable", kcal:350, portion:"3 pièces", alias:["pancakes sirop"]},
+  {id:"gaufres-chantilly", name:"Gaufres chantilly", kcal:400, portion:"1 unité", alias:["gaufre chantilly","gaufres chantilly"]},
+  {id:"muesli-lait", name:"Muesli au lait", kcal:280, portion:"~50g + lait", alias:["muesli lait"]},
+  {id:"porridge-fruits", name:"Porridge aux fruits", kcal:280, portion:"1 bol", alias:["porridge fruits"]},
+  {id:"oeufs-bacon", name:"Œufs bacon", kcal:350, portion:"2 œufs + bacon", alias:["oeufs bacon"]},
+  {id:"viennoiserie-mix", name:"Viennoiserie (assortiment)", kcal:280, portion:"1 unité moyenne", alias:["viennoiserie"]},
+
+  // ==== LÉGUMES INDIVIDUELS ====
+  {id:"epinards", name:"Épinards", kcal:40, portion:"~200g cuits", alias:["epinards"]},
+  {id:"asperges", name:"Asperges", kcal:30, portion:"~150g", alias:["asperge","asperges"]},
+  {id:"artichaut", name:"Artichaut", kcal:50, portion:"1 unité", alias:["artichaut"]},
+  {id:"aubergine-grillee", name:"Aubergine grillée", kcal:60, portion:"~150g", alias:["aubergine grillee"]},
+  {id:"choux-bruxelles", name:"Choux de Bruxelles", kcal:60, portion:"~150g", alias:["choux de bruxelles"]},
+  {id:"celeri", name:"Céleri", kcal:20, portion:"~150g", alias:["celeri"]},
+  {id:"betterave", name:"Betterave", kcal:60, portion:"~150g", alias:["betterave"]},
+  {id:"radis", name:"Radis", kcal:15, portion:"~100g", alias:["radis"]},
+  {id:"concombre", name:"Concombre", kcal:15, portion:"~150g", alias:["concombre"]},
+  {id:"chou-rouge", name:"Chou rouge", kcal:30, portion:"~150g", alias:["chou rouge"]},
+  {id:"epis-mais", name:"Épi de maïs", kcal:100, portion:"1 unité", alias:["epi de mais"]},
+  {id:"petits-pois-carottes", name:"Petits pois carottes", kcal:100, portion:"~200g", alias:["petits pois carottes"]},
+
+  // ==== PAINS / FÉCULENTS ====
+  {id:"pain-complet-tranche", name:"Pain complet (tranche)", kcal:80, portion:"1 tranche", alias:["pain complet tranche"]},
+  {id:"pain-seigle", name:"Pain de seigle", kcal:80, portion:"1 tranche", alias:["pain de seigle","pain seigle"]},
+  {id:"pain-tradition", name:"Pain tradition (portion)", kcal:130, portion:"1/4 baguette", alias:["pain tradition"]},
+  {id:"pain-burger", name:"Pain à burger", kcal:150, portion:"1 unité", alias:["pain a burger","bun"]},
+  {id:"tortilla-wrap-nature", name:"Tortilla/wrap nature", kcal:130, portion:"1 unité", alias:["tortilla nature"]},
+  {id:"crackers", name:"Crackers", kcal:120, portion:"~30g", alias:["crackers","biscuits apero"]},
+  {id:"chips-tortilla", name:"Chips tortilla", kcal:200, portion:"~40g", alias:["chips tortilla","tortilla chips"]},
+
+  // ==== BOISSONS SUPPLÉMENTAIRES ====
+  {id:"eau-gazeuse", name:"Eau gazeuse/plate", kcal:0, portion:"33cl", alias:["eau","eau gazeuse","perrier","evian"]},
+  {id:"jus-orange", name:"Jus d'orange", kcal:110, portion:"200ml", alias:["jus d'orange","jus orange"]},
+  {id:"redbull", name:"Boisson énergisante", kcal:110, portion:"25cl", alias:["red bull","energisante","monster"]},
+  {id:"the-nature", name:"Thé nature", kcal:1, portion:"1 tasse", alias:["the","thé"]},
+  {id:"cafe-nature", name:"Café nature", kcal:2, portion:"1 tasse", alias:["cafe","café","expresso"]},
+  {id:"vin-blanc", name:"Vin blanc", kcal:120, portion:"1 verre", alias:["vin blanc"]},
+  {id:"rose", name:"Vin rosé", kcal:120, portion:"1 verre", alias:["rose","vin rose"]},
+  {id:"cocktail-sucre", name:"Cocktail sucré (mojito, etc.)", kcal:220, portion:"1 verre", alias:["cocktail","mojito","pina colada"]},
+  {id:"whisky-soda", name:"Alcool fort + soft", kcal:150, portion:"1 verre", alias:["whisky","vodka","rhum"]},
+
+  // ==== ENCORE PLUS DE PLATS DU QUOTIDIEN ====
+  {id:"riz-thon", name:"Riz thon", kcal:380, portion:"1 assiette", alias:["riz thon"]},
+  {id:"pates-thon", name:"Pâtes au thon", kcal:420, portion:"~250g", alias:["pates au thon","pates thon"]},
+  {id:"pates-legumes", name:"Pâtes aux légumes", kcal:350, portion:"~250g", alias:["pates aux legumes","pates legumes"]},
+  {id:"riz-legumes-sautes", name:"Riz sauté aux légumes", kcal:300, portion:"~250g", alias:["riz sautes aux legumes"]},
+  {id:"gratin-pates", name:"Gratin de pâtes", kcal:480, portion:"~250g", alias:["gratin de pates","gratin pates"]},
+  {id:"couscous-legumes", name:"Couscous aux légumes", kcal:350, portion:"1 assiette", alias:["couscous aux legumes","couscous legumes"]},
+  {id:"boeuf-carottes", name:"Bœuf carottes", kcal:400, portion:"1 assiette", alias:["boeuf carottes"]},
+  {id:"poulet-riz-legumes", name:"Poulet riz légumes (plat simple)", kcal:450, portion:"1 assiette", alias:["poulet riz legumes"]},
+  {id:"omelette-fromage", name:"Omelette au fromage", kcal:280, portion:"2-3 œufs", alias:["omelette au fromage","omelette fromage"]},
+  {id:"omelette-jambon", name:"Omelette jambon-fromage", kcal:320, portion:"2-3 œufs", alias:["omelette jambon","omelette jambon fromage"]},
+  {id:"steak-frites", name:"Steak frites", kcal:650, portion:"1 assiette", alias:["steak frites"]},
+  {id:"escalope-frites", name:"Escalope frites", kcal:550, portion:"1 assiette", alias:["escalope frites"]},
+  {id:"nuggets-frites", name:"Nuggets frites", kcal:600, portion:"1 assiette", alias:["nuggets frites"]},
+  {id:"poisson-legumes", name:"Poisson légumes (plat simple)", kcal:300, portion:"1 assiette", alias:["poisson legumes"]},
+  {id:"salade-composee", name:"Salade composée (mix simple)", kcal:300, portion:"1 bol", alias:["salade composee"]},
+  {id:"salade-oeuf-thon", name:"Salade œuf-thon", kcal:320, portion:"1 bol", alias:["salade oeuf thon"]},
+  {id:"salade-poulet", name:"Salade au poulet", kcal:350, portion:"1 bol", alias:["salade au poulet","salade poulet"]},
+  {id:"salade-chevre-chaud", name:"Salade chèvre chaud", kcal:420, portion:"1 bol", alias:["salade chevre chaud"]},
 ];
 
 function normalizeText(s){ return String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
@@ -1151,7 +1310,7 @@ function renderHome(){
     const isSwapped = !!STATE.weekOverrides[date];
     const pickerOpen = STATE.swapPickerDate === date;
 
-    strip += `<div class="card" style="padding:12px;${isToday?"border-color:var(--gold);background:rgba(227,168,59,.08);":""}">
+    strip += `<div class="card" style="padding:12px;${isToday?"border-color:var(--gold);background:rgba(240,178,62,.08);":""}">
       <div class="row between">
         <div>
           <p class="muted" style="font-size:11px;text-transform:capitalize;margin:0;">${fmtWeekday(date)} · ${fmtDate(date)}${isSwapped?` <span style="color:var(--gold);">🔀</span>`:""}</p>
@@ -1242,16 +1401,20 @@ function renderProgram(){
         </button>`;
       }).join("");
     } else if (day.type==="cardio"){
-      const proto = CARDIO_PROTOCOLS[day.cardioKind || "steady"];
+      const target = suggestedCardioTarget(day);
       inner = `<div style="padding:6px 2px;">
-        <p style="font-size:13px;font-weight:700;margin:0;">${esc(proto.label)}</p>
-        <p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(proto.why)}</p>
-        <ol class="steps" style="margin-top:8px;">${proto.structure.map((s,i)=>`<li><span class="stepnum">${i+1}</span><span style="font-size:12px;line-height:1.4;">${esc(s)}</span></li>`).join("")}</ol>
+        <p style="font-size:13px;font-weight:700;margin:0;">${esc(target.proto.label)}</p>
+        <p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(target.proto.why)}</p>
+        <div style="margin-top:8px;">${target.segments.map(s=>`
+          <div class="row between" style="background:var(--surface-alt);border-radius:8px;padding:8px 10px;margin-bottom:6px;">
+            <span style="font-size:12px;">${esc(s.label)}</span>
+            <span class="mono" style="font-size:11px;color:var(--gold);">${s.minutes}min · ${s.incline}% · ${s.speed}km/h</span>
+          </div>`).join("")}</div>
       </div>`;
     } else {
       inner = `<p class="muted" style="font-size:13px;padding:6px 2px;">Repos complet ou piscine/sauna léger si t'en as envie.</p>`;
     }
-    return `<div class="card" style="padding:0;overflow:hidden;${isToday?"border-color:var(--gold);background:rgba(227,168,59,.08);":""}">
+    return `<div class="card" style="padding:0;overflow:hidden;${isToday?"border-color:var(--gold);background:rgba(240,178,62,.08);":""}">
       <button class="row between" data-action="toggle-day" data-day="${day.id}" style="width:100%;padding:14px;text-align:left;">
         <div><p class="muted" style="font-size:11px;margin:0;">${esc(day.weekday)}${isToday?` <span style="color:var(--gold);font-weight:700;">· AUJOURD'HUI</span>`:""}</p><p style="font-weight:700;font-size:14px;margin:2px 0 6px;">${esc(day.label)}</p>${pill(meta.label,meta.color)}</div>
         <span style="transform:rotate(${isOpen?180:0}deg);transition:.2s;">⌄</span>
@@ -1396,7 +1559,7 @@ function renderSession(){
         <span class="mono muted" style="font-size:11px;">${step+1}/${day.exercises.length}</span>
       </div>
       <h2 class="display" style="font-size:24px;margin:0 0 4px;">${esc(EX[exId].name)}</h2>
-      <div class="card" style="background:rgba(227,168,59,.1);border-color:var(--gold);margin-bottom:12px;">
+      <div class="card" style="background:rgba(240,178,62,.1);border-color:var(--gold);margin-bottom:12px;">
         <p style="font-size:13px;font-weight:700;color:var(--gold);margin:0;">🎯 Objectif : ${target.sets} x ${target.reps}${target.unit==="sec"?" sec":""}${target.weight?` à ${target.weight}kg`:""}</p>
         <p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(target.note)}</p>
       </div>
@@ -1426,25 +1589,33 @@ function renderSession(){
     const target = suggestedCardioTarget(day);
     const acts = ["Tapis","Vélo","Piscine","Autre"].map(a=>`
       <button data-action="set-cardio-activity" data-value="${a}" style="flex:1;padding:8px 4px;border-radius:8px;font-size:12px;font-weight:700;background:${f.activity===a?"var(--gold)":"var(--surface-alt)"};color:${f.activity===a?"#14171C":"var(--text)"};">${a}</button>`).join("");
+    const segRows = target.segments.map(s=>`
+      <div class="row between" style="background:var(--surface-alt);border-radius:10px;padding:10px 12px;margin-bottom:6px;">
+        <div><p style="font-size:13px;font-weight:700;margin:0;">${esc(s.label)}</p>${s.note?`<p class="muted" style="font-size:11px;margin:3px 0 0;max-width:220px;">${esc(s.note)}</p>`:""}</div>
+        <div style="text-align:right;">
+          <p class="mono" style="font-size:13px;color:var(--gold);font-weight:700;margin:0;">${s.minutes} min</p>
+          <p class="mono" style="font-size:11px;color:var(--teal);margin:2px 0 0;">${s.incline}% · ${s.speed}km/h</p>
+        </div>
+      </div>`).join("");
     return `<div class="fade">
       <div class="row gap8" style="margin-bottom:12px;"><button data-action="cancel-session">‹</button><h2 class="display" style="font-size:22px;margin:0;">${esc(day.label)}</h2></div>
 
-      <div class="card" style="background:rgba(227,168,59,.1);border-color:var(--gold);">
+      <div class="card" style="background:rgba(240,178,62,.1);border-color:var(--gold);">
         <p style="font-size:14px;font-weight:700;color:var(--gold);margin:0;">🎯 ${esc(target.proto.label)}</p>
-        <p style="font-size:13px;font-weight:700;margin:6px 0 0;">${target.kind==="hiit" ? `Objectif : ${target.rounds} tours (~${target.totalMinutes} min au total)` : `Objectif : ${target.minutes} min`}</p>
-        ${target.zone ? `<p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(target.proto.zoneLabel)} : <span style="color:var(--teal);font-weight:700;">${target.zone}</span></p>` : `<p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(target.proto.zoneLabel)} — renseigne ton âge dans le profil (onglet Stats) pour voir ta zone en bpm.</p>`}
+        <p style="font-size:13px;font-weight:700;margin:6px 0 0;">${target.totalMinutes} min au total${target.rounds?` · ${target.rounds} tours`:""}</p>
         <p class="muted" style="font-size:12px;margin:8px 0 0;">${esc(target.proto.why)}</p>
       </div>
 
       <div class="card" style="margin-top:12px;">
-        <p class="muted" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 8px;">Comment faire</p>
-        <ol class="steps">${target.proto.structure.map((s,i)=>`<li><span class="stepnum">${i+1}</span><span style="font-size:14px;line-height:1.5;">${esc(s)}</span></li>`).join("")}</ol>
+        <p class="muted" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:0 0 10px;">Programme du tapis</p>
+        ${segRows}
+        <p class="muted" style="font-size:10px;margin:8px 0 0;">Colonne de droite : inclinaison % · vitesse km/h. Ça monte automatiquement tous les 4 séances.</p>
       </div>
 
       <div class="card" style="margin-top:12px;">
         <div class="col gap10">
           <div><label class="muted" style="font-size:12px;">Activité</label><div class="row gap8" style="margin-top:4px;">${acts}</div></div>
-          <div><label class="muted" style="font-size:12px;">Durée réelle (min)</label><input id="cardio-duration" type="text" inputmode="decimal" value="${esc(f.duration)}" class="mono" style="margin-top:4px;" placeholder="${target.kind==='hiit'?target.totalMinutes:target.minutes}"></div>
+          <div><label class="muted" style="font-size:12px;">Durée réelle (min)</label><input id="cardio-duration" type="text" inputmode="decimal" value="${esc(f.duration)}" class="mono" style="margin-top:4px;" placeholder="${target.totalMinutes}"></div>
           <p class="muted" style="font-size:11px;margin:-4px 0 0;">D'après ta montre (optionnel)</p>
           <div class="row gap8">
             <div style="flex:1;"><label class="muted" style="font-size:12px;">Calories</label><input id="cardio-calories" type="text" inputmode="decimal" value="${esc(f.calories)}" class="mono" style="margin-top:4px;"></div>
@@ -1888,7 +2059,7 @@ function render(){
 
   document.getElementById("app").innerHTML = `
     ${body}
-    <div style="position:fixed;bottom:0;left:0;right:0;background:rgba(27,34,43,.96);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(env(safe-area-inset-bottom) + 6px);max-width:480px;margin:0 auto;">
+    <div style="position:fixed;bottom:0;left:0;right:0;background:rgba(29,37,48,.97);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(env(safe-area-inset-bottom) + 6px);max-width:480px;margin:0 auto;box-shadow:0 -2px 14px rgba(0,0,0,.3);">
       ${nav}
     </div>
     ${renderModal()}
