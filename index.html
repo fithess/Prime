@@ -103,7 +103,7 @@ const EX = {
       "Pousse à travers tes talons pour remonter, sans bloquer complètement les genoux en haut."],
     tip:"Garde toujours le bas du dos collé au dossier — s'il décolle, tu descends trop bas.",
     mistake:"Verrouiller les genoux en extension complète en haut : ça met les articulations en danger, remonte à 90% seulement.",
-    alt:["leg-extension","squat-machine"], axis:"horizontal", from:"Genoux fléchis", to:"Jambes tendues"},
+    alt:["leg-extension"], axis:"horizontal", from:"Genoux fléchis", to:"Jambes tendues"},
   "leg-extension": {name:"Leg extension", muscle:"Quadriceps", equip:"Machine",
     setup:"Assis, dos contre le dossier, rouleau réglé juste au-dessus des chevilles (pas sur les tibias). Le point de pivot du genou doit être aligné avec l'axe de la machine.",
     steps:["Assieds-toi, dos calé, tibias contre le rouleau juste au-dessus des chevilles.",
@@ -113,6 +113,15 @@ const EX = {
     tip:"La phase de descente lente est celle qui construit le plus de muscle ici, ne la bâcle pas.",
     mistake:"Balancer le buste en arrière pour s'aider : garde le dos plaqué au dossier.",
     alt:["presse-cuisses"], axis:"horizontal", from:"Genoux fléchis", to:"Jambes tendues"},
+  "adductor": {name:"Adductor (intérieur de cuisse)", muscle:"Adducteurs", equip:"Machine",
+    setup:"Assis, dos calé, genoux contre les coussins latéraux réglés largeur de tes jambes écartées au départ.",
+    steps:["Assieds-toi, dos calé, règle les coussins contre l'extérieur de tes genoux.",
+      "Pars jambes écartées, coussins loin l'un de l'autre.",
+      "Resserre les jambes en ramenant les coussins vers le centre.",
+      "Reviens lentement à la position écartée sans à-coup."],
+    tip:"Mouvement lent et contrôlé — c'est un petit muscle, pas la peine de charger lourd.",
+    mistake:"Aller trop vite avec l'élan plutôt que de contrôler la résistance.",
+    alt:["presse-cuisses"], axis:"horizontal", from:"Jambes écartées", to:"Jambes resserrées"},
   "squat-machine": {name:"Squat guidé (Smith / Hack squat)", muscle:"Quadriceps / Fessiers", equip:"Machine guidée",
     setup:"Pieds légèrement devant toi, largeur épaules. Débloque le crochet de sécurité (souvent une rotation de la barre) avant de descendre.",
     steps:["Place-toi sous la barre ou sur la plateforme, pieds largeur épaules.",
@@ -139,7 +148,7 @@ const EX = {
       "Reviens lentement à la position de départ sans à-coup."],
     tip:"Version pratique si le leg curl allongé est pris — même muscle, même efficacité.",
     mistake:"Aller trop vite : ici la vitesse contrôlée compte plus que la charge.",
-    alt:["leg-curl"], axis:"horizontal", from:"Jambes tendues", to:"Talons vers l'arrière"},
+    alt:[], axis:"horizontal", from:"Jambes tendues", to:"Talons vers l'arrière"},
   "tirage-horizontal": {name:"Rowing (Dual Adjustable Pulley — Low Row)", muscle:"Dos / Biceps", equip:"Dual Adjustable Pulley",
     setup:"Sur le Dual Adjustable Pulley, règle les deux poulies en position basse ('Low Row' sur l'autocollant de la machine). Recule pour tendre le câble, pieds ancrés, genoux légèrement fléchis.",
     steps:["Règle les deux bras du Dual Adjustable Pulley en position basse (Low Row).",
@@ -166,7 +175,7 @@ const EX = {
       "Ne laisse pas les poids taper les cales entre les répétitions."],
     tip:"Souffle en poussant, inspire en revenant — ça t'aide à garder le gainage.",
     mistake:"Cambrer excessivement le bas du dos pour pousser plus lourd : garde le dos au contact du dossier.",
-    alt:["developpe-incline","pec-deck"], axis:"horizontal", from:"Coudes fléchis", to:"Bras tendus devant"},
+    alt:["pec-deck"], axis:"horizontal", from:"Coudes fléchis", to:"Bras tendus devant"},
   "developpe-incline": {name:"Développé incliné machine", muscle:"Haut des pectoraux / Épaules", equip:"Machine",
     setup:"Règle le siège pour que les poignées soient à hauteur du HAUT de ta poitrine (pas des épaules).",
     steps:["Règle le siège pour que les poignées soient à hauteur du haut de ta poitrine.",
@@ -184,7 +193,7 @@ const EX = {
       "Garde le gainage tout le long, pas de cambrure du dos."],
     tip:"Ne descends pas plus bas que la hauteur d'épaules, ça protège les articulations.",
     mistake:"Verrouiller les coudes en extension complète en haut à chaque rep — reste léger sur le blocage.",
-    alt:["elevations-laterales"], axis:"vertical", from:"Coudes à hauteur d'épaules", to:"Bras tendus au-dessus"},
+    alt:["reverse-fly"], axis:"vertical", from:"Coudes à hauteur d'épaules", to:"Bras tendus au-dessus"},
   "elevations-laterales": {name:"Élévations latérales (poulie ou haltères)", muscle:"Épaules (deltoïde latéral)", equip:"Poulie / Haltères légers",
     setup:"Debout au centre, un haltère léger dans chaque main (ou poulie basse de chaque côté), bras le long du corps.",
     steps:["Debout, léger fléchissement des genoux, bras le long du corps.",
@@ -220,7 +229,7 @@ const EX = {
       "Reviens lentement en laissant les bras s'écarter sans forcer sur les épaules."],
     tip:"Mouvement en arc de cercle, pas en ligne droite — pense à 'refermer un livre' avec ta poitrine.",
     mistake:"Ouvrir trop loin en arrière — ça met les épaules en tension inutilement, limite l'amplitude si ça tire devant.",
-    alt:["developpe-couche","developpe-incline"], axis:"horizontal", from:"Bras écartés", to:"Coussins rapprochés devant toi"},
+    alt:["developpe-couche"], axis:"horizontal", from:"Bras écartés", to:"Coussins rapprochés devant toi"},
   "reverse-fly": {name:"Reverse Fly (oiseau machine)", muscle:"Épaules arrière / Haut du dos", equip:"Machine",
     setup:"Assis face à la machine (poitrine contre le dossier si prévu), attrape les poignées devant toi, bras légèrement fléchis.",
     steps:["Assieds-toi face à la machine, attrape les poignées devant toi.",
@@ -229,7 +238,7 @@ const EX = {
       "Reviens lentement devant toi sans à-coup."],
     tip:"Vise à faire travailler l'arrière des épaules et le haut du dos, pas juste bouger les bras.",
     mistake:"Aller trop vite avec l'élan — ralentis pour vraiment sentir la contraction.",
-    alt:["tirage-horizontal","elevations-laterales"], axis:"horizontal", from:"Bras devant toi", to:"Bras écartés sur les côtés"},
+    alt:["tirage-horizontal"], axis:"horizontal", from:"Bras devant toi", to:"Bras écartés sur les côtés"},
   "dips-machine": {name:"Dips machine (assisté)", muscle:"Triceps / Pectoraux bas", equip:"Machine assistée",
     setup:"Règle le poids d'assistance sur la pile (plus de poids = plus facile, ça compense ton poids de corps). Monte sur les appuis genoux ou pieds selon le modèle.",
     steps:["Règle le poids d'assistance selon ton niveau (plus de poids = plus facile).",
@@ -286,23 +295,24 @@ const EX = {
     alt:["presse-cuisses"], axis:"vertical", from:"Bassin au sol", to:"Bassin levé, fessiers contractés"},
 };
 
-const MUSCU_DEFAULT = ["presse-cuisses","tirage-horizontal","developpe-couche","leg-curl-assis",
-  "developpe-epaules","crunch-machine","hip-thrust","gainage"];
+const MUSCU_DEFAULT = ["presse-cuisses","leg-extension","leg-curl-assis","developpe-couche",
+  "pec-deck","developpe-epaules","reverse-fly","tirage-horizontal","curl-biceps","crunch-machine"];
 
 const DEFAULT_PROGRAM = {days:[
   {id:"d7", label:"Repos", weekday:"Lundi", type:"repos"},
   {id:"d1", label:"Full Body A", weekday:"Mardi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
-  {id:"d2", label:"Cardio", weekday:"Mercredi", type:"cardio", cardioKind:"steady"},
-  {id:"d4", label:"Repos / Piscine légère", weekday:"Jeudi", type:"repos"},
+  {id:"d2", label:"Tapis (optionnel)", weekday:"Mercredi", type:"cardio", cardioKind:"steady"},
+  {id:"d4", label:"Repos", weekday:"Jeudi", type:"repos"},
   {id:"d3", label:"Full Body B", weekday:"Vendredi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
-  {id:"d5", label:"Full Body C", weekday:"Samedi", type:"muscu", exercises:[...MUSCU_DEFAULT]},
-  {id:"d6", label:"Cardio ou Piscine (bonus)", weekday:"Dimanche", type:"cardio", cardioKind:"hiit"},
+  {id:"d5", label:"Repos", weekday:"Samedi", type:"repos"},
+  {id:"d6", label:"Full Body C", weekday:"Dimanche", type:"muscu", exercises:[...MUSCU_DEFAULT]},
 ]};
 const SCHEDULE_MIGRATION_KEY = "ft_schedule_v2";
 const SCHEDULE_V2_WEEKDAYS = {d1:"Mardi", d2:"Mercredi", d3:"Jeudi", d4:"Vendredi", d5:"Samedi", d6:"Dimanche", d7:"Lundi"};
 const SCHEDULE_V2_ORDER = ["d7","d1","d2","d3","d4","d5","d6"];
 const SCHEDULE_MIGRATION_KEY_V3 = "ft_schedule_v3_thu_fri_swap";
 const SCHEDULE_MIGRATION_KEY_V4 = "ft_schedule_v4_cardio_kind";
+const SCHEDULE_MIGRATION_KEY_V5 = "ft_schedule_v5_plan";
 
 // Cardio protocols — structured like the muscu progressive-overload targets,
 // so cardio days aren't just "do some cardio" but have an actual plan.
@@ -1260,7 +1270,7 @@ const TYPE_META = {muscu:{color:"var(--gold)", label:"Musculation"}, cardio:{col
 // ---------------------------------------------------------------------------
 // STATE + STORAGE
 // ---------------------------------------------------------------------------
-const LS = {program:"ft_program", sessions:"ft_sessions", daily:"ft_daily", weekOverrides:"ft_week_overrides", profile:"ft_profile", activeSession:"ft_active_session", customFoods:"ft_custom_foods", foodUsage:"ft_food_usage"};
+const LS = {program:"ft_program", sessions:"ft_sessions", daily:"ft_daily", weekOverrides:"ft_week_overrides", profile:"ft_profile", activeSession:"ft_active_session", customFoods:"ft_custom_foods", foodUsage:"ft_food_usage", fiveDays:"ft_five_days", fiveMoves:"ft_five_moves"};
 function load(key, fallback){ try{ const v=localStorage.getItem(key); return v?JSON.parse(v):fallback; }catch(e){ return fallback; } }
 function save(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){ console.error(e); } }
 
@@ -1272,6 +1282,8 @@ const STATE = {
   weekOverrides: load(LS.weekOverrides, {}),
   customFoods: load(LS.customFoods, []),
   foodUsage: load(LS.foodUsage, {}),
+  fiveDays: load(LS.fiveDays, {}),
+  fiveMoves: load(LS.fiveMoves, {}),
   profile: load(LS.profile, {age:"", heightCm:"", sex:"m"}),
   swapPickerDate: null,
   exercisePickerOpen: false,
@@ -1283,6 +1295,8 @@ const STATE = {
   cardioForm: {activity:"Tapis", duration:"", calories:"", hr:""},
   justFinished: false,
   lastFinishedType: null,
+  muscuJustDone: false,
+  lastMuscuComparison: null,
   openProgramDay: null,
   modalExId: null,
   modalCtx: null, // 'program' | null
@@ -1291,6 +1305,7 @@ const STATE = {
   foodMatches: [],
   showMealsList: false,
   showCustomFoodForm: false,
+  showTierInfo: false,
 };
 
 // One-time migration: shift an already-saved schedule to the new Tuesday-start
@@ -1324,6 +1339,24 @@ const STATE = {
     save(LS.program, STATE.program);
   }
   localStorage.setItem(SCHEDULE_MIGRATION_KEY_V3, "1");
+})();
+
+// Migration : nouveau planning (mardi/vendredi/dimanche) + routine à jour avec les vraies machines.
+(function migratePlanV5(){
+  if (localStorage.getItem(SCHEDULE_MIGRATION_KEY_V5)) return;
+  const plan = {Lundi:["repos","Repos"], Mardi:["muscu","Full Body A"], Mercredi:["cardio","Tapis (optionnel)"],
+    Jeudi:["repos","Repos"], Vendredi:["muscu","Full Body B"], Samedi:["repos","Repos"], Dimanche:["muscu","Full Body C"]};
+  const days = STATE.program.days.map(d=>{
+    const p = plan[d.weekday];
+    if (!p) return d;
+    const nd = {id:d.id, weekday:d.weekday, type:p[0], label:p[1]};
+    if (p[0]==="muscu") nd.exercises = [...MUSCU_DEFAULT];
+    if (p[0]==="cardio") nd.cardioKind = "steady";
+    return nd;
+  });
+  STATE.program = {...STATE.program, days};
+  save(LS.program, STATE.program);
+  localStorage.setItem(SCHEDULE_MIGRATION_KEY_V5, "1");
 })();
 
 // One-time migration: tag cardio days with a protocol kind (steady vs HIIT)
@@ -1366,6 +1399,77 @@ function slotForDate(dateStr){
   return STATE.program.days.find(d => d.weekday.toLowerCase() === wd) || null;
 }
 
+function autoMoveForFive(d){
+  const slot = slotForDate(d);
+  if (!slot || slot.type!=="muscu") return;
+  if (STATE.sessions.some(s=>s.date===d)) return;
+  const isMuscu = x => { const sl = slotForDate(x); return !!sl && sl.type==="muscu" && !STATE.fiveDays[x]; };
+  let best=null;
+  for (let off=-3; off<=4; off++){
+    if (off===0) continue;
+    const t = addDays(d, off);
+    if (t < todayStr()) continue;
+    const sl = slotForDate(t);
+    if (!sl || sl.type==="muscu" || STATE.fiveDays[t] || STATE.sessions.some(s=>s.date===t)) continue;
+    const adj = [addDays(t,-1), addDays(t,1)].some(x => x!==d && isMuscu(x));
+    const score = (adj?10:0) + (sl.type==="cardio"?4:0) + Math.abs(off) + (off<0?1.5:0);
+    if (!best || score<best.score) best = {t, adj, score};
+  }
+  if (!best) return;
+  swapDays(d, best.t);
+  STATE.fiveMoves = {...STATE.fiveMoves, [d]: {to:best.t, adj:best.adj}};
+  save(LS.fiveMoves, STATE.fiveMoves);
+}
+function undoFiveMove(d){
+  const mv = STATE.fiveMoves[d];
+  if (!mv) return;
+  clearSwap(d); clearSwap(mv.to);
+  const next = {...STATE.fiveMoves}; delete next[d];
+  STATE.fiveMoves = next; save(LS.fiveMoves, STATE.fiveMoves);
+}
+// ---- Suivi des kcal mangées : statut du jour + 7 derniers jours + verdict
+const INTAKE_META = {
+  none:{color:"var(--line)", label:"—"},
+  low:{color:"var(--gold)", label:"Trop bas"},
+  ok:{color:"var(--teal)", label:"Sur la bonne voie"},
+  slip:{color:"var(--gold)", label:"Petit écart"},
+  over:{color:"var(--red)", label:"Gros écart"},
+};
+function intakeStatus(eaten, t){
+  if (!eaten || !t) return "none";
+  if (eaten < t.strict) return "low";
+  if (eaten <= t.bien) return "ok";
+  if (eaten <= t.craque) return "slip";
+  return "over";
+}
+function intakeReport(){
+  const days = [];
+  for (let i=6;i>=0;i--){
+    const date = addDays(todayStr(), -i);
+    const eaten = dayKcalTotal(STATE.daily[date]||{});
+    const t = tiersForDate(date);
+    days.push({date, eaten, t, status: intakeStatus(eaten, t), isToday: i===0});
+  }
+  const done = days.filter(d=>!d.isToday && d.eaten>0 && d.t);
+  if (done.length<2) return {days, verdict:{icon:"📊", color:"var(--muted)", text:"Note tes repas encore quelques jours (la montre aussi) et je te dis si t'es sur la bonne voie."}};
+  const avgEaten = Math.round(done.reduce((a,d)=>a+d.eaten,0)/done.length);
+  const avgDef = Math.round(done.reduce((a,d)=>a+(d.t.tdee-d.eaten),0)/done.length);
+  const kgWeek = Math.max(0, avgDef*7/7700);
+  const lowDays = done.filter(d=>d.status==="low").length;
+  const overDays = done.filter(d=>d.status==="over"||d.status==="slip").length;
+  const tail = overDays ? ` (${overDays} jour${overDays>1?"s":""} d'écart sur ${done.length})` : "";
+  let verdict;
+  if (lowDays >= Math.ceil(done.length/2)){
+    verdict = {icon:"⚠️", color:"var(--gold)", text:`Tu manges souvent sous ton niveau Strict (${lowDays} jours sur ${done.length}, moyenne ${avgEaten} kcal). Descendre plus bas n'accélère presque pas la perte et ça mange ton muscle : remonte vers "Bien".`};
+  } else if (avgDef >= 500){
+    verdict = {icon:"✅", color:"var(--teal)", text:`Sur la bonne voie : déficit moyen ~${avgDef} kcal/j, soit environ -${kgWeek.toFixed(1)} kg par semaine à ce rythme${tail}.`};
+  } else if (avgDef >= 200){
+    verdict = {icon:"🟡", color:"var(--gold)", text:`Ça avance doucement : déficit moyen ~${avgDef} kcal/j (≈ -${kgWeek.toFixed(1)} kg/semaine)${tail}. Vise plus souvent "Bien".`};
+  } else {
+    verdict = {icon:"🔴", color:"var(--red)", text:`Pas assez de déficit : ~${avgDef} kcal/j de marge, le poids ne bougera presque pas${tail}.`};
+  }
+  return {days, verdict};
+}
 function swapDays(dateA, dateB){
   const dayA = slotForDate(dateA);
   const dayB = slotForDate(dateB);
@@ -1388,7 +1492,13 @@ function weekIndexFor(dateStr){
 function weeklyExercises(baseIds, dateStr){
   const wk = weekIndexFor(dateStr);
   if (wk % 2 === 0) return baseIds;
-  return baseIds.map(id => (EX[id] && EX[id].alt && EX[id].alt[0]) ? EX[id].alt[0] : id);
+  const used = new Set(baseIds);
+  return baseIds.map(id => {
+    const alts = (EX[id] && EX[id].alt) || [];
+    const pick = alts.find(a => EX[a] && !used.has(a));
+    if (pick){ used.add(pick); return pick; }
+    return id;
+  });
 }
 
 function calcStreak(activeDates){
@@ -1401,9 +1511,22 @@ function calcStreak(activeDates){
   return streak;
 }
 
+function fiveDatesPast(){ return Object.keys(STATE.fiveDays).filter(d=>STATE.fiveDays[d] && d<=todayStr()); }
 function currentStreak(){
-  const dates = [...STATE.sessions.map(s=>s.date), ...Object.entries(STATE.daily).filter(([,v])=>v.water||v.weight||v.sleep||(v.meals&&v.meals.length)).map(([d])=>d)];
+  const dates = [...fiveDatesPast(), ...STATE.sessions.map(s=>s.date), ...Object.entries(STATE.daily).filter(([,v])=>v.water||v.weight||v.sleep||(v.meals&&v.meals.length)).map(([d])=>d)];
   return calcStreak(dates);
+}
+// Régularité : jours actifs cette semaine vs la semaine d'avant, pour voir si ça progresse.
+function consistencyComparison(){
+  const activeDates = new Set([...fiveDatesPast(), ...STATE.sessions.map(s=>s.date), ...Object.entries(STATE.daily).filter(([,v])=>v.water||v.weight||v.sleep||(v.meals&&v.meals.length)).map(([d])=>d)]);
+  const countActive = (fromOffset, toOffset) => {
+    let c = 0;
+    for (let i=fromOffset;i<=toOffset;i++){ if (activeDates.has(addDays(todayStr(), -i))) c++; }
+    return c;
+  };
+  const thisWeek = countActive(0,6);
+  const lastWeek = countActive(7,13);
+  return {thisWeek, lastWeek, diff: thisWeek-lastWeek};
 }
 function personalRecords(){
   const best = {};
@@ -1505,23 +1628,42 @@ function computeBMR(weightKg, profile){
 // Détecte si aujourd'hui est un jour d'entraînement : séance déjà loguée,
 // ou réponse "oui" donnée au prompt du matin.
 function isTrainingDayToday(){
-  return STATE.sessions.some(s=>s.date===todayStr());
+  return STATE.sessions.some(s=>s.date===todayStr()) || !!STATE.fiveDays[todayStr()];
+}
+const DEFAULT_ACTIVE_KCAL = 200; // ton jour de repos habituel, utilisé seulement tant que la montre n'est pas notée
+function weightAtDate(date){
+  const ws = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
+  if (!ws.length) return null;
+  let w = ws[0][1].weight;
+  for (const [d,v] of ws){ if (d<=date) w = v.weight; else break; }
+  return w;
+}
+// Base de calcul (expliquée dans l'app) :
+//  - dépense du jour = métabolisme de base (Mifflin-St Jeor) + calories actives de la montre
+//  - 1 kg de gras ≈ 7700 kcal
+//  - Strict = perte visée ~1 % du poids / semaine, Bien = ~0,7 %, Craqué = entretien (0 perte)
+//  - plancher de sécurité : jamais sous 1500 kcal
+const fmtKg = k => k>0.05 ? "≈ -"+k.toFixed(1)+" kg/sem" : k<-0.05 ? "≈ +"+Math.abs(k).toFixed(1)+" kg/sem" : "≈ 0 kg/sem";
+const FLOOR_KCAL = 1500, STRICT_RATE = 0.010, BIEN_RATE = 0.007;
+function kgPerWeek(tdee, intake){ return (tdee-intake)*7/7700; }
+function tiersForDate(date){
+  const w = weightAtDate(date);
+  const bmr = computeBMR(w, STATE.profile);
+  if (!bmr) return null;
+  const entered = toNum((STATE.daily[date]||{}).watchKcal) || 0;
+  const active = entered>0 ? entered : DEFAULT_ACTIVE_KCAL;
+  const tdee = bmr + active;
+  const defStrict = w*STRICT_RATE*1100, defBien = w*BIEN_RATE*1100; // kcal/jour pour ce % de poids par semaine
+  const strict = Math.max(FLOOR_KCAL, Math.round(tdee-defStrict));
+  const bien = Math.max(strict+150, Math.round(tdee-defBien));
+  const craque = Math.max(bien+250, Math.round(tdee));
+  const training = STATE.sessions.some(s=>s.date===date) || !!STATE.fiveDays[date];
+  return {bmr:Math.round(bmr), active, activeEntered: entered>0, tdee:Math.round(tdee), strict, bien, craque, training,
+    kgStrict:kgPerWeek(tdee,strict), kgBien:kgPerWeek(tdee,bien), kgCraque:kgPerWeek(tdee,craque)};
 }
 function dailyCalorieTiers(){
-  const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
-  const latestWeight = weights.length ? weights[weights.length-1][1].weight : null;
-  const bmr = computeBMR(latestWeight, STATE.profile);
-  if (!bmr) return null;
-  const maintenance = bmr*1.3;
-  const training = isTrainingDayToday();
-  const todayEntry = STATE.daily[todayStr()] || {};
-  const bonus = toNum(todayEntry.watchKcal) || 0;
-  return {
-    training, bonus,
-    strict: Math.round(maintenance - 1050 + bonus),
-    bien: Math.round(maintenance - 750 + bonus),
-    craque: Math.round(maintenance + 300 + bonus),
-  };
+  const t = tiersForDate(todayStr());
+  return t ? {...t, bonus: t.activeEntered ? t.active : 0} : null;
 }
 function weeklyDeficitEstimate(){
   const cutoff = addDays(todayStr(), -6);
@@ -1549,14 +1691,47 @@ function todayDeficit(entry){
 function weeklyRecapLite(){
   const cutoff = addDays(todayStr(), -6);
   const days = Object.entries(STATE.daily).filter(([d])=>d>=cutoff && d<=todayStr());
-  const usable = days.map(([,v])=>todayDeficit(v)).filter(Boolean).filter(dd=>dd.eaten>0);
+  const usable = days.map(([,v])=>todayDeficit(v)).filter(Boolean).filter(dd=>dd.eaten>0 && dd.watch>0);
   if (!usable.length) return null;
   const inDeficit = usable.filter(dd=>dd.deficit>=0).length;
   const avg = Math.round(usable.reduce((a,dd)=>a+dd.deficit,0)/usable.length);
   return {inDeficit, total: usable.length, avg};
 }
+// Diagnostic réel : croise le déficit moyen avec la vraie tendance du poids
+// pour expliquer POURQUOI ça bouge ou pas, pas juste afficher des chiffres.
+function coachingInsight(){
+  const recap = weeklyRecapLite();
+  if (!recap || recap.total<3) return {icon:"📊", color:"var(--muted)", text:"Pas encore assez de jours notés cette semaine (repas + montre) pour un vrai diagnostic."};
+  const weights = Object.entries(STATE.daily).filter(([d,v])=>v.weight && d>=addDays(todayStr(),-14)).sort();
+  if (weights.length<2) return {icon:"⚖️", color:"var(--muted)", text:"Note ton poids plus régulièrement pour que je puisse te dire si ça marche vraiment."};
+  const trend = weights[weights.length-1][1].weight - weights[0][1].weight;
+  const good = recap.avg >= 400;
+  if (trend < -0.3) return {icon:"✅", color:"var(--teal)", text:`Ça descend bien (${trend.toFixed(1)}kg) et ton déficit moyen est de ${recap.avg} kcal/j — continue exactement comme ça.`};
+  if (trend > 0.3) return good
+    ? {icon:"⚠️", color:"var(--gold)", text:`Le poids est monté (+${trend.toFixed(1)}kg) alors que ton déficit a l'air bon — vérifie que tu loggues bien tout (grignotages, sauces, boissons), les portions sont souvent sous-estimées.`}
+    : {icon:"⚠️", color:"var(--red)", text:`Le poids est monté (+${trend.toFixed(1)}kg) et ton déficit moyen est faible (${recap.avg} kcal/j) — resserre un peu les repas cette semaine.`};
+  return good
+    ? {icon:"💧", color:"var(--teal)", text:`Le poids bouge presque pas, mais ton déficit moyen est bon (${recap.avg} kcal/j) — c'est probablement de la rétention d'eau, pas un vrai blocage. Patiente quelques jours.`}
+    : {icon:"🍽️", color:"var(--gold)", text:`Le poids stagne et ton déficit moyen est faible (${recap.avg} kcal/j) — c'est probablement la cause. Vise plus près du niveau "Bien" cette semaine.`};
+}
 
-const GOAL_TARGET_DATE = "2026-12-29"; // ~18 semaines, rythme "Bien" avec ~2x salle/semaine
+const GOAL_TARGET_DATE = "2027-04-30"; // ~0,5 kg/semaine : rythme réaliste en sécurité avec ses jours calmes + five/salle
+function trackingCheck(){
+  const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
+  if (weights.length<2) return null; // besoin d'au moins un point de départ + un poids récent
+  const startW = weights[0][1].weight;
+  const startDate = new Date(weights[0][0]+"T00:00:00");
+  const targetDate = new Date(GOAL_TARGET_DATE+"T00:00:00");
+  const today = new Date(todayStr()+"T00:00:00");
+  const totalDays = (targetDate - startDate) / 86400000;
+  if (totalDays<=0) return null;
+  const elapsedDays = Math.max(0, (today - startDate) / 86400000);
+  const frac = Math.min(1, elapsedDays/totalDays);
+  const expected = startW - (startW-GOAL_FINAL)*frac;
+  const current = weights[weights.length-1][1].weight;
+  const diff = Math.round((current - expected)*10)/10; // positif = en retard (plus lourd que prévu)
+  return {expected: Math.round(expected*10)/10, current, diff, onTrack: diff<=0.3};
+}
 function monthlyMilestones(){
   const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
   if (!weights.length) return [];
@@ -1656,9 +1831,10 @@ function renderHome(){
   let strip = "";
   weekDates.forEach((date, i) => {
     const day = slotForDate(date);
-    const meta = TYPE_META[day.type];
+    const isFive = !!STATE.fiveDays[date];
+    const meta = isFive ? {color:"var(--teal)", label:"Five"} : TYPE_META[day.type];
     const isToday = i===0;
-    const showGo = isToday && day.type!=="repos" && !doneToday;
+    const showGo = isToday && day.type!=="repos" && !doneToday && !isFive;
     const isSwapped = !!STATE.weekOverrides[date];
     const pickerOpen = STATE.swapPickerDate === date;
 
@@ -1666,12 +1842,17 @@ function renderHome(){
       <div class="row between">
         <div>
           <p class="muted" style="font-size:11px;text-transform:capitalize;margin:0;">${fmtWeekday(date)} · ${fmtDate(date)}${isSwapped?` <span style="color:var(--gold);">🔀</span>`:""}</p>
-          <p style="font-size:14px;font-weight:700;margin:2px 0 6px;">${esc(day.label)}</p>
+          <p style="font-size:14px;font-weight:700;margin:2px 0 6px;">${isFive?"⚽ Five":esc(day.label)}</p>
           ${pill(meta.label, meta.color)}
+          ${isFive && day.type==="muscu" ? `<p class="muted" style="font-size:10px;margin:6px 0 0;">Muscu prévue ce jour : décale-la avec 🔀</p>` : ""}
+          ${isFive && STATE.fiveMoves[date] ? `<p style="font-size:10px;margin:6px 0 0;color:var(--gold);">Muscu décalée → ${fmtWeekday(STATE.fiveMoves[date].to)}${STATE.fiveMoves[date].adj?" (collée à une autre séance)":""}</p>` : ""}
         </div>
         <div class="col gap6" style="align-items:flex-end;">
           ${showGo ? `<button data-action="start-day" data-day="${day.id}" style="background:var(--gold);border-radius:10px;padding:10px 14px;color:#14171C;font-weight:700;font-size:12px;">▶ Go</button>` : ""}
-          <button data-action="toggle-swap-picker" data-date="${date}" style="color:var(--muted);font-size:17px;padding:4px;">🔀</button>
+          <div class="row gap6">
+            <button data-action="toggle-five" data-date="${date}" style="font-size:17px;padding:4px;${isFive?"":"opacity:.45;"}">⚽</button>
+            <button data-action="toggle-swap-picker" data-date="${date}" style="color:var(--muted);font-size:17px;padding:4px;">🔀</button>
+          </div>
         </div>
       </div>
       ${isSwapped ? `<button data-action="clear-swap" data-date="${date}" style="margin-top:8px;font-size:11px;color:var(--red);">↺ Annuler l'échange</button>` : ""}
@@ -1702,28 +1883,46 @@ function renderHome(){
       </div>
       ${doneToday ? `<p style="color:var(--teal);font-size:12px;margin:0;">✓ Séance du jour déjà validée</p>` : ""}
       ${(()=>{
+        const cc = consistencyComparison();
+        if (cc.thisWeek===0 && cc.lastWeek===0) return "";
+        const better = cc.diff>0, same = cc.diff===0;
+        return `<p style="font-size:12px;margin:0;color:${better?"var(--teal)":same?"var(--muted)":"var(--red)"};">
+          📆 <span class="mono" style="font-weight:800;">${cc.thisWeek}/7</span> jours actifs cette semaine <span class="mono">(${cc.lastWeek}/7</span> la semaine dernière)${better?" — mieux que la semaine dernière":same?"":" — moins que la semaine dernière"}
+        </p>`;
+      })()}
+      ${(()=>{
         const training = isTrainingDayToday();
         const todayEntryW = STATE.daily[todayStr()] || {};
         const weighInNeeded = !todayEntryW.weight;
         const tiers = dailyCalorieTiers();
         if (!tiers) return `<div class="card"><p class="muted" style="font-size:12px;margin:0;">Renseigne ton profil (âge/taille, onglet Métabo) et ton poids pour voir ton plafond kcal du jour.</p></div>`;
         return `<div class="card">
-          <p style="font-size:13px;font-weight:700;margin:0 0 2px;">${training?"🏋️ Jour de sport":"🛋️ Jour de repos"} — ton plafond aujourd'hui</p>
-          <p class="muted" style="font-size:11px;margin:0 0 10px;">${tiers.bonus>0 ? `+${tiers.bonus} kcal ajoutées (montre) — ` : (training ? "Note tes calories brûlées (montre) dans le Journal pour ajuster ce plafond. " : "")}Pour continuer d'atteindre ton objectif.</p>
+          <p style="font-size:13px;font-weight:700;margin:0 0 2px;">${STATE.fiveDays[todayStr()]?"⚽ Jour de five":training?"🏋️ Jour de sport":"🛋️ Jour de repos"} — ton plafond aujourd'hui</p>
+          <p class="muted" style="font-size:11px;margin:0 0 10px;">${tiers.activeEntered ? `Calories actives de ta montre : ${tiers.active}.` : `Montre pas encore notée : j'estime ${tiers.active} kcal actives (ton jour de repos habituel). Remplis-la ce soir dans le Journal et tout se recalcule.`}</p>
           <div class="grid3">
             <div style="text-align:center;padding:10px 4px;background:var(--surface-alt);border-radius:2px;">
               <p class="muted" style="font-size:10px;margin:0;text-transform:uppercase;">Strict</p>
               <p class="mono" style="font-size:16px;color:var(--teal);font-weight:800;margin:4px 0 0;">${tiers.strict}</p>
+              <p class="muted" style="font-size:9px;margin:2px 0 0;">${fmtKg(tiers.kgStrict)}</p>
             </div>
             <div style="text-align:center;padding:10px 4px;background:var(--surface-alt);border-radius:2px;border:1px solid var(--gold);">
               <p class="muted" style="font-size:10px;margin:0;text-transform:uppercase;">Bien</p>
               <p class="mono" style="font-size:16px;color:var(--gold);font-weight:800;margin:4px 0 0;">${tiers.bien}</p>
+              <p class="muted" style="font-size:9px;margin:2px 0 0;">${fmtKg(tiers.kgBien)}</p>
             </div>
             <div style="text-align:center;padding:10px 4px;background:var(--surface-alt);border-radius:2px;">
               <p class="muted" style="font-size:10px;margin:0;text-transform:uppercase;">Craqué</p>
               <p class="mono" style="font-size:16px;color:var(--red);font-weight:800;margin:4px 0 0;">${tiers.craque}</p>
+              <p class="muted" style="font-size:9px;margin:2px 0 0;">${fmtKg(tiers.kgCraque)}</p>
             </div>
           </div>
+          <button data-action="toggle-tier-info" style="margin-top:10px;font-size:11px;color:var(--muted);font-weight:700;">${STATE.showTierInfo?"✕ Fermer":"ℹ️ Comment c'est calculé ?"}</button>
+          ${STATE.showTierInfo ? `<div class="muted" style="font-size:11px;line-height:1.55;margin-top:8px;">
+            <p style="margin:0 0 6px;"><b style="color:var(--text);">Ta dépense du jour</b> = ton métabolisme de base (${tiers.bmr} kcal, calculé avec poids, taille, âge) + les calories actives de ta montre (${tiers.active}) = <b style="color:var(--text);">${tiers.tdee} kcal</b>.</p>
+            <p style="margin:0 0 6px;">1 kg de gras ≈ 7 700 kcal. Donc manger X kcal sous ta dépense te fait perdre à peu près X × 7 / 7 700 kg par semaine.</p>
+            <p style="margin:0 0 6px;"><b style="color:var(--teal);">Strict</b> vise ~1 % de ton poids par semaine, <b style="color:var(--gold);">Bien</b> ~0,7 %, <b style="color:var(--red);">Craqué</b> = ton entretien (tu perds rien, tu prends rien).</p>
+            <p style="margin:0;">Plancher de sécurité : jamais sous ${FLOOR_KCAL} kcal. Les jours calmes il bloque la vitesse : pour aller plus vite, il faut dépenser plus (five, salle), pas manger moins.</p>
+          </div>` : ""}
           ${weighInNeeded ? `<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--line);">
             <p class="muted" style="font-size:11px;margin:0 0 8px;">Pesée du matin :</p>
             <div class="row gap6"><input id="input-weight" type="text" inputmode="decimal" placeholder="kg" value="${esc(todayEntryW.weight||"")}" class="mono" style="flex:1;">
@@ -1735,14 +1934,57 @@ function renderHome(){
         <div class="row between" style="margin-bottom:8px;"><div class="row gap8"><span>🎯</span><span style="font-weight:700;font-size:14px;">Objectif : ${GOAL_FINAL}kg</span></div><span class="mono" style="color:var(--gold);font-size:13px;">${Math.max(0,currentWeight-GOAL_FINAL).toFixed(1)}kg restants</span></div>
         <div class="bar-bg"><div class="bar-fill" style="width:${startWeight>GOAL_FINAL?Math.min(100,Math.max(0,((startWeight-currentWeight)/(startWeight-GOAL_FINAL))*100)):100}%;background:var(--gold);"></div></div>
         <p class="muted" style="font-size:11px;margin:8px 0 0;">Actuel : ${currentWeight}kg${etaText?` · ${etaText}`:""}</p>
+        ${(()=>{
+          const tc = trackingCheck();
+          if (!tc) return "";
+          return `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);">
+            <p style="font-size:12px;margin:0;color:${tc.onTrack?"var(--teal)":"var(--red)"};font-weight:700;">${tc.onTrack ? `✓ Dans les temps (prévu ~${tc.expected}kg aujourd'hui)` : `⚠ En retard de ${tc.diff}kg sur la trajectoire (prévu ~${tc.expected}kg aujourd'hui)`}</p>
+          </div>`;
+        })()}
         ${milestones.length ? `<div class="row gap6" style="margin-top:10px;flex-wrap:wrap;">${milestones.map(m=>`<span class="pill" style="background:var(--surface-alt);color:var(--muted);">${esc(m.label)} · ~${m.weight}kg</span>`).join("")}</div>` : ""}
       </div>` : `<div class="card"><p class="muted" style="font-size:12px;margin:0;">Note ton poids dans le Journal pour suivre ta progression vers ${GOAL_FINAL}kg.</p></div>`}
       ${(()=>{
-        const recap = weeklyRecapLite();
-        if (!recap) return "";
-        const good = recap.avg >= 0;
-        return `<div class="card" style="padding:12px 16px;">
-          <p style="font-size:12px;margin:0;"><span class="mono" style="font-weight:800;color:${recap.inDeficit===recap.total?"var(--teal)":"var(--gold)"};">${recap.inDeficit}/${recap.total}</span> jours en déficit cette semaine · moyenne <span class="mono" style="font-weight:800;color:${good?"var(--teal)":"var(--red)"};">${good?"":"+"}${Math.abs(recap.avg)} kcal${good?"":" (surplus)"}</span></p>
+        const t = dailyCalorieTiers();
+        if (!t) return "";
+        const rep = intakeReport();
+        const eaten = dayKcalTotal(STATE.daily[todayStr()]||{});
+        const st = intakeStatus(eaten, t);
+        const earlyDay = new Date().getHours() < 20;
+        const stLabel = (st==="low" && earlyDay) ? "En cours" : INTAKE_META[st].label;
+        const stColor = (st==="low" && earlyDay) ? "var(--muted)" : INTAKE_META[st].color;
+        const scale = t.craque*1.08;
+        const pos = v => Math.min(100, (v/scale)*100);
+        const left = t.bien - eaten;
+        const line = !eaten ? "Rien noté aujourd'hui pour l'instant."
+          : left>=0 ? `Il te reste ${left} kcal pour rester sur Bien.`
+          : eaten<=t.craque ? `Tu dépasses Bien de ${-left} kcal (encore sous Craqué).`
+          : `Tu es au-dessus même de Craqué, de ${eaten-t.craque} kcal.`;
+        const bars = rep.days.map(d=>{
+          const h = d.t && d.eaten ? Math.max(6, Math.min(100, (d.eaten/(d.t.craque*1.08))*100)) : 6;
+          const col = (d.status==="low" && d.isToday && earlyDay) ? "var(--muted)" : INTAKE_META[d.status].color;
+          return `<div style="flex:1;text-align:center;">
+            <div style="height:44px;display:flex;align-items:flex-end;justify-content:center;"><div style="width:70%;height:${h}%;background:${col};border-radius:2px;${d.isToday?"outline:1px solid var(--text);":""}"></div></div>
+            <p class="muted" style="font-size:9px;margin:3px 0 0;text-transform:uppercase;">${fmtWeekday(d.date).slice(0,1)}</p>
+          </div>`;
+        }).join("");
+        return `<div class="card">
+          <div class="row between" style="margin-bottom:8px;">
+            <span style="font-size:13px;font-weight:700;">🍽️ Ce que tu manges</span>
+            <span class="mono" style="font-size:12px;color:${stColor};font-weight:800;">${eaten} kcal · ${stLabel}</span>
+          </div>
+          <div style="position:relative;height:10px;background:var(--bg);border:1px solid var(--line);border-radius:2px;margin:4px 0 16px;">
+            <div style="height:100%;width:${pos(eaten)}%;background:${stColor};"></div>
+            ${[["Strict",t.strict],["Bien",t.bien],["Craqué",t.craque]].map(([n,v])=>`<div style="position:absolute;top:-3px;left:${pos(v)}%;width:2px;height:16px;background:var(--text);opacity:.5;"></div><span class="mono" style="position:absolute;top:13px;left:${pos(v)}%;transform:translateX(-50%);font-size:9px;color:var(--muted);">${n} ${v}</span>`).join("")}
+          </div>
+          <p style="font-size:12px;margin:0 0 12px;">${line}</p>
+          <div class="row gap6" style="margin-bottom:12px;">${bars}</div>
+          <p style="font-size:12px;margin:0;line-height:1.5;"><span style="font-size:15px;">${rep.verdict.icon}</span> <span style="color:${rep.verdict.color};">${esc(rep.verdict.text)}</span></p>
+        </div>`;
+      })()}
+      ${(()=>{
+        const insight = coachingInsight();
+        return `<div class="card" style="padding:14px 16px;">
+          <p style="font-size:12px;margin:0;line-height:1.5;"><span style="font-size:15px;">${insight.icon}</span> <span style="color:${insight.color};">${esc(insight.text)}</span></p>
         </div>`;
       })()}
       <div class="card" style="${lowWater?"border-color:var(--red);":""}">
@@ -1882,6 +2124,10 @@ function startDay(dayId){
   render();
 }
 
+function sessionVolume(session){
+  if (!session || session.type!=="muscu") return 0;
+  return session.entries.reduce((a,e)=>a + e.sets.reduce((b,s)=>b + (toNum(s.weight)||0)*(toNum(s.reps)||0), 0), 0);
+}
 function finishMuscu(){
   captureCurrentStepInputs();
   const entries = Object.entries(STATE.guidedSets)
@@ -1889,11 +2135,23 @@ function finishMuscu(){
     .filter(e=>e.sets.length>0);
   if (entries.length===0){ return; }
   const session = {id:Date.now(), date:todayStr(), dayId:STATE.activeDay.id, type:"muscu", entries};
+  const prevSession = STATE.sessions.find(s=>s.type==="muscu" && s.dayId===STATE.activeDay.id);
+  const newVolume = Math.round(sessionVolume(session));
+  const prevVolume = prevSession ? Math.round(sessionVolume(prevSession)) : null;
+  STATE.lastMuscuComparison = {volume: newVolume, diff: prevVolume!=null ? newVolume-prevVolume : null};
   STATE.sessions = [session, ...STATE.sessions];
   save(LS.sessions, STATE.sessions);
-  STATE.activeDay = null; STATE.justFinished = true; STATE.lastFinishedType = "muscu";
   clearActiveSession();
-  render();
+  // Le cardio fait partie intégrante de chaque séance muscu — on enchaîne direct,
+  // pas une option à part.
+  const cardioDay = STATE.program.days.find(d=>d.type==="cardio");
+  if (cardioDay){
+    STATE.muscuJustDone = true;
+    startDay(cardioDay.id);
+  } else {
+    STATE.activeDay = null; STATE.justFinished = true; STATE.lastFinishedType = "muscu";
+    render();
+  }
 }
 function finishCardio(){
   captureCardioForm();
@@ -1901,21 +2159,36 @@ function finishCardio(){
   const session = {id:Date.now(), date:todayStr(), dayId:STATE.activeDay.id, type:"cardio", cardioKind: STATE.activeDay.cardioKind || "steady", ...STATE.cardioForm};
   STATE.sessions = [session, ...STATE.sessions];
   save(LS.sessions, STATE.sessions);
-  STATE.activeDay = null; STATE.justFinished = true; STATE.lastFinishedType = "cardio";
+  STATE.activeDay = null; STATE.justFinished = true;
+  STATE.lastFinishedType = STATE.muscuJustDone ? "combined" : "cardio";
+  STATE.muscuJustDone = false;
   clearActiveSession();
   render();
 }
 
 function renderSession(){
   if (STATE.justFinished){
-    const cardioDay = STATE.program.days.find(d=>d.type==="cardio");
-    const offerCardio = STATE.lastFinishedType==="muscu" && cardioDay;
-    return `<div class="col center gap14" style="align-items:center;text-align:center;padding:60px 20px;">
+    const cmp = STATE.lastMuscuComparison;
+    const todayWatch = toNum((STATE.daily[todayStr()]||{}).watchKcal);
+    return `<div class="col center gap14" style="align-items:center;text-align:center;padding:50px 20px;">
       <span style="font-size:48px;">🏆</span>
       <h2 class="display" style="font-size:26px;margin:0;">Séance enregistrée</h2>
-      <p class="muted">Bien joué. Continue comme ça.</p>
-      ${offerCardio ? `<button data-action="start-day" data-day="${cardioDay.id}" class="btn-primary" style="padding:12px 20px;background:var(--teal);">🏃 Enchaîner avec le cardio (20 min)</button>` : ""}
-      <button data-action="dismiss-finish" class="${offerCardio?"btn-secondary":"btn-primary"}" style="padding:10px 20px;">Retour</button>
+      <p class="muted">${STATE.lastFinishedType==="combined"?"Muscu + cardio, séance complète.":"Bien joué. Continue comme ça."}</p>
+      ${cmp ? `<div class="card" style="width:100%;">
+        <div class="grid2">
+          <div style="text-align:center;">
+            <p class="muted" style="font-size:10px;margin:0;text-transform:uppercase;">Volume soulevé</p>
+            <p class="mono" style="font-size:20px;color:var(--gold);font-weight:800;margin:4px 0 0;">${cmp.volume}<span style="font-size:11px;"> kg·reps</span></p>
+            ${cmp.diff!=null ? `<p class="mono" style="font-size:11px;margin:2px 0 0;color:${cmp.diff>=0?"var(--teal)":"var(--red)"};">${cmp.diff>=0?"+":""}${cmp.diff} vs dernière fois</p>` : `<p class="muted" style="font-size:10px;margin:2px 0 0;">Première fois sur ce jour</p>`}
+          </div>
+          <div style="text-align:center;">
+            <p class="muted" style="font-size:10px;margin:0;text-transform:uppercase;">Calories (montre)</p>
+            <p class="mono" style="font-size:20px;color:var(--teal);font-weight:800;margin:4px 0 0;">${todayWatch || "—"}</p>
+            ${!todayWatch ? `<p class="muted" style="font-size:10px;margin:2px 0 0;">À noter dans le Journal</p>` : ""}
+          </div>
+        </div>
+      </div>` : ""}
+      <button data-action="dismiss-finish" class="btn-primary" style="padding:10px 20px;">Retour</button>
     </div>`;
   }
 
@@ -1944,21 +2217,26 @@ function renderSession(){
     const swapOpen = STATE.showSwapPanel;
 
     return `<div class="fade">
-      <div class="row between" style="margin-bottom:12px;">
+      <div class="row between" style="margin-bottom:8px;">
         <button data-action="cancel-session">‹</button>
-        <div class="row gap6">${dots}</div>
-        <span class="mono muted" style="font-size:11px;">${step+1}/${day.exercises.length}</span>
+        <span class="mono" style="font-size:12px;font-weight:800;color:var(--gold);">ÉTAPE ${step+1}/${day.exercises.length}</span>
       </div>
+      <div class="row gap6" style="margin-bottom:14px;">${dots}</div>
       <h2 class="display" style="font-size:24px;margin:0 0 4px;">${esc(EX[exId].name)}</h2>
       <div class="card" style="background:rgba(215,255,63,.1);border-color:var(--gold);margin-bottom:12px;">
         <p style="font-size:13px;font-weight:700;color:var(--gold);margin:0;">🎯 Objectif : ${target.sets} x ${target.reps}${target.unit==="sec"?" sec":""}${target.weight?` à ${target.weight}kg`:""}</p>
         <p class="muted" style="font-size:12px;margin:4px 0 0;">${esc(target.note)}</p>
       </div>
       <div class="card">
-        <p style="font-weight:700;font-size:13px;margin:0 0 8px;">Note tes séries</p>
-        <div class="row mono muted" style="font-size:10px;padding-left:26px;"><span style="flex:1;">KG</span><span style="flex:1;">REPS</span></div>
+        <p style="font-weight:800;font-size:14px;margin:0 0 4px;">👇 Remplis chaque série ci-dessous</p>
+        <p class="muted" style="font-size:11px;margin:0 0 10px;">Combien de kilos, combien de répétitions — pour chaque série que tu fais.</p>
+        <div class="row gap8" style="margin-bottom:4px;">
+          <span style="width:18px;"></span>
+          <span class="mono" style="flex:1;font-size:11px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;">⚖️ Kilos</span>
+          <span class="mono" style="flex:1;font-size:11px;font-weight:800;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;">🔢 Répétitions</span>
+        </div>
         ${rows}
-        <button data-action="add-set" class="row gap6" style="color:var(--gold);font-size:12px;margin-top:8px;">➕ Ajouter une série</button>
+        <button data-action="add-set" class="row gap6" style="color:var(--gold);font-size:12px;margin-top:10px;font-weight:700;">➕ Ajouter une série</button>
       </div>
       <div class="row gap8" style="margin-top:10px;">
         <button data-action="toggle-swap-panel" style="flex:1;background:var(--surface-alt);border-radius:2px;padding:9px 0;font-size:11px;font-weight:700;color:var(--text);text-transform:uppercase;">${swapOpen?"✕ Fermer":"🔁 Machine prise ?"}</button>
@@ -1970,9 +2248,9 @@ function renderSession(){
         ${pickerOpen ? `<div class="col gap6" style="margin-top:10px;max-height:280px;overflow-y:auto;">${pickerList}</div>` : ""}
       </div>` : ""}
       ${detailOpen ? `<div style="margin-top:8px;">${exerciseDetailHTML(exId, "session")}</div>` : ""}
-      <div class="row gap10" style="margin-top:16px;">
-        ${step>0 ? `<button data-action="prev-step" class="btn-secondary" style="flex:1;">Précédent</button>`:""}
-        <button data-action="${isLast?"finish-muscu":"next-step"}" class="btn-primary" style="flex:2;">${isLast?"Terminer la séance":"Exercice suivant"}</button>
+      <div class="row gap10" style="margin-top:18px;">
+        ${step>0 ? `<button data-action="prev-step" class="btn-secondary" style="flex:1;">‹ Précédent</button>`:""}
+        <button data-action="${isLast?"finish-muscu":"next-step"}" class="btn-primary" style="flex:2;font-size:15px;">${isLast?"✓ Terminer la séance":"Exercice suivant ›"}</button>
       </div>
       ${!isLast ? `<button data-action="finish-muscu" style="width:100%;margin-top:10px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:10px;padding:10px 0;font-size:12px;">⏱ Pas le temps — terminer maintenant (séance écourtée)</button>` : ""}
     </div>`;
@@ -1993,7 +2271,7 @@ function renderSession(){
       </div>`).join("");
     return `<div class="fade">
       <div class="row gap8" style="margin-bottom:12px;"><button data-action="cancel-session">‹</button><h2 class="display" style="font-size:22px;margin:0;">${esc(day.label)}</h2></div>
-
+      ${STATE.muscuJustDone ? `<div class="card" style="background:rgba(61,169,252,.1);border-color:var(--teal);margin-bottom:12px;"><p style="font-size:13px;font-weight:700;color:var(--teal);margin:0;">✓ Muscu terminée — dernière étape de la séance</p></div>` : ""}
       <div class="card" style="background:rgba(215,255,63,.1);border-color:var(--gold);">
         <p style="font-size:14px;font-weight:700;color:var(--gold);margin:0;">🎯 ${esc(target.proto.label)}</p>
         <p style="font-size:13px;font-weight:700;margin:6px 0 0;">${target.totalMinutes} min au total${target.rounds?` · ${target.rounds} tours`:""}</p>
@@ -2121,6 +2399,7 @@ function renderDaily(){
       ${entry.watchKcal ? `<p class="muted" style="font-size:10px;margin:6px 0 0;color:var(--teal);">✓ ${entry.watchKcal} kcal${yEntry.watchKcal?` · hier ${yEntry.watchKcal}kcal`:""}</p>` : (yEntry.watchKcal ? `<p class="muted" style="font-size:10px;margin:6px 0 0;">Hier : ${yEntry.watchKcal} kcal</p>` : "")}
       ${(()=>{
         const dd = todayDeficit(entry);
+        if (dd && !entry.watchKcal) return `<p class="muted" style="font-size:10px;margin:8px 0 0;">Note tes calories actives (montre) pour voir ton déficit réel du jour.</p>`;
         if (!dd) return `<p class="muted" style="font-size:10px;margin:8px 0 0;">Renseigne ton profil (onglet Métabo) pour voir ton déficit réel du jour.</p>`;
         const positive = dd.deficit >= 0;
         return `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line);">
@@ -2247,8 +2526,10 @@ function renderProgress(){
         const weights = Object.entries(STATE.daily).filter(([,v])=>v.weight).sort();
         const latestWeight = weights.length ? weights[weights.length-1][1].weight : null;
         const bmr = computeBMR(latestWeight, STATE.profile);
-        return bmr
-          ? `<div style="padding-top:12px;border-top:1px solid var(--line);"><p style="font-size:13px;margin:0;">Tu brûles environ <span class="mono" style="color:var(--gold);font-weight:800;font-size:16px;">${Math.round(bmr)} kcal/jour</span> juste en existant (métabolisme de base).</p><p class="muted" style="font-size:11px;margin:6px 0 0;">+ tes calories actives (montre) = ta dépense totale du jour.</p></div>`
+        if (bmr) return `<div style="padding-top:12px;border-top:1px solid var(--line);"><p style="font-size:13px;margin:0;">Tu brûles environ <span class="mono" style="color:var(--gold);font-weight:800;font-size:16px;">${Math.round(bmr)} kcal/jour</span> juste en existant (métabolisme de base).</p><p class="muted" style="font-size:11px;margin:6px 0 0;">+ tes calories actives (montre) = ta dépense totale du jour.</p></div>`;
+        const hasAgeHeight = STATE.profile.age && STATE.profile.heightCm;
+        return hasAgeHeight
+          ? `<p style="font-size:11px;color:var(--teal);margin:0;">✓ Profil enregistré (âge ${esc(STATE.profile.age)} / ${esc(STATE.profile.heightCm)}cm) — note aussi ton poids dans le Journal pour voir le calcul.</p>`
           : `<p class="muted" style="font-size:11px;">Renseigne âge, taille et ton poids (onglet Journal) pour voir le calcul.</p>`;
       })()}
     </div>
@@ -2294,7 +2575,7 @@ function copySessionSummary(sessionId){
 function exportData(){
   const data = {
     program: STATE.program, sessions: STATE.sessions, daily: STATE.daily,
-    weekOverrides: STATE.weekOverrides, profile: STATE.profile, exportedAt: new Date().toISOString(),
+    weekOverrides: STATE.weekOverrides, fiveDays: STATE.fiveDays, fiveMoves: STATE.fiveMoves, profile: STATE.profile, exportedAt: new Date().toISOString(),
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
@@ -2315,6 +2596,8 @@ function importDataFromFile(file){
       if (data.program) { STATE.program = data.program; save(LS.program, STATE.program); }
       if (data.sessions) { STATE.sessions = data.sessions; save(LS.sessions, STATE.sessions); }
       if (data.daily) { STATE.daily = data.daily; save(LS.daily, STATE.daily); }
+      if (data.fiveMoves) { STATE.fiveMoves = data.fiveMoves; save(LS.fiveMoves, STATE.fiveMoves); }
+      if (data.fiveDays) { STATE.fiveDays = data.fiveDays; save(LS.fiveDays, STATE.fiveDays); }
       if (data.weekOverrides) { STATE.weekOverrides = data.weekOverrides; save(LS.weekOverrides, STATE.weekOverrides); }
       if (data.profile) { STATE.profile = data.profile; save(LS.profile, STATE.profile); }
       alert("Sauvegarde restaurée !");
@@ -2328,11 +2611,13 @@ function importDataFromFile(file){
 
 function resetAllData(){
   if (!confirm("Ça efface toutes tes données (séances, journal) pour repartir de zéro. Tu es sûr ?")) return;
-  [LS.program, LS.sessions, LS.daily, LS.weekOverrides, LS.profile].forEach(k=>localStorage.removeItem(k));
+  [LS.program, LS.sessions, LS.daily, LS.weekOverrides, LS.fiveDays, LS.fiveMoves, LS.profile].forEach(k=>localStorage.removeItem(k));
   STATE.program = JSON.parse(JSON.stringify(DEFAULT_PROGRAM));
   STATE.sessions = [];
   STATE.daily = {};
   STATE.weekOverrides = {};
+  STATE.fiveDays = {};
+  STATE.fiveMoves = {};
   STATE.profile = {age:"", heightCm:"", sex:"m"};
   STATE.swapPickerDate = null;
   STATE.activeDay = null;
@@ -2343,6 +2628,7 @@ function resetAllData(){
   localStorage.setItem(SCHEDULE_MIGRATION_KEY, "1");
   localStorage.setItem(SCHEDULE_MIGRATION_KEY_V3, "1");
   localStorage.setItem(SCHEDULE_MIGRATION_KEY_V4, "1");
+  localStorage.setItem(SCHEDULE_MIGRATION_KEY_V5, "1");
   alert("C'est reparti, l'app est vierge.");
   render();
 }
@@ -2456,7 +2742,7 @@ document.addEventListener("click", (e)=>{
   else if (action==="prev-step"){ captureCurrentStepInputs(); STATE.guidedStep--; STATE.exercisePickerOpen=false; STATE.showSwapPanel=false; STATE.showExerciseDetail=false; saveActiveSession(); render(); }
   else if (action==="finish-muscu"){ finishMuscu(); }
   else if (action==="finish-cardio"){ finishCardio(); }
-  else if (action==="cancel-session"){ STATE.activeDay=null; clearActiveSession(); render(); }
+  else if (action==="cancel-session"){ STATE.activeDay=null; STATE.muscuJustDone=false; clearActiveSession(); render(); }
   else if (action==="dismiss-finish"){ STATE.justFinished=false; render(); }
   else if (action==="set-cardio-activity"){ captureCardioForm(); STATE.cardioForm.activity = btn.dataset.value; render(); }
   else if (action==="add-water"){
@@ -2524,6 +2810,14 @@ document.addEventListener("click", (e)=>{
     save(LS.customFoods, STATE.customFoods);
     STATE.showCustomFoodForm = false;
     STATE.foodQuery = ""; STATE.foodMatches = [];
+    render();
+  }
+  else if (action==="toggle-tier-info"){ STATE.showTierInfo = !STATE.showTierInfo; render(); }
+  else if (action==="toggle-five"){
+    const d = btn.dataset.date;
+    const next = {...STATE.fiveDays};
+    if (next[d]){ delete next[d]; STATE.fiveDays = next; save(LS.fiveDays, STATE.fiveDays); undoFiveMove(d); }
+    else { next[d] = true; STATE.fiveDays = next; save(LS.fiveDays, STATE.fiveDays); autoMoveForFive(d); }
     render();
   }
   else if (action==="toggle-custom-food-form"){ STATE.showCustomFoodForm = !STATE.showCustomFoodForm; render(); }
